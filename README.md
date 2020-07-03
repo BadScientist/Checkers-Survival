@@ -1,4 +1,4 @@
 # Checkers-Survival
 Checkers Studios survival game project for CS 361.
 
-![High-Level Architecture] (https://raw.githubusercontent.com/BadScientist/Checkers-Survival/master/Survival_Game_High-Level_Architecture.png?token=AG6IY56CKWPR55ESRXXHL6K673VOM)
+![High-Level Architecture] (https://cdn.discordapp.com/attachments/726146298247381012/728481863882244146/unknown.png)
