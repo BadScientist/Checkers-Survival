@@ -58,6 +58,22 @@ def get_user_input(player_obj):
         else:
             player_obj.hunt(words[1], words[2])  # To be updated based on player class
 
+    elif words[0] == "talk":
+
+        if len(words) < 2:
+            print("You must specify who you want to talk to.")
+
+        else:
+            player_obj.talk(words[1])  # To be updated based on player class
+
+    elif words[0] == "trade":
+
+        if len(words) < 2:
+            print("You must specify who you with to trade with.")
+
+        else:
+            player_obj.trade(words[1])
+
     elif words[0] == "inventory":
         player_obj.display_inventory()  # To be updated based on player class
 
@@ -75,7 +91,7 @@ def get_user_input(player_obj):
 
         # Display command list
         if len(words) == 1:
-            print("Commands: move, look, take, use, hunt, inventory, map, status, here, help")
+            print("Commands: move, look, take, use, hunt, talk, trade, inventory, map, status, here, help")
 
         elif words[1] == "move":
             print("Usage: move <direction>")
@@ -96,6 +112,14 @@ def get_user_input(player_obj):
         elif words[1] == "hunt":
             print("Usage: hunt <weapon> <animal>")
             print("Hunt the specified animal with the specified weapon.")
+
+        elif words[1] == "talk":
+            print("Usage: talk <NPC name>")
+            print("Talk to the specified NPC.")
+
+        elif words[1] == "trade":
+            print("Usage: trade <NPC name>")
+            print("Trade with the specified NPC.")
 
         elif words[1] == "inventory":
             print("Usage: inventory")
