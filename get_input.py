@@ -69,3 +69,53 @@ def get_user_input(player_obj):
 
     elif words[0] == "here":
         player_obj.display_location()  # To be updated based on player class
+
+    # Display help information about commands
+    elif words[0] == "help":
+
+        # Display command list
+        if len(words) == 1:
+            print("Commands: move, look, take, use, hunt, inventory, map, status, here, help")
+
+        elif words[1] == "move":
+            print("Usage: move <direction>")
+            print("Move to the location in the specified direction.")
+
+        elif words[1] == "look":
+            print("Usage: look <direction>")
+            print("Look in the specified direction.")
+
+        elif words[1] == "take":
+            print("Usage: take <item>")
+            print("Take the specified item.")
+
+        elif words[1] == "use":
+            print("Usage: use <item> OR use <item> <target>")
+            print("Use the specified item. Optionally use item on specified target.")
+
+        elif words[1] == "hunt":
+            print("Usage: hunt <weapon> <animal>")
+            print("Hunt the specified animal with the specified weapon.")
+
+        elif words[1] == "inventory":
+            print("Usage: inventory")
+            print("Display the items in the player's inventory.")
+
+        elif words[1] == "map":
+            print("Usage: map")
+            print("Display the rooms the player has visited.")
+
+        elif words[1] == "status":
+            print("Usage: status")
+            print("Display the player's status.")
+
+        elif words[1] == "here":
+            print("Usage: here")
+            print("Display the description of current location.")
+
+        elif words[1] == "help":
+            print("Usage: help OR help <command>")
+            print("Display command help information.")
+
+    else:
+        print("You didn't enter a valid command. Type \"help\" for a list of commands.")
