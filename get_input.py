@@ -66,3 +66,6 @@ def get_user_input(player_obj):
 
     elif words[0] == "status":
         player_obj.display_status()  # To be updated based on player class
+
+    elif words[0] == "here":
+        player_obj.display_location()  # To be updated based on player class
