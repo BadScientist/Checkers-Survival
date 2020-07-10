@@ -1,6 +1,48 @@
+class Player:
+    """Test player class. Not to be implemented."""
+    def __init__(self):
+        pass
+
+    def move(self, str):
+        print("Moved " + str)
+
+    def look(self, str):
+        print("Looked " + str)
+
+    def take(self, str):
+        print("Took " + str)
+
+    def use(self, str1, str2=None):
+        if str2 is None:
+            print("Used " + str1)
+        else:
+            print("Used " + str1 + " on " + str2)
+
+    def hunt(self, str1, str2):
+        print("Hunted " + str1 + " with " + str2)
+
+    def talk(self, str):
+        print("Talked to " + str)
+
+    def trade(self, str):
+        print("Traded your item for " + str + "'s other item.")
+
+    def display_inventory(self):
+        print("You look in your inventory.")
+
+    def display_map(self):
+        print("You look at your map.")
+
+    def display_status(self):
+        print("You are healthy.")
+
+    def display_location(self):
+        print("You are here.")
+
+
 def get_user_input(player_obj):
 
-    curr_input = input()  # Get input. Currently no prompt.
+    curr_input = input("Test prompt: ")  # Get input. Prompt is placeholder.
     words = []
     curr_word = ""
 
@@ -141,5 +183,14 @@ def get_user_input(player_obj):
             print("Usage: help OR help <command>")
             print("Display command help information.")
 
+        else:
+            print("Commands: move, look, take, use, hunt, talk, trade, inventory, map, status, here, help")
+
     else:
         print("You didn't enter a valid command. Type \"help\" for a list of commands.")
+
+
+player = Player()
+
+while True:
+    get_user_input(player)
