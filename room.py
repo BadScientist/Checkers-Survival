@@ -25,7 +25,14 @@ class Room:
         
     def apply_path(self, direction, target):
     #direction eg N, S ...; target is the room path leads to
-        setattr(self, direction, target)
+        #check if path already occupied and if there's existing path to target
+        if self.get_adjacent_room(direction) == None:
+            all_paths = ['N','S','E','W']
+            for path in all_paths:
+                if getattr(self, path) == target:
+                    return
+            setattr(self, direction, target)
+        #***************maybe throw error if occupied****************
     
     def get_long_desc(self):
         return self.long_desc
@@ -36,9 +43,33 @@ class Room:
     def get_adjacent_room(self, direction):
     #direction eg N, S ...;
         return getattr(self, direction)
+    
+    def get_empty_paths(self): #used for level generation
+    #get all paths/directions that don't have an assigned room
+    #returns an array of all available paths
+        all_paths = ['N','S','E','W']
+        idx = 0
+        while idx < len(all_paths):
+            direction = all_paths[idx]
+            if getattr(self, direction) != None:
+                all_paths.remove(direction)
+                idx-=1
+            idx+=1
+        return all_paths
 
-#room_1 = Room('haha', 'lool')
-#room_2 = Room()
+
+def gen_random_level(room_num):
+    rooms = []
+    for i in range(0, room_num):
+        rooms.append(Room())
+    print(rooms)
+    
+
+room_1 = Room('haha', 'lool')
+room_2 = Room()
+room_3 = Room()
+
+gen_random_level(3)
 
 #print(room_1.get_long_desc())
 #print(room_1.get_shrt_desc())
