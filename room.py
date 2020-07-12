@@ -1,3 +1,5 @@
+import random
+
 #example use of functions below class definition
 
 class Room:
@@ -26,13 +28,18 @@ class Room:
     def apply_path(self, direction, target):
     #direction eg N, S ...; target is the room path leads to
         #check if path already occupied and if there's existing path to target
-        if self.get_adjacent_room(direction) == None:
-            all_paths = ['N','S','E','W']
-            for path in all_paths:
-                if getattr(self, path) == target:
-                    return
-            setattr(self, direction, target)
-        #***************maybe throw error if occupied****************
+        if self != target:
+            if self.get_adjacent_room(direction) == None:
+                all_paths = ['N','S','E','W']
+                for path in all_paths:
+                    if getattr(self, path) == target:
+                        return False           #failure
+                setattr(self, direction, target)
+                return True
+            else:
+                return False
+        else:
+            return False
     
     def get_long_desc(self):
         return self.long_desc
@@ -57,19 +64,57 @@ class Room:
             idx+=1
         return all_paths
 
+random.seed()
+
+def create_path(parent, target, paths):
+    #only possible reason for failure is the parent's paths are filled
+    opposite_dir = {
+        'N': 'S',
+        'S': 'N',
+        'E': 'W',
+        'W': 'E'
+    }
+    if paths:
+        idx = random.randint(0,len(paths)-1)
+        direction = paths[idx]
+        if parent.apply_path(direction, target) is False:
+            return False
+        else:
+            target.apply_path(opposite_dir[direction], parent)
+    else:
+        return False
 
 def gen_random_level(room_num):
-    rooms = []
+    #creates a room at a time, joining the new room to the existing 'bunch'
+    #of rooms
+    all_rooms = []
+    avail_rooms = [] #has index of rooms with an available path
     for i in range(0, room_num):
-        rooms.append(Room())
-    print(rooms)
-    
+        all_rooms.append(Room()) #create the new room (child)
+        avail_rooms.append(i)
+        if i == 0:
+            continue
+        flag = False
+        while flag == False:
+            if i == 1: #(2 rooms only)
+                parent = all_rooms[0] #will have path to new room
+                avail_paths = parent.get_empty_paths()#parent's available paths
+                flag = create_path(parent, all_rooms[i], avail_paths)
+            if i > 1:
+                idx = random.randint(0,len(avail_rooms)-2)
+                parent = all_rooms[avail_rooms[idx]] #will have path to new rm
+                avail_paths = parent.get_empty_paths()#parent's available paths
+                flag = create_path(parent, all_rooms[i], avail_paths)
+            if flag == False:
+                avail_rooms.remove(idx) #remove from 'bunch' - all paths filled 
+                print("Fail! Full!")
+    for i in range(0, room_num):
+        print(all_rooms[i].__dict__,'\n')        
+    print(avail_rooms)
+
 
 room_1 = Room('haha', 'lool')
-room_2 = Room()
-room_3 = Room()
-
-gen_random_level(3)
+gen_random_level(10)
 
 #print(room_1.get_long_desc())
 #print(room_1.get_shrt_desc())
