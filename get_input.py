@@ -190,7 +190,7 @@ def get_user_input(player_obj):
         print("You didn't enter a valid command. Type \"help\" for a list of commands.")
 
 
-player = Player()
+# player = Player()
 
-while True:
-    get_user_input(player)
+# while True:
+#    get_user_input(player)
