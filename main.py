@@ -106,13 +106,11 @@ class Player:
         # Invalid entry error message
         else:
             print("You didn't enter a valid direction.")
-            print("**************************************************")
             return
 
         # No adjacent room error message
         if adj_room is None:
             print("You can't go that way.")
-            print("**************************************************")
             return
         else:
             self.location = adj_room
@@ -124,7 +122,6 @@ class Player:
         location.
          """
         print(self.location.get_long_desc())
-        print("**************************************************")
 
     def look(self, dir_str):
 
@@ -144,17 +141,14 @@ class Player:
         # Invalid entry error message
         else:
             print("You didn't enter a valid direction.")
-            print("**************************************************")
             return
 
         # No adjacent room error message
         if adj_room is None:
             print("There is nothing in that direction.")
-            print("**************************************************")
             return
         else:
             print("To the " + dir_str + " you see " + adj_room.get_shrt_desc())
-            print("**************************************************")
 
     def take(self, item_str):
         print("Took " + item_str)
@@ -175,13 +169,18 @@ class Player:
         print("Traded your item for " + npc_str + "'s other item.")
 
     def display_inventory(self):
-        print("You look in your inventory.")
+        if len(self._inventory) == 0:
+            print("Your inventory is empty.")
+        else:
+            print("Your inventory contains:")
+            for item in self._inventory:
+                print(item)
 
     def display_map(self):
         print("You look at your map.")
 
     def display_status(self):
-        print("You are healthy.")
+        print("Health: " + str(self._health) + "/100")
 
     # set functions
     def adj_health(self, amount):
@@ -353,6 +352,8 @@ class Player:
     
         else:
             print("You didn't enter a valid command. Type \"help\" for a list of commands.")
+
+        print("**************************************************")
 
 
 random.seed()
