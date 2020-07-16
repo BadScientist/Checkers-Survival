@@ -1,5 +1,6 @@
-import random
+from item import *
 from room import *
+
 
 # example use of functions below class definition
 class Player:
@@ -286,7 +287,15 @@ random.seed()
 
 def main():
     level_1 = gen_random_level(10)
-    test_player = Player("Johnnie", level_1[0], "hunting knife")
+    hunting_knife = Weapon("Hunting Knife",
+                           "A plain hunting knife.",
+                           10, 15)
+    health_pack = Consumable("Health Pack",
+                             "A simple health pack.",
+                             30, 1)
+    test_player = Player("Johnnie", level_1[0], None)
+    test_player.add_item(hunting_knife)
+    test_player.add_item(health_pack)
     while True:
         test_player.get_user_input()
 

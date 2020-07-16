@@ -1,8 +1,9 @@
 import random
 
-print("test file") #testing if file works
+print("test file")  # testing if file works
 
-class item:
+
+class Item:
     """Item class of the game."""
     def __init__(self, name, str_desc):
         """Creates an  item object.\n
@@ -28,7 +29,7 @@ class item:
         return self._name + ": " + self._str_desc
 
 
-class weapon(item):
+class Weapon(Item):
     """Weapon class of the game."""
     def __init__(self, name, str_desc, dmg_low, dmg_high):
         """Creates a weapon object.\n
@@ -53,7 +54,8 @@ class weapon(item):
         """Returns high range of damage."""
         return self._dmg_high
 
-class consumable(item):
+
+class Consumable(Item):
     """Consumable class in game."""
     def __init__(self, name, str_desc, value, use_count):
         """Creates a consumable object.\n
@@ -67,7 +69,7 @@ class consumable(item):
         return self._name + ": " + self._str_desc + " value: " + str(self._value) + ", use count:" + str(self._use_count) 
         
     def get_value(self):
-        """get the value of the cosumable."""
+        """get the value of the consumable."""
         return self._value
     
     def get_use_count(self):
