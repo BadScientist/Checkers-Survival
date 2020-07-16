@@ -9,7 +9,7 @@ class Player:
         self._health = 100
         self.location = start_room
         self._weapon = weapon
-        self._inventory = []
+        self._inventory = [weapon]
 
     def move(self, dir_str):
         """
