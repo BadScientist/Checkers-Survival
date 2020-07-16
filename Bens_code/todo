@@ -1,0 +1,8 @@
+- create weapon class
+- create consumable item class
+ users can have items in inventory
+
+ backlogs
+ - user can use the login and menu
+ - User can enter simple commands to interact with the game
+ 
