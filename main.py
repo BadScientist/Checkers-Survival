@@ -1,82 +1,7 @@
 import random
-
+from room import *
 
 # example use of functions below class definition
-
-class Room:
-    # Variables:
-    #   long_desc -> printed in-game when within the room
-    #   shrt_desc -> printed in-game when in a room adjacent to this room
-    #   N,S,E,W   -> point to adjacent room in respective direction (in 2D)
-    #                set to None (null) if not yet defined
-
-    def __init__(self, long_desc=None, shrt_desc=None, n=None, s=None, e=None,
-                 w=None):
-        self.long_desc = long_desc
-        self.shrt_desc = shrt_desc
-        self.N = n
-        self.S = s
-        self.E = e
-        self.W = w
-
-    def get_n(self):
-        return self.N
-
-    def get_s(self):
-        return self.S
-
-    def get_e(self):
-        return self.E
-
-    def get_w(self):
-        return self.W
-
-    def apply_long(self, long_desc):
-        self.long_desc = long_desc
-
-    def apply_shrt(self, shrt_desc):
-        self.shrt_desc = shrt_desc
-
-    def apply_path(self, direction, target):
-        # direction eg N, S ...; target is the room path leads to
-        # check if path already occupied and if there's existing path to target
-        if self != target:
-            if self.get_adjacent_room(direction) is None:
-                all_paths = ['N', 'S', 'E', 'W']
-                for path in all_paths:
-                    if getattr(self, path) == target:
-                        return False  # failure
-                setattr(self, direction, target)
-                return True
-            else:
-                return False
-        else:
-            return False
-
-    def get_long_desc(self):
-        return self.long_desc
-
-    def get_shrt_desc(self):
-        return self.shrt_desc
-
-    def get_adjacent_room(self, direction):
-        # direction eg N, S ...;
-        return getattr(self, direction)
-
-    def get_empty_paths(self):  # used for level generation
-        # get all paths/directions that don't have an assigned room
-        # returns an array of all available paths
-        all_paths = ['N', 'S', 'E', 'W']
-        idx = 0
-        while idx < len(all_paths):
-            direction = all_paths[idx]
-            if getattr(self, direction) is not None:
-                all_paths.remove(direction)
-                idx -= 1
-            idx += 1
-        return all_paths
-
-
 class Player:
     def __init__(self, name, start_room, weapon):
         self._name = name
@@ -92,16 +17,16 @@ class Player:
         """
         # Get the room in the given direction
         if dir_str == 'n' or dir_str == "north":
-            adj_room = self.location.get_n()
+            adj_room = self.location.get_adjacent_room('N')
 
         elif dir_str == 's' or dir_str == "south":
-            adj_room = self.location.get_s()
+            adj_room = self.location.get_adjacent_room('S')
 
         elif dir_str == 'e' or dir_str == "east":
-            adj_room = self.location.get_e()
+            adj_room = self.location.get_adjacent_room('E')
 
         elif dir_str == 'w' or dir_str == "west":
-            adj_room = self.location.get_w()
+            adj_room = self.location.get_adjacent_room('W')
 
         # Invalid entry error message
         else:
@@ -127,16 +52,16 @@ class Player:
 
         # Get the room in the given direction
         if dir_str == 'n' or dir_str == "north":
-            adj_room = self.location.get_n()
+            adj_room = self.location.get_adjacent_room('N')
 
         elif dir_str == 's' or dir_str == "south":
-            adj_room = self.location.get_s()
+            adj_room = self.location.get_adjacent_room('S')
 
         elif dir_str == 'e' or dir_str == "east":
-            adj_room = self.location.get_e()
+            adj_room = self.location.get_adjacent_room('E')
 
         elif dir_str == 'w' or dir_str == "west":
-            adj_room = self.location.get_w()
+            adj_room = self.location.get_adjacent_room('W')
 
         # Invalid entry error message
         else:
@@ -359,73 +284,11 @@ class Player:
 random.seed()
 
 
-def create_path(parent, target, paths):
-    # parent is the existing room the new room (target) will be joined to
-    # only possible reason for failure is the parent's paths are filled
-    opposite_dir = {
-        'N': 'S',
-        'S': 'N',
-        'E': 'W',
-        'W': 'E'
-    }
-    if paths:
-        idx = random.randint(0, len(paths) - 1)
-        direction = paths[idx]
-        if parent.apply_path(direction, target) is False:
-            return False
-        else:
-            return target.apply_path(opposite_dir[direction], parent)
-    else:
-        return False
-
-
-def gen_random_level(room_num):
-    # creates a room at a time, joining the new room (target) to the existing
-    # 'bunch' of rooms. Joins to a specific 'parent'
-    all_rooms = []
-    avail_rooms = []  # has index of rooms with an available path
-    for i in range(0, room_num):
-        long_desc = "Room " + str(i) + "'s long description."
-        shrt_desc = "Room " + str(i) + "'s short description."
-        all_rooms.append(Room(long_desc, shrt_desc))  # create the new room (target)
-        avail_rooms.append(i)
-        if i == 0:
-            continue
-        flag = False
-        while not flag:
-            if i == 1:  # 2 rooms only
-                parent = all_rooms[0]
-                avail_paths = parent.get_empty_paths()  # parent's available paths
-                flag = create_path(parent, all_rooms[i], avail_paths)
-            if i > 1:  # more than 2 rooms
-                idx = random.randint(0, len(avail_rooms) - 2)
-                parent = all_rooms[avail_rooms[idx]]
-                avail_paths = parent.get_empty_paths()  # parent's available paths
-                flag = create_path(parent, all_rooms[i], avail_paths)
-            if not flag:
-                avail_rooms.remove(idx)  # remove room from 'bunch'-paths filled
-                # print('room Filled! Fail!')
-    # for i in range(0, room_num):
-    #   print(all_rooms[i].__dict__)
-    #   print('')
-    # print(avail_rooms)
-    return all_rooms
-
-
 def main():
     level_1 = gen_random_level(10)
     test_player = Player("Johnnie", level_1[0], "hunting knife")
     while True:
         test_player.get_user_input()
-
-# print(room_1.get_long_desc())
-# print(room_1.get_shrt_desc())
-
-# room_1.apply_long('goin don know')
-# room_1.apply_path('N', room_2)
-
-# print(room_1.__dict__)
-# to print all class vars
 
 
 if __name__ == "__main__":

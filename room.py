@@ -2,13 +2,13 @@ import random
 import tkinter as tk
 
 random.seed()
-root = tk.Tk(className=" Map")
-root.geometry("840x540")
+#root = tk.Tk(className=" Map")
+#root.geometry("840x540")
 
-vert_scroll = tk.Scrollbar(root, orient='vertical')
-vert_scroll.pack(side='right', fill='y')
-hori_scroll = tk.Scrollbar(root, orient='horizontal')
-hori_scroll.pack(side='bottom', fill='x')
+#vert_scroll = tk.Scrollbar(root, orient='vertical')
+#vert_scroll.pack(side='right', fill='y')
+#hori_scroll = tk.Scrollbar(root, orient='horizontal')
+#hori_scroll.pack(side='bottom', fill='x')
 
 class Room: 
     #Variables:
@@ -24,8 +24,8 @@ class Room:
     #   room_1.apply_path('N', room_2)
     #   print(room_1.__dict__) to print all class vars
     
-    def __init__(self, long_desc=None, shrt_desc=None, N=None, S=None, E=None, 
-                 W=None):
+    def __init__(self, long_desc='Standard Room', shrt_desc='Standard', N=None,
+                 S=None, E=None, W=None):
         self.long_desc = long_desc
         self.shrt_desc = shrt_desc
         self.N = N
@@ -134,7 +134,6 @@ def gen_random_level(room_num):
                 flag = create_path(parent, all_rooms[i], avail_paths)
             if flag == False:
                 avail_rooms.remove(idx) #remove room from 'bunch'-paths filled
-                print('room Filled! Fail!')
     #for i in range(0, room_num):
         #print(all_rooms[i])
         #print(all_rooms[i].__dict__)
@@ -145,7 +144,8 @@ def gen_random_level(room_num):
 #Level generation functions complete
 level = gen_random_level(10)
 
-                            #GUI Definition
+
+                            #GUI Map Definition
 
 def locate_pivot(level):
     #pivot is the room which is most centrally located in the map
@@ -194,11 +194,11 @@ def display_level(canvas, room, x, y):
 
 def start_level_IO(level):
     pivot = locate_pivot(level)
-    canvas = tk.Canvas(root, width=800, height=500)
+    #canvas = tk.Canvas(root, width=800, height=500)
     x = 405 #centre of the screen on x-axis
     y = 235 #centre of the screen on y-axis
-    display_level(canvas, pivot, x, y)
-    canvas.pack()
+    #display_level(canvas, pivot, x, y)
+    #canvas.pack()
 
 #coordinates: X-start, Y-start, X-end, Y-end
 #each room takes maximum of 80x80
@@ -216,7 +216,7 @@ def start_level_IO(level):
 #canvas.create_line(x, y-21, x, y-39) #Up
 #canvas.pack()
 
-returnButton = tk.Button(root, text="OK", padx=50, command=root.destroy)
-returnButton.pack()
+#returnButton = tk.Button(root, text="OK", padx=50, command=root.destroy)
+#returnButton.pack()
 
-root.mainloop()
+#root.mainloop()
