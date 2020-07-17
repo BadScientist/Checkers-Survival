@@ -187,13 +187,27 @@ level = gen_random_level(10)
 
                             #GUI Map Definition
 
-#root = tk.Tk(className=" Map")
-#root.geometry("840x540")
+#coordinates: X-start, Y-start, X-end, Y-end
+#each room takes maximum of 80x80
 
-#vert_scroll = tk.Scrollbar(root, orient='vertical')
-#vert_scroll.pack(side='right', fill='y')
-#hori_scroll = tk.Scrollbar(root, orient='horizontal')
-#hori_scroll.pack(side='bottom', fill='x')
+#maximise the canvas according to the number of rooms
+#canvas = tk.Canvas(root, width=800, height=500)
+#x = 405 #centre of the screen on x-axis
+#y = 235 #centre of the screen on y-axis
+
+#Templates
+#canvas.create_rectangle(x-20, y-20, x+20, y+20, outline="#fb0", fill="#fb0")
+#canvas.create_line(x+21, y, x+39, y) #Right
+#canvas.create_line(x, y+21, x, y+39) #Down
+#canvas.create_line(x-21, y, x-39, y) #Left
+#canvas.create_line(x, y-21, x, y-39) #Up
+#canvas.pack()
+
+#returnButton = tk.Button(root, text="OK", padx=50, command=root.destroy)
+#returnButton.pack()
+
+#root.mainloop()
+
 
 def locate_pivot(level):
     #pivot is the room which is most centrally located in the map
@@ -235,36 +249,44 @@ def display_path(canvas, direction, x, y):
     elif direction == 'W':
         canvas.create_line(x-21, y, x-39, y) #Left
 
-def display_level(canvas, room, x, y):
+def display_room(canvas, x, y, flag=False):
+    #x and y are mark the centre of the room shape
+    #flag is True is player is in that room. Can be later changed to e.g. a
+    #   list of items/events so we can print symbols etc.
+    if flag == False:
+        canvas.create_rectangle(x-20, y-20, x+20, y+20, outline="#fb0",
+                                fill="#000")
+    else:
+        canvas.create_rectangle(x-20, y-20, x+20, y+20, outline="#fb0",
+                                fill="#fb0")
+
+def display_level(canvas, room, location, x, y):
     #room is the current room being examined to be printed
     #x and y are mark the centre of the room shape
     return
 
-def start_level_IO(level):
+def start_small_map_IO(location):
+    #location is the player's current location (room)
+    return
+
+def start_large_map_IO(level, location):
+    root = tk.Tk(className=" Map")
+    root.geometry("1080x680")
+    canvas = tk.Canvas(root, width=1040, height=610)
+    
+    vert_scroll = tk.Scrollbar(root, orient='vertical')
+    vert_scroll.pack(side='right', fill='y')
+    hori_scroll = tk.Scrollbar(root, orient='horizontal')
+    hori_scroll.pack(side='bottom', fill='x')
+    
     pivot = locate_pivot(level)
-    #canvas = tk.Canvas(root, width=800, height=500)
-    x = 405 #centre of the screen on x-axis
-    y = 235 #centre of the screen on y-axis
-    #display_level(canvas, pivot, x, y)
-    #canvas.pack()
-
-#coordinates: X-start, Y-start, X-end, Y-end
-#each room takes maximum of 80x80
-
-#maximise the canvas according to the number of rooms
-#canvas = tk.Canvas(root, width=800, height=500)
-#x = 405 #centre of the screen on x-axis
-#y = 235 #centre of the screen on y-axis
-
-#Templates
-#canvas.create_rectangle(x-20, y-20, x+20, y+20, outline="#fb0", fill="#fb0")
-#canvas.create_line(x+21, y, x+39, y) #Right
-#canvas.create_line(x, y+21, x, y+39) #Down
-#canvas.create_line(x-21, y, x-39, y) #Left
-#canvas.create_line(x, y-21, x, y-39) #Up
-#canvas.pack()
-
-#returnButton = tk.Button(root, text="OK", padx=50, command=root.destroy)
-#returnButton.pack()
-
-#root.mainloop()
+    x = 525 #centre of the screen on x-axis
+    y = 305 #centre of the screen on y-axis
+    #display_level(canvas, pivot, location, x, y)
+    canvas.pack()
+    
+    returnButton = tk.Button(root, text="OK", padx=50, command=root.destroy)
+    returnButton.pack(side='bottom')
+    root.mainloop()
+    
+start_large_map_IO(level, level[0])
