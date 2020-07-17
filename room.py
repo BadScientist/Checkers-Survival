@@ -1,5 +1,6 @@
 import random
 import tkinter as tk
+from mapGUI import *
 
 random.seed()
 
@@ -171,122 +172,15 @@ def gen_random_level(room_num):
                 flag = create_path(parent, all_rooms[i], avail_paths)
             if flag == False:
                 avail_rooms.remove(idx) #remove room from 'bunch'-paths filled
-    #for i in range(0, room_num):
-        #print(all_rooms[i])
-        #print(all_rooms[i].__dict__)
-        #print('')
-    #print(avail_rooms)
+    for i in range(0, room_num):
+        print(all_rooms[i])
+        print(all_rooms[i].__dict__)
+        print('')
+    print(avail_rooms)
     return all_rooms
 
 #Level generation functions complete
 
 
-
 level = gen_random_level(10)
-
-
-                            #GUI Map Definition
-
-#coordinates: X-start, Y-start, X-end, Y-end
-#each room takes maximum of 80x80
-
-#maximise the canvas according to the number of rooms
-#canvas = tk.Canvas(root, width=800, height=500)
-#x = 405 #centre of the screen on x-axis
-#y = 235 #centre of the screen on y-axis
-
-#Templates
-#canvas.create_rectangle(x-20, y-20, x+20, y+20, outline="#fb0", fill="#fb0")
-#canvas.create_line(x+21, y, x+39, y) #Right
-#canvas.create_line(x, y+21, x, y+39) #Down
-#canvas.create_line(x-21, y, x-39, y) #Left
-#canvas.create_line(x, y-21, x, y-39) #Up
-#canvas.pack()
-
-#returnButton = tk.Button(root, text="OK", padx=50, command=root.destroy)
-#returnButton.pack()
-
-#root.mainloop()
-
-
-def locate_pivot(level):
-    #pivot is the room which is most centrally located in the map
-    prospects = []
-    flag = False
-    i = 0
-    while flag == False:
-        flag = False
-        for room in level:
-            if len(room.get_empty_paths()) == i:
-                prospects.append(room)
-                flag = True
-        if flag == False:
-            i+=1
-        if i == 5: #just 1 room in the level
-            return room
-    pivot = prospects[0]
-    highest_pts = 0
-    for room in prospects:
-        pts = 0
-        paths = room.get_existing_paths()
-        for path in paths:
-            if room.get_adjacent_room(path) in prospects:
-                pts+=1
-        if pts > highest_pts:
-            highest_pts = pts
-            pivot = room
-    return pivot
-
-def display_path(canvas, direction, x, y):
-    #direction is the direction of the line representing a path
-    #x and y are mark the centre of the room shape
-    if direction == 'N':
-        canvas.create_line(x, y-21, x, y-39) #Up
-    elif direction == 'S':
-        canvas.create_line(x, y+21, x, y+39) #Down
-    elif direction == 'E':
-        canvas.create_line(x+21, y, x+39, y) #Right
-    elif direction == 'W':
-        canvas.create_line(x-21, y, x-39, y) #Left
-
-def display_room(canvas, x, y, flag=False):
-    #x and y are mark the centre of the room shape
-    #flag is True is player is in that room. Can be later changed to e.g. a
-    #   list of items/events so we can print symbols etc.
-    if flag == False:
-        canvas.create_rectangle(x-20, y-20, x+20, y+20, outline="#fb0",
-                                fill="#000")
-    else:
-        canvas.create_rectangle(x-20, y-20, x+20, y+20, outline="#fb0",
-                                fill="#fb0")
-
-def display_level(canvas, room, location, x, y):
-    #room is the current room being examined to be printed
-    #x and y are mark the centre of the room shape
-    return
-
-def start_small_map_IO(location):
-    #location is the player's current location (room)
-    return
-
-def start_large_map_IO(level, location):
-    root = tk.Tk(className=" Map")
-    root.geometry("1080x680")
-    canvas = tk.Canvas(root, width=1040, height=610)
-    
-    vert_scroll = tk.Scrollbar(root, orient='vertical')
-    vert_scroll.pack(side='right', fill='y')
-    hori_scroll = tk.Scrollbar(root, orient='horizontal')
-    hori_scroll.pack(side='bottom', fill='x')
-    
-    pivot = locate_pivot(level)
-    x = 525 #centre of the screen on x-axis
-    y = 305 #centre of the screen on y-axis
-    #display_level(canvas, pivot, location, x, y)
-    canvas.pack()
-    
-    returnButton = tk.Button(root, text="OK", padx=50, command=root.destroy)
-    returnButton.pack(side='bottom')
-    root.mainloop()
-    
 start_large_map_IO(level, level[0])
