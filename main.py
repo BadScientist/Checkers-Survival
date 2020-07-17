@@ -1,5 +1,6 @@
 import random
 from room import *
+import mapGUI as Map
 
 # example use of functions below class definition
 class Player:
@@ -101,7 +102,8 @@ class Player:
             for item in self._inventory:
                 print(item)
 
-    def display_map(self):
+    def display_map(self, level):
+        start_large_map_IO(level, self.location)
         print("You look at your map.")
 
     def display_status(self):
@@ -128,7 +130,7 @@ class Player:
     def get_item(self, item_num):
         return self._inventory[item_num]
 
-    def get_user_input(self):
+    def get_user_input(self, level):
 
         # Get input. Prompt is placeholder.
         curr_input = input("What do you want to do?: ")
@@ -209,7 +211,7 @@ class Player:
             self.display_inventory()  # To be updated based on player class
     
         elif words[0] == "map":
-            self.display_map()  # To be updated based on player class
+            self.display_map(level)  # To be updated based on player class
     
         elif words[0] == "status":
             self.display_status()  # To be updated based on player class
@@ -288,7 +290,7 @@ def main():
     level_1 = gen_random_level(10)
     test_player = Player("Johnnie", level_1[0], "hunting knife")
     while True:
-        test_player.get_user_input()
+        test_player.get_user_input(level_1)
 
 
 if __name__ == "__main__":
