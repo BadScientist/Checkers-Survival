@@ -1,7 +1,7 @@
 from tkinter import *
-from PIL import ImageTk, Image
+# from PIL import ImageTk, Image
 import tkinter.font as tkFont
-from PIL import Image, ImageTk
+# from PIL import Image, ImageTk
 
 import os
 
