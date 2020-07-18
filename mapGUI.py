@@ -2,10 +2,11 @@ import tkinter as tk
 
 #GUI Map Definition - Enlarged Map and Mini-Map
 
+#Use start_large_map_IO for enlarged map and start_mini_map_IO for mini map
+#They are the very last functions at the bottom
+
 #The Mini-Map will be displayed at bottom-left of UI during normal gameplay
 #Enlarged Map displayed upon user input
-
-#note that mini-map has not yet been implemented
 
 #Key Variables and Rules Used to Display Enlarged Map (only):
 #   each room takes maximum of 80x80 including paths in all directions
@@ -126,8 +127,19 @@ def display_level(canvas, room, location, x, y, prev_dir=None):
                       next_position[0], next_position[1], path)
     return
 
-def start_small_map_IO(location):
+def start_mini_map_IO(root, location):
     #location is the player's current location (room)
+    canvas = tk.Canvas(root, width=170, height=170, highlightthickness=0)
+    canvas.config(bg='#3b444b')
+    canvas.create_oval(0,0,170,170, fill="#999")
+    x=85
+    y=85
+    display_room(canvas, x, y, True)
+    for path in location.get_existing_paths():
+        display_path(canvas, path, x, y)
+        nxt_position = nxt_room_position(path, x, y)
+        display_room(canvas, nxt_position[0], nxt_position[1], False)
+    canvas.pack(anchor='sw', side='bottom')
     return
 
 def start_large_map_IO(level, location):

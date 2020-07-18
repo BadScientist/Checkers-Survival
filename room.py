@@ -211,3 +211,10 @@ def gen_random_level(room_num):
 
 #level = gen_random_level(10)
 #start_large_map_IO(level, level[0])
+#root = tk.Tk(className=" Map")
+#root.config(bg='#3b444b')
+#root.geometry("880x660")
+
+#start_mini_map_IO(root, level[0])
+
+#root.mainloop()

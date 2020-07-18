@@ -1,6 +1,6 @@
 import random
 from room import *
-import mapGUI as Map
+import mapGUI
 
 # example use of functions below class definition
 class Player:
@@ -290,7 +290,19 @@ def main():
     level_1 = gen_random_level(10)
     test_player = Player("Johnnie", level_1[0], "hunting knife")
     while True:
+        
+        #       To test the mini map remove these comments:
+        #
+        #root = tk.Tk(className=" Example Gameplay")
+        #root.config(bg='#3b444b')
+        #root.geometry("880x660")
+        #mapGUI.start_mini_map_IO(root, level_1[0])
+        #root.mainloop()
+        #
+        #Then close it to continue with rest of main()
+    
         test_player.get_user_input(level_1)
+        
 
 
 if __name__ == "__main__":
