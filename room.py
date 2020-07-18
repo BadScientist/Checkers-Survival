@@ -189,25 +189,32 @@ def gen_random_level(room_num):
             continue
         flag = False
         while flag == False:
+            idx = 0
             if i == 1: #2 rooms only
                 parent = all_rooms[0]
-                avail_paths = parent.get_empty_paths()#parent's available paths
-                flag = create_path(all_rooms, parent, all_rooms[i], avail_paths)
             if i > 1:  #more than 2 rooms
                 idx = random.randint(0,len(avail_rooms)-2)
                 parent = all_rooms[avail_rooms[idx]]
-                avail_paths = parent.get_empty_paths()#parent's available paths
-                flag = create_path(all_rooms, parent, all_rooms[i], avail_paths)
+            avail_paths = parent.get_empty_paths()#parent's available paths
+            flag = create_path(all_rooms, parent, all_rooms[i], avail_paths)
             if flag == False:
-                avail_rooms.remove(idx) #remove room from 'bunch'-paths filled
-    for i in range(0, room_num):
-        print(all_rooms[i])
-        print(all_rooms[i].__dict__)
-        print('')
-    print(avail_rooms)
+                if idx in avail_rooms:
+                    avail_rooms.remove(idx) #remove room from 'bunch'-paths filled
+    #for i in range(0, room_num):
+        #print(all_rooms[i])
+        #print(all_rooms[i].__dict__)
+        #print('')
+    #print(avail_rooms)
     return all_rooms
 
 #Level generation functions complete
 
-level = gen_random_level(10)
-start_large_map_IO(level, level[0])
+#level = gen_random_level(10)
+#start_large_map_IO(level, level[0])
+#root = tk.Tk(className=" Map")
+#root.config(bg='#3b444b')
+#root.geometry("880x660")
+
+#start_mini_map_IO(root, level[0])
+
+#root.mainloop()
