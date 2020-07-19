@@ -1,293 +1,333 @@
 from item import *
 from room import *
+from player import *
 import mapGUI
+from tkinter import *
+# from PIL import ImageTk, Image
+import tkinter.font as tkFont
+# from PIL import Image, ImageTk
+import os
+
+# FIXME: Program freezes upon clicking 'exit' button in interface.
+
+root = Tk()
 
 
-# example use of functions below class definition
-class Player:
-    def __init__(self, name, start_room, weapon):
-        self._name = name
-        self._health = 100
-        self.location = start_room
-        self._weapon = weapon
-        self._inventory = [weapon]
+###Page Setup###
+root.config(bg='#3b444b')
+root.geometry('900x700')
 
-    def move(self, dir_str):
-        """
-        Updates the player's location to the adjacent room in the given
-        direction (if present) and displays the long_desc of the new room.
-        """
-        # Get the room in the given direction
-        if dir_str == 'n' or dir_str == "north":
-            adj_room = self.location.get_adjacent_room('N')
+###END Page Setup###
 
-        elif dir_str == 's' or dir_str == "south":
-            adj_room = self.location.get_adjacent_room('S')
+###Page Switches###
+def login_page():
+    f2.pack()
+    f1.pack_forget()
 
-        elif dir_str == 'e' or dir_str == "east":
-            adj_room = self.location.get_adjacent_room('E')
+def signup_page():
+    f3.pack()
+    f1.pack_forget()
 
-        elif dir_str == 'w' or dir_str == "west":
-            adj_room = self.location.get_adjacent_room('W')
+def login_back():
+    f1.pack()
+    f2.pack_forget()
 
-        # Invalid entry error message
-        else:
-            print("You didn't enter a valid direction.")
-            return
+def signup_back():
+    f1.pack()
+    f3.pack_forget()
 
-        # No adjacent room error message
-        if adj_room is None:
-            print("You can't go that way.")
-            return
-        else:
-            self.location = adj_room
-            self.here()
+def start_game():
+    f4.pack()
+    f1.pack_forget()
+    f3.pack_forget()
+    f2.pack_forget()
 
-    def here(self):
-        """
-        Displays the long_desc of the Room that is currently set as the Player's
-        location.
-         """
-        print(self.location.get_long_desc())
+def back_menu():
+    f1.pack()
+    f4.pack_forget()
 
-    def look(self, dir_str):
+def new_game():
+    print("Start New Game")
 
-        # Get the room in the given direction
-        if dir_str == 'n' or dir_str == "north":
-            adj_room = self.location.get_adjacent_room('N')
+def load_game():
+    print("Load Old Game")
 
-        elif dir_str == 's' or dir_str == "south":
-            adj_room = self.location.get_adjacent_room('S')
+def info():
+    f5.pack()
+    f4.pack_forget()
 
-        elif dir_str == 'e' or dir_str == "east":
-            adj_room = self.location.get_adjacent_room('E')
+def info_back():
+    f4.pack()
+    f5.pack_forget()
 
-        elif dir_str == 'w' or dir_str == "west":
-            adj_room = self.location.get_adjacent_room('W')
+def settings():
+    f6.pack()
+    f4.pack_forget()
 
-        # Invalid entry error message
-        else:
-            print("You didn't enter a valid direction.")
-            return
+def settings_back():
+    f4.pack()
+    f6.pack_forget()
 
-        # No adjacent room error message
-        if adj_room is None:
-            print("There is nothing in that direction.")
-            return
-        else:
-            print("To the " + dir_str + " you see " + adj_room.get_shrt_desc())
+def help5():
+    f7.pack()
+    f4.pack_forget()
 
-    def take(self, item_str):
-        print("Took " + item_str)
+def help_back():
+    f4.pack()
+    f7.pack_forget()
 
-    def use(self, item_str, target_str=None):
-        if target_str is None:
-            print("Used " + item_str)
-        else:
-            print("Used " + item_str + " on " + target_str)
+###END Page Switches###
 
-    def hunt(self, target_str, weap_str):
-        print("Hunted " + target_str + " with " + weap_str)
+###Frames###
+f1 = Frame(root, bg='#3b444b')
+f2 = Frame(root, bg='#3b444b')
+f3 = Frame(root, bg='#3b444b')
+f4 = Frame(root, bg='#3b444b')
+f5 = Frame(root, bg='#3b444b')
+f6 = Frame(root, bg='#3b444b')
+f7 = Frame(root, bg='#3b444b')
+###END Frames###
 
-    def talk(self, npc_str):
-        print("Talked to " + npc_str)
+title = Label(root, text="Crashed",font=("Courier" ,54), pady=70, fg='white', bg='#3b444b')
+title.pack()
 
-    def trade(self, npc_str):
-        print("Traded your item for " + npc_str + "'s other item.")
+###Main Page###
+frame0 = Frame(f1, bg='#3b444b' ,pady=5)
+frame1 = Frame(f1)
+frame2 = Frame(f1, bg='#3b444b' ,pady=5)
 
-    def display_inventory(self):
-        if len(self._inventory) == 0:
-            print("Your inventory is empty.")
-        else:
-            print("Your inventory contains:")
-            for item in self._inventory:
-                print(item)
+button = Button(frame0, text="Login",bg='#cc5500', fg='white',width= 15, command=login_page)
+button.pack(side=LEFT, anchor= "nw")
 
-    def display_map(self, level):
-        start_large_map_IO(level, self.location)
-        print("You look at your map.")
+button = Button(frame1, text="Signup",bg='#cc5500', fg='white',width= 15, command=signup_page)
+button.pack(side=LEFT, anchor= "nw")
 
-    def display_status(self):
-        print("Health: " + str(self._health) + "/100")
+button = Button(frame2, text="Exit",bg='#FF0000', fg='white',width= 15, command=root.quit)
+button.pack(side=LEFT, anchor= "nw")
 
-    # set functions
-    def adj_health(self, amount):
-        """Adjusts the player's health by the given amount."""
-        self._health += amount
+frame0.pack()
+frame1.pack()
+frame2.pack()
+###END Main Page###
 
-    def add_item(self, item):
-        self._inventory.append(item)
+###Login Page###
+#this clears out the text in the text box for username
+def clear_username1(event):
+    username2.delete(0, END)
 
-    def set_weapon(self, weapon):
-        self._weapon = weapon
+def clear_password1(event):
+    password2.delete(0, END)
 
-    # get functions
-    def get_health(self):
-        return self._health
+frame1 = Frame(f2, bg='#3b444b' ,pady=10)
+frame2 = Frame(f2)
+frame3 = Frame(f2, bg='#3b444b' ,pady=10)
 
-    def get_weapon(self):
-        return self._weapon
+#username entry box is here
+username2 = Entry(frame1, width=25)
+username2.insert(0, "Username")
+username2.pack(side=LEFT, anchor= "nw")
+username2.bind("<Button-1>", clear_username1)
+###LOGIN USERNAME END###
 
-    def get_item(self, item_num):
-        return self._inventory[item_num]
+#password for the login part
+password2 = Entry(frame2, width=25)
+password2.insert(0, "Password")
+password2.pack(side=LEFT, anchor= "nw")
+password2.bind("<Button-1>", clear_password1)
+###Pasword END###
 
-    def get_user_input(self, level):
+button = Button(frame3, text="Back",bg='#cc5500', fg='white', width= 15, command=login_back)
+button.pack(side=LEFT, anchor= "nw")
 
-        # Get input. Prompt is placeholder.
-        curr_input = input("What do you want to do?: ")
-        words = []
-        curr_word = ""
-    
-        for letter in curr_input.lower():
-    
-            # Concat non-space characters into words
-            if letter != ' ':
-                curr_word += letter
-    
-            # Add words separated by spaces to words list
-            else:
-                words.append(curr_word)
-                curr_word = ""
-    
-        words.append(curr_word)  # Add final word to list
-    
-        # Call methods based on user input.
-        if words[0] == "move":
-            if len(words) == 1:
-                print("You must specify a valid direction to move.")
-            else:
-                self.move(words[1])  # To be updated based on player class
-    
-        elif words[0] == "look":
-            if len(words) == 1:
-                print("You must specify a valid direction to look.")
-            else:
-                self.look(words[1])  # To be updated based on player class
-    
-        elif words[0] == "take":
-            if len(words) == 1:
-                print("You must specify a valid item to take.")
-            else:
-                self.take(words[1])  # To be updated based on player class
-    
-        elif words[0] == "use":
-    
-            if len(words) == 1:
-                print("You must specify a valid item to use.")
-    
-            # Use item.
-            elif len(words) == 2:
-                self.use(words[1])  # To be updated based on player class
-    
-            # Use item on target.
-            else:
-                self.use(words[1], words[2])  # To be updated based on player class
-    
-        elif words[0] == "hunt":
-    
-            if len(words) < 3:
-                print("You must specify a target and a weapon to use.")
-    
-            # Hunt target with weapon.
-            else:
-                self.hunt(words[1], words[2])  # To be updated based on player class
-    
-        elif words[0] == "talk":
-    
-            if len(words) < 2:
-                print("You must specify who you want to talk to.")
-    
-            else:
-                self.talk(words[1])  # To be updated based on player class
-    
-        elif words[0] == "trade":
-    
-            if len(words) < 2:
-                print("You must specify who you with to trade with.")
-    
-            else:
-                self.trade(words[1])
-    
-        elif words[0] == "inventory":
-            self.display_inventory()  # To be updated based on player class
-    
-        elif words[0] == "map":
-            self.display_map(level)  # To be updated based on player class
-    
-        elif words[0] == "status":
-            self.display_status()  # To be updated based on player class
-    
-        elif words[0] == "here":
-            self.here()  # To be updated based on player class
-    
-        # Display help information about commands
-        elif words[0] == "help":
-    
-            # Display command list
-            if len(words) == 1:
-                print("Commands: move, look, take, use, hunt, talk, trade, inventory, map, status, here, help")
-    
-            elif words[1] == "move":
-                print("Usage: move <direction>")
-                print("Move to the location in the specified direction.")
-    
-            elif words[1] == "look":
-                print("Usage: look <direction>")
-                print("Look in the specified direction.")
-    
-            elif words[1] == "take":
-                print("Usage: take <item>")
-                print("Take the specified item.")
-    
-            elif words[1] == "use":
-                print("Usage: use <item> OR use <item> <target>")
-                print("Use the specified item. Optionally use item on specified target.")
-    
-            elif words[1] == "hunt":
-                print("Usage: hunt <weapon> <animal>")
-                print("Hunt the specified animal with the specified weapon.")
-    
-            elif words[1] == "talk":
-                print("Usage: talk <NPC name>")
-                print("Talk to the specified NPC.")
-    
-            elif words[1] == "trade":
-                print("Usage: trade <NPC name>")
-                print("Trade with the specified NPC.")
-    
-            elif words[1] == "inventory":
-                print("Usage: inventory")
-                print("Display the items in the player's inventory.")
-    
-            elif words[1] == "map":
-                print("Usage: map")
-                print("Display the rooms the player has visited.")
-    
-            elif words[1] == "status":
-                print("Usage: status")
-                print("Display the player's status.")
-    
-            elif words[1] == "here":
-                print("Usage: here")
-                print("Display the description of current location.")
-    
-            elif words[1] == "help":
-                print("Usage: help OR help <command>")
-                print("Display command help information.")
-    
-            else:
-                print("Commands: move, look, take, use, hunt, talk, trade, inventory, map, status, here, help")
-    
-        else:
-            print("You didn't enter a valid command. Type \"help\" for a list of commands.")
+button = Button(frame3, text="Login",bg='#cc5500', fg='white',width= 15, command=start_game)
+button.pack(side=LEFT, anchor= "nw")
 
-        print("**************************************************")
+frame1.pack()
+frame2.pack()
+frame3.pack()
+###END Login Page
+
+###Sign Up Page###
+#this clears out the text in the text box for username
+def clear_username2(event):
+    username1.delete(0, END)
+
+def clear_password2(event):
+    password1.delete(0, END)
+
+def clear_name1(event):
+    name1.delete(0, END)
+
+frame0 = Frame(f3, bg='#3b444b' ,pady=10)
+frame1 = Frame(f3, bg='red')
+frame2 = Frame(f3, bg='#3b444b' ,pady=10)
+frame3 = Frame(f3, bg='yellow')
+
+#name entry box is here
+name1 = Entry(frame0, width=25)
+name1.insert(0, "Name")
+name1.pack(side= LEFT, anchor= "nw")
+name1.bind("<Button-1>", clear_name1)
+###NAME END###
+
+#username entry box is here
+username1 = Entry(frame1, width=25)
+username1.insert(0, "Username")
+username1.pack(side=LEFT, anchor= "nw")
+username1.bind("<Button-1>", clear_username2)
+###LOGIN USERNAME END###
+
+#password for the login part
+password1 = Entry(frame2, width=25)
+password1.insert(0, "Password")
+password1.pack(side=LEFT, anchor= "nw")
+password1.bind("<Button-1>", clear_password2)
+###Pasword END###
+
+button = Button(frame3, text="Back",bg='#cc5500', fg='white', width= 15, command=signup_back)
+button.pack(side=LEFT, anchor= "nw")
+
+button = Button(frame3, text="Signup",bg='#cc5500', fg='white',width= 15, command=start_game)
+button.pack(side=LEFT, anchor= "nw")
+
+frame0.pack()
+frame1.pack()
+frame2.pack()
+frame3.pack()
+###End Sign Up Page###
+
+###Menu###
+frame0 = Frame(f4, bg='#3b444b' ,pady=5)
+frame1 = Frame(f4, bg='red')
+frame2 = Frame(f4, bg='#3b444b' ,pady=5)
+frame3 = Frame(f4, bg='yellow')
+frame4 = Frame(f4, bg='#3b444b' ,pady=5)
+frame5 = Frame(f4, bg='yellow')
+
+button = Button(frame0, text="New Game",bg='#cc5500', fg='white',width= 15, command=new_game)
+button.pack(side=LEFT, anchor= "nw")
+
+button = Button(frame1, text="Load Game",bg='#cc5500', fg='white',width= 15, command=load_game)
+button.pack(side=LEFT, anchor= "nw")
+
+button = Button(frame2, text="Info",bg='#cc5500', fg='white',width= 15, command=info)
+button.pack(side=LEFT, anchor= "nw")
+
+button = Button(frame3, text="Help",bg='#cc5500', fg='white',width= 15, command=help5)
+button.pack(side=LEFT, anchor= "nw")
+
+button = Button(frame4, text="Settings",bg='#cc5500', fg='white',width= 15, command=settings)
+button.pack(side=LEFT, anchor= "nw")
+
+button = Button(frame5, text="Log Out",bg="#FF0000", fg='white',width= 15, command=back_menu)
+button.pack(side=LEFT, anchor= "nw")
+
+frame0.pack()
+frame1.pack()
+frame2.pack()
+frame3.pack()
+frame4.pack()
+frame5.pack()
+###END Menu###
+
+###Info Tab###
+c1 = Canvas(f5, bg='#5a6873', width=500, height=400)
+
+#the info tab and the underline part
+font1 = tkFont.Font(family="Courier",size=13,weight="bold")
+c1.create_text(30, 20, text="Info:", font=font1, fill='white')
+
+#info goes here
+c1.create_text(250, 50, text="Disaster! Once assigned the prestigious task of establishing a Research Outpost orbiting", fill='white')
+c1.create_text(250, 65, text="Earth to study the technologically rudimentary humanoids, a mechanical failure rendered", fill='white')
+c1.create_text(250, 80, text="you unable to reach a stable orbit over the planet. You had no choice but to enter the", fill='white')
+c1.create_text(250, 95, text="planet's rich atmosphere and crash landed on one of it's islands. Nonetheless, protocol", fill='white')
+c1.create_text(250, 110, text="dictates that radio silence for a period of 5 rotations (5 days) will necessitate a ", fill='white')
+c1.create_text(250, 125, text="search-and-rescue mission to be dispatched. Hunt, Work with friendly natives, Brave the", fill='white')
+c1.create_text(250, 140, text="planet's hazards - but by all means... Survive.", fill='white')
+
+#back button
+button = Button(c1, text="Back",bg='#cc5500', fg='white', width= 15, command=info_back)
+button.pack()
+c1.create_window(75, 375, window=button)
+
+c1.pack()
+
+###End Info Tab###
+
+###Settings Tab###
+c3 = Canvas(f6, bg='#5a6873', width=500, height=400)
+
+#title for settings
+font1 = tkFont.Font(family="Courier",size=13,weight="bold")
+c3.create_text(50, 20, text="Settings:", font=font1, fill='white')
+
+#settings options
+font2 = tkFont.Font(family="Courier",size=10)
+
+c3.create_text(200, 40, text="---", font=font2,fill='white')
+set1 = Checkbutton(c3, bg='#5a6873')
+c3.create_window(230, 40,window=set1)
 
 
-random.seed()
+#back button
+button = Button(c3, text="Back",bg='#cc5500', fg='white', width= 15, command=settings_back)
+button.pack()
+c3.create_window(75, 375, window=button)
+
+#update button
+button = Button(c3, text="Update",bg='#cc5500', fg='white', width= 15)
+button.pack()
+c3.create_window(425, 375, window=button)
+
+c3.pack()
+
+###End Settings Tab###
+
+###Help Tab###
+c2 = Canvas(f7, bg='#5a6873', width=500, height=400)
+
+#the info tab and the underline part
+font1 = tkFont.Font(family="Courier",size=13,weight="bold")
+c2.create_text(30, 20, text="Help:", font=font1, fill='white')
+
+#title and box
+font2 = tkFont.Font(family="Courier",size=10)
+c2.create_text(90, 50, text="Title:", font=font2, fill='white')
+
+box1 = Entry(c2, width=50)
+box1.pack()
+
+c2.create_window(275, 50, window=box1)
+#descrip and box
+c2.create_text(65, 75, text="Description:", font=font2, fill='white')
+
+box2 = Entry(c2, width=50)
+box2.pack()
+
+c2.create_window(275, 75, window=box2)
+
+
+#back button
+button = Button(c2, text="Back",bg='#cc5500', fg='white', width= 15, command=help_back)
+button.pack()
+c2.create_window(75, 375, window=button)
+
+#submit button
+button = Button(c2, text="Submit",bg='#cc5500', fg='white', width= 15)
+button.pack()
+c2.create_window(425, 375, window=button)
+
+c2.pack()
+
+###End Help Tab###
+
+f1.pack()
+root.mainloop()
 
 
 def main():
+    random.seed()
     level_1 = gen_random_level(10)
     hunting_knife = Weapon("Hunting Knife",
                            "A plain hunting knife.",
