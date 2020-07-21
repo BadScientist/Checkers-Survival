@@ -351,7 +351,6 @@ def main():
         #Then close it to continue with rest of main()
     
         test_player.get_user_input(level_1)
-        
 
 
 if __name__ == "__main__":

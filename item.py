@@ -5,11 +5,12 @@ print("test file")  # testing if file works
 
 class Item:
     """Item class of the game."""
-    def __init__(self, name, str_desc):
+    def __init__(self, name, str_desc, type):
         """Creates an  item object.\n
         parameters: name, str_desc"""
         self._name = name
         self._str_desc = str_desc
+        self._type = type
     
     def get_name(self):
         return self._name
@@ -25,6 +26,9 @@ class Item:
         """Sets description of the item."""
         self._str_desc = desc
 
+    def get_type(self):
+        return self._type
+
     def __str__(self):
         return self._name + ": " + self._str_desc
 
@@ -36,6 +40,7 @@ class Weapon(Item):
         parameters: name, str_desc, dmg_low, dmg_high"""
         self._name = name
         self._str_desc = str_desc
+        self._type = "WEAPON"
         self._dmg_low = dmg_low
         self._dmg_high = dmg_high
     
@@ -43,7 +48,9 @@ class Weapon(Item):
         return self._name + ": " + self._str_desc + " low: " + str(self._dmg_low) + ", high:" + str(self._dmg_high) 
     
     def rand_dmg(self):
-        """Returns randomized dmg value between dmg low and dmg_high (inclusive)."""
+        """
+        Returns randomized dmg value between dmg low and dmg_high (inclusive).
+        """
         return random.randrange(self._dmg_low, self._dmg_high + 1)
 
     def get_low(self):
@@ -62,6 +69,7 @@ class Consumable(Item):
         parameters: name, str_desc, value, use_count"""
         self._name = name
         self._str_desc = str_desc
+        self._type = "CONSUMABLE"
         self._value = value
         self._use_count = use_count
 
@@ -86,4 +94,6 @@ class Consumable(Item):
         """checks if item is usable"""
         return self._use_count > 0
     
-    
+    def adj_use_count(self, integer):
+        """Adjusts the consumable item use count by the given integer."""
+        self._use_count += integer
