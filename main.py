@@ -335,11 +335,10 @@ def main():
     health_pack = Consumable("Health Pack",
                              "A simple health pack.",
                              30, 1)
-    test_player = Player("Johnnie", level_1[0], None)
+    test_player = Player("Johnnie", level_1[0])
     test_player.add_item(hunting_knife)
     test_player.add_item(health_pack)
     while True:
-        
         #       To test the mini map remove these comments:
         #
         #root = tk.Tk(className=" Example Gameplay")
