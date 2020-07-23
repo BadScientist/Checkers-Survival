@@ -102,7 +102,7 @@ button.pack(side=LEFT, anchor= "nw")
 button = Button(frame1, text="Signup",bg='#cc5500', fg='white',width= 15, command=signup_page)
 button.pack(side=LEFT, anchor= "nw")
 
-button = Button(frame2, text="Exit",bg='#FF0000', fg='white',width= 15, command=root.quit)
+button = Button(frame2, text="Exit",bg='#FF0000', fg='white',width= 15, command=root.destroy)
 button.pack(side=LEFT, anchor= "nw")
 
 frame0.pack()
