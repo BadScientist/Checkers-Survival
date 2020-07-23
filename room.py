@@ -13,6 +13,8 @@ class Room:
     #                set to None (null) if not yet defined
     #   x and y   -> rough position of the room, to prevent overlaps between
     #                rooms.
+    #   seen      -> T/F; T if it has been looked at or entered. Default is F.
+    #                if T, its contents appear in map; if F, a ? appears
     
     # Functions:
     #   all variables in the class can be obtained and/or changed with the
@@ -49,6 +51,7 @@ class Room:
         self.S = S
         self.E = E
         self.W = W
+        self.seen = False
         self.character = character
         self.animal = animal
     
@@ -95,6 +98,10 @@ class Room:
         else:
             return False
     
+    def apply_seen(self, state=True):
+        #default is True because this will mostly be called to set seen to T
+        self.seen = state
+    
     def get_position(self):
         return [self.x, self.y]
     
@@ -140,6 +147,9 @@ class Room:
                 idx -= 1
             idx += 1
         return all_paths
+    
+    def get_seen(self):
+        return self.seen
 
     # Functions to generate a random level with supplied no. of rooms
 
@@ -230,15 +240,3 @@ def gen_random_level(room_num):
         # print('')
     # print(avail_rooms)
     return all_rooms
-
-# Level generation functions complete
-
-# level = gen_random_level(10)
-# start_large_map_IO(level, level[0])
-# root = tk.Tk(className=" Map")
-# root.config(bg='#3b444b')
-# root.geometry("880x660")
-
-# start_mini_map_IO(root, level[0])
-
-# root.mainloop()

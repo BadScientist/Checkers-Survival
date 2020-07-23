@@ -10,6 +10,7 @@ class Player:
     def __init__(self, name, start_room):
         self._name = name
         self._health = 100
+        start_room.apply_seen() #To view adjacent room contents in Maps
         self.location = start_room
         self._weapon = None
         self._inventory = []
@@ -42,6 +43,7 @@ class Player:
             print("You can't go that way.")
             return
         else:
+            adj_room.apply_seen() #To view adjacent room contents in Maps
             self.location = adj_room
             self.here()
 
@@ -68,7 +70,7 @@ class Player:
 
         elif dir_str == 'w' or dir_str == "west":
             adj_room = self.location.get_adjacent_room('W')
-
+        
         # Invalid entry error message
         else:
             print("You didn't enter a valid direction.")
@@ -79,6 +81,7 @@ class Player:
             print("There is nothing in that direction.")
             return
         else:
+            adj_room.apply_seen() #To view adjacent room contents in Maps
             print("To the " + dir_str + " you see " + adj_room.get_shrt_desc())
 
     def take(self, item_str):

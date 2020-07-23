@@ -91,26 +91,32 @@ def display_path(canvas, direction, x, y):
     elif direction == 'W':
         canvas.create_line(x-21, y, x-39, y) #Left
 
-def display_room(canvas, x, y, flag=False):
+def display_room(canvas, room, x, y, flag=False):
     #Prints a room onto window. Takes its center and prints it according to
     #   standard boundaries
 
-    #Flag is True if player is in that room.    
+    #Flag is True if player is in that room.
+    #Symbol is the symbol of e.g. an animal/item/etc in the map
+    
     #Remember x and y are mark the center of the room shape
+    symbol = '?'
+    if room.get_seen() == True:
+        symbol = None
     if flag == False:
         canvas.create_rectangle(x-20, y-20, x+20, y+20, outline="#fb0",
                                 fill="#000")
     else:
         canvas.create_rectangle(x-20, y-20, x+20, y+20, outline="#fb0",
                                 fill="#fb0")
+    canvas.create_text(x, y, text=symbol, fill='#fff')
 
 def display_level(canvas, room, location, x, y, prev_dir=None):
     #room is the current room being examined to be printed
     #x and y are mark the center of the room shape
     if room == location:
-        display_room(canvas, x, y, True)
+        display_room(canvas, room, x, y, True)
     else:
-        display_room(canvas, x, y, False)
+        display_room(canvas, room, x, y, False)
     paths = room.get_existing_paths()
     if prev_dir != None:
         opposite_dir = {
@@ -134,11 +140,12 @@ def start_mini_map_IO(root, location):
     canvas.create_oval(0,0,170,170, fill="#999")
     x=85
     y=85
-    display_room(canvas, x, y, True)
+    display_room(canvas, location, x, y, True)
     for path in location.get_existing_paths():
         display_path(canvas, path, x, y)
         nxt_position = nxt_room_position(path, x, y)
-        display_room(canvas, nxt_position[0], nxt_position[1], False)
+        display_room(canvas, location.get_adjacent_room(path), nxt_position[0], 
+                     nxt_position[1], False)
     canvas.pack(anchor='sw', side='bottom')
     return
 
