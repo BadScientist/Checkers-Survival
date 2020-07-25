@@ -111,6 +111,9 @@ class Room:
 
     def get_animal(self):
         return self.animal
+
+    def remove_animal(self):
+        self.animal = None
     
     def get_adjacent_room(self, direction):
         # pass direction eg 'N' ie North, and it returns the room N of self. If

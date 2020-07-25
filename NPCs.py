@@ -1,4 +1,5 @@
 from item import *
+from copy import deepcopy
 
 
 class Character:
@@ -45,7 +46,7 @@ class Character:
 
 def create_character(name, description, dialogue, item_offered, item_wanted):
     """
-    Creates a Character class object. Enter <n> to in description string to
+    Creates a Character class object. Enter <n> in description string to
     insert the Character's name. Enter <io> and <iw> in the dialogue string to
     insert the item names of the item_offered and item_wanted.
     :param name: string name of the character (i.e. "hunter", "trader", etc.)
@@ -60,8 +61,10 @@ def create_character(name, description, dialogue, item_offered, item_wanted):
     char_dial = dialogue.replace(
         "<io>", item_offered.get_name().upper()).replace(
         "<iw>", item_wanted.get_name().upper())
+    char_io = deepcopy(item_offered)
+    char_iw = deepcopy(item_wanted)
 
-    return Character(char_name, char_desc, char_dial, item_offered, item_wanted)
+    return Character(char_name, char_desc, char_dial, char_io, char_iw)
 
 
 class Animal:
@@ -109,14 +112,70 @@ class Animal:
         """
         self._health -= integer
 
-# meat = Consumable("meat", "A hunk of meat. Eat it to gain health.", 10, 1)
-# hp = Consumable("health pack", "A first aid kit that will fully restore your health.", 100, 1)
 
-# mychar = create_character("hunter",
-#                          "You see a <n> leaning against a nearby tree.",
-#                          "\"Hello there. If you have a <iw>, I'll trade you this <io> for it.\"",
-#                          hp, meat)
+def create_animal(name, description, health, injure_chance, damage, reward):
+    """
+    Creates an Animal class object. Enter <n> in description string to
+    insert the Character's name.
+    :param name: string name of the animal (i.e. "rabbit", "bear", etc.)
+    :param description: string that will be printed after Room description
+    :param health: amount of health the animal has (integer number)
+    :param injure_chance: chance that animal will damage player during a hunt if
+     its health is not depleted (float in range [0.0 .. 1.0))
+    :param damage: damage to player if injured by the animal (integer number)
+    :param reward: item received by player upon successfully hunting the animal
+    :return: returns Animal class object
+    """
+    anml_name = str(name).upper()
+    anml_desc = description.replace("<n>", anml_name)
+    anml_reward = deepcopy(reward)
 
-# print(mychar.get_name())
-# print(mychar.get_dialogue())
-# print(mychar.get_description())
+    return Animal(anml_name, anml_desc, health,
+                  injure_chance, damage, anml_reward)
+
+
+# FIXME: Item references need to be updated once item_master_list is created.
+# character_master_list = [
+#     create_character("survivor",
+#                      "There is another <n> here."
+#                      "Please, I need some <iw>. I can offer this <io> in return.",
+#                      item_master_list[0], item_master_list[1]),
+#     create_character("explorer",
+#                      "An alien <n> eyes you from a short distance away.",
+#                      "\"Greetings, traveller. I'm looking for a <iw>. If you're willing to trade, I'll give you this <io>.\"",
+#                      item_master_list[0], item_master_list[1]),
+#     create_character("trader",
+#                      "An alien <n> waves you over. It seems they want to make you an offer.",
+#                      "\"You look like you could use this <io>. I'd be willing to trade it for a <iw>.\"",
+#                      item_master_list[0], item_master_list[1]),
+#     create_character("warrior",
+#                      "An alien <n> signals to you that they want to talk.",
+#                      "\"You won't make it far without a decent weapon. If you get me a <iw>, I'll give you my <io>.\"",
+#                      item_master_list[0], item_master_list[1]),
+#     create_character("doctor",
+#                      "A <n> from your ship's crew is here.",
+#                      "\"If you're hurt, I can give you this <io>, but I need a <iw> in return.\"",
+#                      item_master_list[0], item_master_list[1])
+# ]
+
+# FIXME: Item references need to be updated once item_master_list is created.
+# animal_master_list = [
+#     create_animal("vermien",
+#                   "A small, relatively harmless <n> scurries about nearby, constantly watching you with one of its three eyes.",
+#                   10, 0.10, 5, item_master_list[0]),
+#     create_animal("skevick",
+#                   "You spot a slithering <n>. It blends in well with the terrain.",
+#                   15, 0.55, 10, item_master_list[0]),
+#     create_animal("boggu",
+#                   "A <n> growls at you from inside its den. You can see its eye glowing in the darkness.",
+#                   30, 0.40, 10, item_master_list[0]),
+#     create_animal("eebrol", "A large <n> skitters toward you on its many short legs.",
+#                   15, 0.50, 15, item_master_list[0]),
+#     create_animal("jabbin", "You see a large <n> sleeping nearby. It might be best not to wake it.",
+#                   35, 0.25, 15, item_master_list[0]),
+#     create_animal("ixum",
+#                   "An eight-legged <n> crawls along the ground. You can see the venom glistening on its stingers.",
+#                   20, 0.33, 20, item_master_list[0]),
+#     create_animal("mortrid", "A massive, horrifying <n> stands a short distance away. It opens its mouth and lets out a chilling screech!",
+#                   50, 0.75, 20, item_master_list[0])
+# ]
