@@ -84,7 +84,7 @@ class Consumable(Item):
         """get the remaining use count"""
         return self._use_count
 
-    #EDIT: this method should probably pass in a unit argument to change it
+    # EDIT: this method should probably pass in a unit argument to change it
     # def use_item(self, unit):
     def use_item(self):
         """uses the item, decrementing the use count"""

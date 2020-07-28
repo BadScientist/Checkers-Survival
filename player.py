@@ -1,5 +1,5 @@
 import random
-import copy
+from copy import deepcopy
 from room import *
 from item import *
 from NPCs import *
@@ -52,9 +52,16 @@ class Player:
         Displays the long_desc of the Room that is currently set as the Player's
         location.
          """
+        # Print current room's long description
         print(self.location.get_long_desc())
+
+        # If present, print character's description
         if self.location.get_character() is not None:
             print(self.location.get_character().get_description())
+
+        # If present, print animal's description.
+        if self.location.get_animal() is not None:
+            print(self.location.get_animal().get_description())
 
     def look(self, dir_str):
 
@@ -84,20 +91,71 @@ class Player:
             adj_room.apply_seen() #To view adjacent room contents in Maps
             print("To the " + dir_str + " you see " + adj_room.get_shrt_desc())
 
+    def add_item(self, new_item):
+        """Add the given item to the inventory."""
+
+        # If the item is a Consumable, check if the player already has the same
+        # item. If so, add the use count to the new item, remove the current
+        # item from the inventory, and then add the new item.
+        if new_item.get_type() == "CONSUMABLE":
+            for item in self._inventory:
+                if item.get_name() == new_item.get_name():
+                    new_item.adj_use_count(item.get_use_count())
+                    self._inventory.remove(item)
+
+        # Add the new item to the inventory.
+        self._inventory.append(new_item)
+
     def take(self, item_str):
+
+        # FIXME: method is still placeholder
+
         print("Took " + item_str)
 
     def use(self, item_str, target_str=None):
+
+        # FIXME: method is still placeholder
+
         if target_str is None:
             print("Used " + item_str)
         else:
             print("Used " + item_str + " on " + target_str)
 
-    def hunt(self, target_str):
-        if self._weapon is None:
+    def hunt(self):
+        """Hunt the animal in the current location with the equipped weapon."""
+        weapon = self._weapon
+        animal = self.location.get_animal()
+
+        if animal is None:
+            print("There is nothing here to hunt.")
+            return
+
+        if weapon is None:
             print("You must equip a weapon to hunt.")
             return
-        print("Hunted " + target_str)
+
+        # Reduce the animal's health by an amount
+        # in the equipped weapon's damage range
+        dmg = int(weapon.rand_dmg())
+        animal.adj_health(dmg)
+
+        # Check if animal has health remaining. If not, give player the reward,
+        # print success message, and remove animal from room.
+        if animal.get_health() <= 0:
+            reward = animal.get_hunt_reward()
+            self.add_item(reward)
+            print("You killed the " + animal.get_name() + " and got " + reward.get_name() + ".")
+            self.location.remove_animal()
+
+        # If animal still has health, print message notifying player.
+        else:
+            print("You hurt the " + animal.get_name() + ", but it's still alive.")
+
+            # Check if animal injures player. If so, reduce player's health by
+            # animal's damage and print message notifying player.
+            if random.random() < animal.get_injure_chance():
+                self._health -= animal.get_damage()
+                print("You were hurt by the " + animal.get_name())
 
     def talk(self):
         """
@@ -125,15 +183,8 @@ class Player:
                 for item1 in self._inventory:
                     if item1.get_name() == item_wanted.get_name():
 
-                        # Check if Player already has the same item as offered.
-                        # If so, add use_count of the item in inventory to the
-                        # item offered and remove the item from the inventory
-                        # before adding the new item to the inventory.
-                        for item2 in self._inventory:
-                            if item2.get_name() == item_offered.get_name():
-                                item_offered.adj_use_count(item2.get_use_count())
-                                self._inventory.remove(item2)
-                        self._inventory.append(item_offered)
+                        # Add the item_offered to the inventory.
+                        self.add_item(item_offered)
 
                         # Remove 1 count of the traded item from the inventory.
                         # If no more uses, remove the item from the inventory.
@@ -172,9 +223,6 @@ class Player:
     def adj_health(self, amount):
         """Adjusts the player's health by the given amount."""
         self._health += amount
-
-    def add_item(self, item):
-        self._inventory.append(item)
 
     def equip(self, weapon_str):
         """
@@ -271,13 +319,7 @@ class Player:
                          words[2])  # To be updated based on player class
 
         elif words[0] == "hunt":
-
-            if len(words) < 2:
-                print("You must specify a target.")
-
-            # Hunt target with weapon.
-            else:
-                self.hunt(words[1])  # To be updated based on player class
+            self.hunt()  # To be updated based on player class
 
         elif words[0] == "talk":
             self.talk()  # To be updated based on player class
@@ -388,15 +430,15 @@ def main():
     hunter = create_character("HUNTER",
                               "You see a <n> leaning against a nearby tree.",
                               "\"Hello there. If you have a <iw>, I'll trade you this <io> for it.\"",
-                              copy.deepcopy(mp), copy.deepcopy(meat))
-    bunny = Animal("BUNNY",
-                   "There is a small space BUNNY hopping about nearby.",
-                   16, 0.5, 5, copy.deepcopy(meat))
+                              deepcopy(mp), deepcopy(meat))
+    bunny = create_animal("BUNNY",
+                   "There is a small space <n> hopping about nearby.",
+                   16, 0.5, 5, meat)
     level_1[0].character = hunter
     level_1[0].animal = bunny
     test_player = Player("Johnnie", level_1[0])
-    test_player.add_item(copy.deepcopy(mp))
-    test_player.add_item(copy.deepcopy(hk))
+    test_player.add_item(deepcopy(mp))
+    test_player.add_item(deepcopy(hk))
     while True:
         #       To test the mini map remove these comments:
         #
