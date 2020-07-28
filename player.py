@@ -138,13 +138,16 @@ class Player:
         # in the equipped weapon's damage range
         dmg = int(weapon.rand_dmg())
         animal.adj_health(dmg)
+        print("You attack the " + animal.get_name() + " with your " +
+              weapon.get_name() + ".")
 
         # Check if animal has health remaining. If not, give player the reward,
         # print success message, and remove animal from room.
         if animal.get_health() <= 0:
             reward = animal.get_hunt_reward()
             self.add_item(reward)
-            print("You killed the " + animal.get_name() + " and got " + reward.get_name() + ".")
+            print("You killed the " + animal.get_name() + " and got " +
+                  reward.get_name() + ".")
             self.location.remove_animal()
 
         # If animal still has health, print message notifying player.
@@ -161,8 +164,9 @@ class Player:
         """
         Talk to the Character in the Room in which the Player is located.
         """
-
-        if self.location.get_character() is not None:
+        character = self.location.get_character()
+        if character is not None:
+            print("The " + character.get_name() + " greets you:")
             print(self.location.get_character().get_dialogue())
 
         else:
@@ -193,6 +197,9 @@ class Player:
                             self._inventory.remove(item1)
 
                         character.set_trade_complete()
+                        print("You hand the " + character.get_name() + " the " +
+                              item_wanted.get_name() + " and they give you a " +
+                              item_offered.get_name() + " in return.")
                         print("\"Thanks for the trade.\"")
                         return
 
