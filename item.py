@@ -1,6 +1,6 @@
 import random
 
-print("test file")  # testing if file works
+# print("test file")  # testing if file works
 
 
 class Item:
