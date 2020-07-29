@@ -1,7 +1,11 @@
 import random
 
-# print("test file")  # testing if file works
+# =============================================================================
+# use functions below the classes to initialize an item
+# there are specific functions e.g create_knife to create standard items
+# =============================================================================
 
+# TODO: adjust the attributes of the items e.g. damage and use_count
 
 class Item:
     """Item class of the game."""
@@ -61,6 +65,44 @@ class Weapon(Item):
         """Returns high range of damage."""
         return self._dmg_high
 
+def create_weapon(name, str_desc, dmg_low, dmg_high):
+    return Weapon(name, str_desc, dmg_low, dmg_high)
+
+def create_knife():
+    name = 'Knife'
+    str_desc = 'Knife'
+    dmg_low = 10
+    dmg_high = 30
+    return create_weapon(name, str_desc, dmg_low, dmg_high)
+
+def create_sling_shot():
+    name = 'Sling Shot'
+    str_desc = 'Sling Shot'
+    dmg_low = 20
+    dmg_high = 50
+    return create_weapon(name, str_desc, dmg_low, dmg_high)
+
+def create_stone_axe():
+    name = 'Stone Axe'
+    str_desc = 'Stone Axe'
+    dmg_low = 40
+    dmg_high = 100
+    return create_weapon(name, str_desc, dmg_low, dmg_high)
+
+def create_bow():
+    name = 'Bow'
+    str_desc = 'Bow'
+    dmg_low = 50
+    dmg_high = 100
+    return create_weapon(name, str_desc, dmg_low, dmg_high)
+
+def gun():
+    name = 'Gun'
+    str_desc = 'Gun'
+    dmg_low = 90
+    dmg_high = 100
+    return create_weapon(name, str_desc, dmg_low, dmg_high)
+
 
 class Consumable(Item):
     """Consumable class in game."""
@@ -97,3 +139,41 @@ class Consumable(Item):
     def adj_use_count(self, integer):
         """Adjusts the consumable item use count by the given integer."""
         self._use_count += integer
+
+def create_consumable(name, str_desc, value, use_count):
+    return Consumable(name, str_desc, value, use_count)
+
+def create_health_kit():
+    name = 'Health Kit'
+    str_desc = 'Health Kit'
+    value = 100
+    use_count = 1
+    return create_consumable(name, str_desc, value, use_count)
+
+def create_berries():
+    name = 'Berries'
+    str_desc = 'Berries'
+    value = 20
+    use_count = 1
+    return create_consumable(name, str_desc, value, use_count)
+
+def create_emergency_rations():
+    name = 'Berries'
+    str_desc = 'Berries'
+    value = 30
+    use_count = 1
+    return create_consumable(name, str_desc, value, use_count)
+
+def create_vitamins():
+    name = 'Vitamins'
+    str_desc = 'Vitamins'
+    value = 30
+    use_count = 1
+    return create_consumable(name, str_desc, value, use_count)
+    
+def create_vermen_meat():
+    name = 'Vermen Meat'
+    str_desc = 'Vermen Meat'
+    value = 10
+    use_count = 1
+    return create_consumable(name, str_desc, value, use_count)
