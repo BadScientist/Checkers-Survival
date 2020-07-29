@@ -4,12 +4,13 @@ from mapGUI import *
 
 random.seed()
 
+# FIXME: Change room descriptions according to what the room contains
 
 class Room: 
     
     def __init__(self, x=0, y=0, long_desc='Standard Room',
                  shrt_desc='Standard', N=None, S=None, E=None, W=None,
-                 character=None, animal=None):
+                 character=None, animal=None, item=None):
         """
         Creates a Room object that can be added to the level map.
         :param x: room's position (y axis), to prevent overlaps between rooms
@@ -24,6 +25,7 @@ class Room:
                      contents e.g. animal can be seen. Otherwise '?' appears
         :param character: Character object located in Room
         :param animal: Animal object located in Room
+        :param item: Item object located in Room
         """
         self.x = x
         self.y = y
@@ -36,6 +38,7 @@ class Room:
         self.seen = False
         self.character = character
         self.animal = animal
+        self.item = item
     
     def apply_position(self, x, y):
         self.x = x
@@ -103,6 +106,9 @@ class Room:
 
     def remove_animal(self):
         self.animal = None
+        
+    def get_item(self):
+        return self.item
     
     def get_adjacent_room(self, direction):
         # pass direction eg 'N' ie North, and it returns the room N of self. If

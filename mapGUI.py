@@ -2,6 +2,10 @@ import tkinter as tk
 
 #GUI Map Definition - Enlarged Map and Mini-Map
 
+
+# TODO: New window upon clicking or hovering over a room in map
+
+
 #Use start_large_map_IO for enlarged map and start_mini_map_IO for mini map
 #They are the very last functions at the bottom
 
@@ -99,16 +103,23 @@ def display_room(canvas, room, x, y, flag=False):
     #Symbol is the symbol of e.g. an animal/item/etc in the map
     
     #Remember x and y are mark the center of the room shape
-    symbol = '?'
-    if room.get_seen() == True:
-        symbol = None
+    symbol = ''
+    if room.get_character() != None:
+        symbol += room.get_character().get_name() + '\n'
+    if room.get_animal() != None:
+        symbol += room.get_animal().get_name() + '\n'
+    if room.get_item() != None:
+        symbol += room.get_item().get_name() + '\n'
+    if room.get_seen() == False:
+        symbol = '?'
+    
     if flag == False:
         canvas.create_rectangle(x-20, y-20, x+20, y+20, outline="#fb0",
                                 fill="#000")
     else:
         canvas.create_rectangle(x-20, y-20, x+20, y+20, outline="#fb0",
                                 fill="#fb0")
-    canvas.create_text(x, y, text=symbol, fill='#fff')
+    canvas.create_text(x, y, text=symbol, font=("Andale Mono", 8), fill='#fff')
 
 def display_level(canvas, room, location, x, y, prev_dir=None):
     #room is the current room being examined to be printed
