@@ -6,40 +6,22 @@ random.seed()
 
 
 class Room: 
-    # Variables:
-    #   long_desc -> printed in-game when within the room
-    #   shrt_desc -> printed in-game when in a room adjacent to this room
-    #   N,S,E,W   -> point to adjacent room in respective direction (in 2D)
-    #                set to None (null) if not yet defined
-    #   x and y   -> rough position of the room, to prevent overlaps between
-    #                rooms.
-    #   seen      -> T/F; T if it has been looked at or entered. Default is F.
-    #                if T, its contents appear in map; if F, a ? appears
-    
-    # Functions:
-    #   all variables in the class can be obtained and/or changed with the
-    #   functions below. A short explanation of each function is provided.
-    
-    # Example of Room Class Use:
-    #   print(room_1.get_long_desc())
-    #   print(room_1.get_shrt_desc())
-    #   room_1.apply_long('goin don know')
-    #   room_1.apply_path('N', room_2)
-    #   print(room_1.__dict__) to print all class vars
     
     def __init__(self, x=0, y=0, long_desc='Standard Room',
                  shrt_desc='Standard', N=None, S=None, E=None, W=None,
                  character=None, animal=None):
         """
         Creates a Room object that can be added to the level map.
-        :param x:
-        :param y:
+        :param x: room's position (y axis), to prevent overlaps between rooms
+        :param y: room's position (y axis), to prevent overlaps between rooms
         :param long_desc: string displayed by here command
         :param shrt_desc: string displayed by look command
         :param N: adjacent Room object to the north
         :param S: adjacent Room object to the south
         :param E: adjacent Room object to the east
         :param W: adjacent Room object to the west
+        :param seen: if Room has been looked at or entered (T/F). If T, Room's
+                     contents e.g. animal can be seen. Otherwise '?' appears
         :param character: Character object located in Room
         :param animal: Animal object located in Room
         """
@@ -237,9 +219,4 @@ def gen_random_level(room_num):
             if flag is False:
                 if idx in avail_rooms:       # remove room from
                     avail_rooms.remove(idx)  # 'bunch'-paths filled
-    # for i in range(0, room_num):
-        # print(all_rooms[i])
-        # print(all_rooms[i].__dict__)
-        # print('')
-    # print(avail_rooms)
     return all_rooms
