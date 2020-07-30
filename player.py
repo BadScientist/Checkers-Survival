@@ -10,10 +10,10 @@ class Player:
     def __init__(self, name, start_room):
         self._name = name
         self._health = 100
-        start_room.apply_seen() #To view adjacent room contents in Maps
+        start_room.apply_seen()  # To view adjacent room contents in Maps
         self.location = start_room
-        self._weapon = None
-        self._inventory = []
+        self._weapon = create_knife()
+        self._inventory = [create_medkit(1)]
 
     def move(self, dir_str):
         """

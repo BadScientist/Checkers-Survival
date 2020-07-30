@@ -1,5 +1,5 @@
 from item import *
-from copy import deepcopy
+from random import randrange
 
 
 class Character:
@@ -137,7 +137,7 @@ def create_animal(name, description, health, injure_chance, damage, reward):
 # TODO: Expand and refine list.
 character_master_list = [
     create_character("survivor",
-                     "There is another <n> here."
+                     "There is another <n> here.",
                      "Please, I need some <iw>. I can offer this <io> in return.",
                      create_meat(2), create_berries(1)),
     create_character("explorer",
@@ -179,3 +179,71 @@ animal_master_list = [
     create_animal("mortrid", "A massive, horrifying <n> stands a short distance away. It opens its mouth and lets out a chilling screech!",
                   110, 0.50, 20, create_meat(3))
 ]
+
+
+def gen_character(level):
+    """
+    Returns None or a random character object based on the given level number.
+    """
+    # 50% chance of returning character instead of None
+    if randrange(0, 9) >= 5:
+
+        # Later levels can spawn higher index characters
+        if level + 1 > len(character_master_list):     # Prevent index out-of-bounds
+            range_max = len(character_master_list)
+        else:
+            range_max = level + 1
+
+        if level - 3 < 0:
+            range_min = 0
+        else:
+            range_min = level - 3
+
+        char_index = randrange(range_min, range_max)
+
+        return character_master_list[char_index]
+
+    else:
+        return None
+
+
+def gen_animal(level):
+    """
+    Returns None or a random animal object based on the given level number.
+    """
+    # 50% chance of returning animal instead of None
+    if randrange(0, 9) >= 5:
+
+        # Later levels can spawn higher index animals
+        if level + 1> len(animal_master_list):  # Prevent index out-of-bounds
+            range_max = len(animal_master_list)
+        else:
+            range_max = level + 1
+
+        if level - 2 < 0:
+            range_min = 0
+        else:
+            range_min = level - 2
+
+        animal_index = randrange(range_min, range_max)
+
+        return animal_master_list[animal_index]
+
+    else:
+        return None
+
+
+# Test animal and character generation.
+
+# for i in range(0, 10):
+#     character = gen_character(4)
+#     animal = gen_animal(4)
+#     if character is not None:
+#         char_name = character.get_name()
+#     else:
+#         char_name = "None"
+#     if animal is not None:
+#         anml_name = animal.get_name()
+#     else:
+#         anml_name = "None"
+#     print(char_name + ", " + anml_name)

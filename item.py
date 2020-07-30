@@ -152,8 +152,8 @@ class Consumable(Item):
         self._use_count += integer
 
 
-def create_consumable(name, str_desc, value, use_count):
-    return Consumable(name, str_desc, value, use_count)
+def create_consumable(name, str_desc, value, health_gain, use_count):
+    return Consumable(name, str_desc, value, health_gain, use_count)
 
 
 def create_medkit(quantity):

@@ -1,16 +1,18 @@
 import random
+from NPCs import *
 import tkinter as tk
 from mapGUI import *
 
 random.seed()
 
+
 # FIXME: Change room descriptions according to what the room contains
 
 class Room: 
     
-    def __init__(self, x=0, y=0, long_desc='Standard Room',
+    def __init__(self, level, x=0, y=0, long_desc='Standard Room',
                  shrt_desc='Standard', N=None, S=None, E=None, W=None,
-                 character=None, animal=None, item=None):
+                 item=None):
         """
         Creates a Room object that can be added to the level map.
         :param x: room's position (y axis), to prevent overlaps between rooms
@@ -36,8 +38,8 @@ class Room:
         self.E = E
         self.W = W
         self.seen = False
-        self.character = character
-        self.animal = animal
+        self.character = gen_character(level)
+        self.animal = gen_animal(level)
         self.item = item
     
     def apply_position(self, x, y):
@@ -84,7 +86,7 @@ class Room:
             return False
     
     def apply_seen(self, state=True):
-        #default is True because this will mostly be called to set seen to T
+        # default is True because this will mostly be called to set seen to T
         self.seen = state
     
     def get_position(self):
@@ -203,12 +205,12 @@ def create_path(level, parent, target, paths):
         return False
 
 
-def gen_random_level(room_num):
+def gen_random_level(room_num, level):
     # see Concept above for better understanding of function
     all_rooms = []
     avail_rooms = []  # has index of rooms with an available path
     for i in range(0, room_num):
-        all_rooms.append(Room())  # create the new room (target)
+        all_rooms.append(Room(level))  # create the new room (target)
         avail_rooms.append(i)
         if i == 0:
             continue
