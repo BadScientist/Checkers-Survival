@@ -61,8 +61,8 @@ def create_character(name, description, dialogue, item_offered, item_wanted):
     char_dial = dialogue.replace(
         "<io>", item_offered.get_name().upper()).replace(
         "<iw>", item_wanted.get_name().upper())
-    char_io = deepcopy(item_offered)
-    char_iw = deepcopy(item_wanted)
+    char_io = item_offered
+    char_iw = item_wanted
 
     return Character(char_name, char_desc, char_dial, char_io, char_iw)
 
@@ -128,54 +128,54 @@ def create_animal(name, description, health, injure_chance, damage, reward):
     """
     anml_name = str(name).upper()
     anml_desc = description.replace("<n>", anml_name)
-    anml_reward = deepcopy(reward)
+    anml_reward = reward
 
     return Animal(anml_name, anml_desc, health,
                   injure_chance, damage, anml_reward)
 
 
-# FIXME: Item references need to be updated once item_master_list is created.
-# character_master_list = [
-#     create_character("survivor",
-#                      "There is another <n> here."
-#                      "Please, I need some <iw>. I can offer this <io> in return.",
-#                      item_master_list[0], item_master_list[1]),
-#     create_character("explorer",
-#                      "An alien <n> eyes you from a short distance away.",
-#                      "\"Greetings, traveller. I'm looking for a <iw>. If you're willing to trade, I'll give you this <io>.\"",
-#                      item_master_list[0], item_master_list[1]),
-#     create_character("trader",
-#                      "An alien <n> waves you over. It seems they want to make you an offer.",
-#                      "\"You look like you could use this <io>. I'd be willing to trade it for a <iw>.\"",
-#                      item_master_list[0], item_master_list[1]),
-#     create_character("warrior",
-#                      "An alien <n> signals to you that they want to talk.",
-#                      "\"You won't make it far without a decent weapon. If you get me a <iw>, I'll give you my <io>.\"",
-#                      item_master_list[0], item_master_list[1]),
-#     create_character("doctor",
-#                      "A <n> from your ship's crew is here.",
-#                      "\"If you're hurt, I can give you this <io>, but I need a <iw> in return.\"",
-#                      item_master_list[0], item_master_list[1])
-# ]
+# TODO: Expand and refine list.
+character_master_list = [
+    create_character("survivor",
+                     "There is another <n> here."
+                     "Please, I need some <iw>. I can offer this <io> in return.",
+                     create_meat(2), create_berries(1)),
+    create_character("explorer",
+                     "An alien <n> eyes you from a short distance away.",
+                     "\"Greetings, traveller. I'm looking for a <iw>. If you're willing to trade, I'll give you this <io>.\"",
+                     create_rations(2), create_meat(1)),
+    create_character("trader",
+                     "An alien <n> waves you over. It seems they want to make you an offer.",
+                     "\"You look like you could use this <io>. I'd be willing to trade it for a <iw>.\"",
+                     create_vitamins(2), create_meat(1)),
+    create_character("warrior",
+                     "An alien <n> signals to you that they want to talk.",
+                     "\"You won't make it far without a decent weapon. If you get me a <iw>, I'll give you my <io>.\"",
+                     create_axe(), create_vitamins(1)),
+    create_character("doctor",
+                     "A <n> from your ship's crew is here.",
+                     "\"If you're hurt, I can give you this <io>, but I need a <iw> in return.\"",
+                     create_medkit(1), create_meat(1))
+]
 
-# FIXME: Item references need to be updated once item_master_list is created.
-# animal_master_list = [
-#     create_animal("vermien",
-#                   "A small, relatively harmless <n> scurries about nearby, constantly watching you with one of its three eyes.",
-#                   10, 0.10, 5, item_master_list[0]),
-#     create_animal("skevick",
-#                   "You spot a slithering <n>. It blends in well with the terrain.",
-#                   15, 0.55, 10, item_master_list[0]),
-#     create_animal("boggu",
-#                   "A <n> growls at you from inside its den. You can see its eye glowing in the darkness.",
-#                   30, 0.40, 10, item_master_list[0]),
-#     create_animal("eebrol", "A large <n> skitters toward you on its many short legs.",
-#                   15, 0.50, 15, item_master_list[0]),
-#     create_animal("jabbin", "You see a large <n> sleeping nearby. It might be best not to wake it.",
-#                   35, 0.25, 15, item_master_list[0]),
-#     create_animal("ixum",
-#                   "An eight-legged <n> crawls along the ground. You can see the venom glistening on its stingers.",
-#                   20, 0.33, 20, item_master_list[0]),
-#     create_animal("mortrid", "A massive, horrifying <n> stands a short distance away. It opens its mouth and lets out a chilling screech!",
-#                   50, 0.75, 20, item_master_list[0])
-# ]
+# TODO: Expand and refine list.
+animal_master_list = [
+    create_animal("vermien",
+                  "A small, relatively harmless <n> scurries about nearby, constantly watching you with one of its three eyes.",
+                  10, 0.33, 5, create_meat(1)),
+    create_animal("skevick",
+                  "You spot a slithering <n>. It blends in well with the terrain.",
+                  15, 0.50, 10, create_meat(1)),
+    create_animal("boggu",
+                  "A <n> growls at you from inside its den. You can see its eye glowing in the darkness.",
+                  45, 0.40, 10, create_meat(2)),
+    create_animal("eebrol", "A large <n> skitters toward you on its many short legs.",
+                  50, 0.50, 10, create_meat(2)),
+    create_animal("jabbin", "You see a large <n> sleeping nearby. It might be best not to wake it.",
+                  55, 0.25, 20, create_meat(2)),
+    create_animal("ixum",
+                  "An eight-legged <n> crawls along the ground. You can see the venom glistening on its stingers.",
+                  100, 0.33, 25, create_meat(3)),
+    create_animal("mortrid", "A massive, horrifying <n> stands a short distance away. It opens its mouth and lets out a chilling screech!",
+                  110, 0.50, 20, create_meat(3))
+]
