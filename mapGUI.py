@@ -119,7 +119,7 @@ def display_room(canvas, room, x, y, flag=False):
     else:
         canvas.create_rectangle(x-20, y-20, x+20, y+20, outline="#fb0",
                                 fill="#fb0")
-    canvas.create_text(x, y, text=symbol, font=("Andale Mono", 8), fill='#fff')
+    canvas.create_text(x, y, text=symbol, font=("sans serif", 9), fill='#fff')
 
 def display_level(canvas, room, location, x, y, prev_dir=None):
     #room is the current room being examined to be printed
@@ -183,7 +183,7 @@ def start_large_map_IO(level, location):
     display_level(canvas, pivot, location, x, y)
     canvas.pack()
     
-    returnButton = tk.Button(root, text="OK", padx=80, pady=10, command=root.destroy,
-                             bg='#cc5500', fg='white')
+    returnButton = tk.Button(root, text="OK", padx=80, pady=10, 
+                             command=root.destroy, bg='#cc5500', fg='white')
     returnButton.pack(side='bottom')
     root.mainloop()
