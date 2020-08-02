@@ -396,23 +396,10 @@ def newMiniMap():
 
 
 #GAME SETTINGS
+
 random.seed()
 level_1 = gen_random_level(10, 1)
-meat = create_consumable("MEAT", "A hunk of meat. Eat it to gain health.", 1, 10, 0)
-mp = create_consumable("MEDPACK", "A first aid kit that will fully restore your health.", 1, 100, 0)
-hk = Weapon("KNIFE", "A plain hunting knife.", 10, 15)
-hunter = create_character("HUNTER",
-                            "You see a <n> leaning against a nearby tree.",
-                            "\"Hello there. If you have a <iw>, I'll trade you this <io> for it.\"",
-                            deepcopy(mp), deepcopy(meat))
-bunny = create_animal("BUNNY",
-                "There is a small space <n> hopping about nearby.",
-                16, 0.5, 5, meat)
-level_1[0].character = hunter
-level_1[0].animal = bunny
 test_player = Player("Johnnie", level_1[0])
-test_player.add_item(deepcopy(mp))
-test_player.add_item(deepcopy(hk))
 
 ###Frames###
 f10 = Frame(root, bg='#3b444b')
