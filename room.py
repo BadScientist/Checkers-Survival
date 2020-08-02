@@ -5,7 +5,16 @@ from mapGUI import *
 
 random.seed()
 
-# FIXME: Room descriptions (short description) needs the landscape description
+# TODO: Room descriptions (short description) needs the landscape description
+
+#changes:
+    # changed the room descriptions such that shrt_desc only gives the landscape 
+    # e.g. 'Dark Forest'. long_desc gives a sentence e.g. 'You are in a Dark 
+    # Forest.' 
+    # However, the functions that return them are different. get_shrt_desc 
+    # returns the short description as is, but get_long_desc returns the room's 
+    # long_desc, the contents' descriptions, and the shrt_desc of the adjacent 
+    # rooms that have been seen.
 
 class Room: 
     
