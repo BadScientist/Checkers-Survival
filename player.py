@@ -272,10 +272,10 @@ class Player:
     def get_item(self, item_num):
         return self._inventory[item_num]
 
-    def get_user_input(self, level):
+    def get_user_input(self, level, text):
 
         # Get input. Prompt is placeholder.
-        curr_input = input("What do you want to do?: \n >")
+        curr_input = text
         words = []
         curr_word = ""
 
