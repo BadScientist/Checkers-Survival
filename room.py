@@ -5,12 +5,11 @@ from mapGUI import *
 
 random.seed()
 
-
-# FIXME: Change room descriptions according to what the room contains
+# FIXME: Room descriptions (short description) needs the landscape description
 
 class Room: 
     
-    def __init__(self, level_num, x=0, y=0, long_desc='Standard Room',
+    def __init__(self, level_num, x=0, y=0, long_desc='You are in Standard Room',
                  shrt_desc='Standard', N=None, S=None, E=None, W=None,
                  item=None):
         """
@@ -94,7 +93,24 @@ class Room:
     
     def get_long_desc(self):
         # returns the long description of the room
-        return self.long_desc
+        # Print current room's long description
+        
+        desc = self.long_desc + '\n'
+        # If present, print character's description
+        if self.character is not None:
+            desc += self.character.get_description() + '\n'
+        # If present, print animal's description.
+        if self.animal is not None:
+            desc += self.animal.get_description() + '\n'
+        
+        # get seen rooms' short descriptions
+        for path in self.get_existing_paths():
+            adj_room = self.get_adjacent_room(path)
+            if adj_room is not None:
+                if adj_room.get_seen() == True:
+                    desc += 'To the ' + path + ' you see '
+                    desc += adj_room.get_shrt_desc() + '\n'
+        return desc
  
     def get_shrt_desc(self):
         # returns the short description of the room
