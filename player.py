@@ -62,14 +62,6 @@ class Player:
         # Print current room's long description
         print(self.location.get_long_desc())
 
-        # If present, print character's description
-        if self.location.get_character() is not None:
-            print(self.location.get_character().get_description())
-
-        # If present, print animal's description.
-        if self.location.get_animal() is not None:
-            print(self.location.get_animal().get_description())
-
     def look(self, dir_str):
 
         # Get the room in the given direction

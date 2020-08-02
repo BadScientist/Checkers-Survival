@@ -142,7 +142,6 @@ def display_level(canvas, room, location, x, y, prev_dir=None):
         next_position = nxt_room_position(path, x, y)
         display_level(canvas, room.get_adjacent_room(path), location, 
                       next_position[0], next_position[1], path)
-    return
 
 def start_mini_map_IO(root, location):
     #location is the player's current location (room)
@@ -158,7 +157,6 @@ def start_mini_map_IO(root, location):
         display_room(canvas, location.get_adjacent_room(path), nxt_position[0], 
                      nxt_position[1], False)
     canvas.pack(anchor='sw', side='bottom')
-    return
 
 def start_large_map_IO(level, location):
     #Defines the Enlarged Map Window and Creates the Canvas to generate map

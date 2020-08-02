@@ -5,12 +5,20 @@ from mapGUI import *
 
 random.seed()
 
+# TODO: Room descriptions (short description) needs the landscape description
 
-# FIXME: Change room descriptions according to what the room contains
+#changes:
+    # changed the room descriptions such that shrt_desc only gives the landscape 
+    # e.g. 'Dark Forest'. long_desc gives a sentence e.g. 'You are in a Dark 
+    # Forest.' 
+    # However, the functions that return them are different. get_shrt_desc 
+    # returns the short description as is, but get_long_desc returns the room's 
+    # long_desc, the contents' descriptions, and the shrt_desc of the adjacent 
+    # rooms that have been seen.
 
 class Room: 
     
-    def __init__(self, level, x=0, y=0, long_desc='Standard Room',
+    def __init__(self, level_num, x=0, y=0, long_desc='You are in Standard Room',
                  shrt_desc='Standard', N=None, S=None, E=None, W=None,
                  item=None):
         """
@@ -38,8 +46,8 @@ class Room:
         self.E = E
         self.W = W
         self.seen = False
-        self.character = gen_character(level)
-        self.animal = gen_animal(level)
+        self.character = gen_character(level_num)
+        self.animal = gen_animal(level_num)
         self.item = item
     
     def apply_position(self, x, y):
@@ -94,7 +102,24 @@ class Room:
     
     def get_long_desc(self):
         # returns the long description of the room
-        return self.long_desc
+        # Print current room's long description
+        
+        desc = self.long_desc + '\n'
+        # If present, print character's description
+        if self.character is not None:
+            desc += self.character.get_description() + '\n'
+        # If present, print animal's description.
+        if self.animal is not None:
+            desc += self.animal.get_description() + '\n'
+        
+        # get seen rooms' short descriptions
+        for path in self.get_existing_paths():
+            adj_room = self.get_adjacent_room(path)
+            if adj_room is not None:
+                if adj_room.get_seen() == True:
+                    desc += 'To the ' + path + ' you see '
+                    desc += adj_room.get_shrt_desc() + '\n'
+        return desc
  
     def get_shrt_desc(self):
         # returns the short description of the room
@@ -205,12 +230,12 @@ def create_path(level, parent, target, paths):
         return False
 
 
-def gen_random_level(room_num, level):
+def gen_random_level(room_num, level_num):
     # see Concept above for better understanding of function
     all_rooms = []
     avail_rooms = []  # has index of rooms with an available path
     for i in range(0, room_num):
-        all_rooms.append(Room(level))  # create the new room (target)
+        all_rooms.append(Room(level_num))  # create the new room (target)
         avail_rooms.append(i)
         if i == 0:
             continue
