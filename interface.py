@@ -360,11 +360,11 @@ def clock():
 def hpNumber():
     hp = 0 
     i = 0
-    for D in test_player._inventory:
-        # if test_player._inventory[i] == "MEDPACK":
-        #     hp += 1
-        #     break
-        i +=1
+    # for D in test_player._inventory:
+    #     # if test_player._inventory[i] == "MEDPACK":
+    #     #     hp += 1
+    #     #     break
+    #     i +=1
     return hp
 
 #how much meat the user has
@@ -380,14 +380,27 @@ def hkNumber():
 #this will be where it figures out what the text says
 def searchDirection():
     result = entry10.get()
-    print(result)
-    test_player.get_user_input( level_3)
+    test_player.get_user_input(level_1, result)
     entry10.delete(0,END)
 
 #GAME SETTINGS
 random.seed()
-level_3 = gen_random_level(10, 3)
-test_player = Player("Johnnie", level_3[0])
+level_1 = gen_random_level(10, 1)
+meat = create_consumable("MEAT", "A hunk of meat. Eat it to gain health.", 1, 10, 0)
+mp = create_consumable("MEDPACK", "A first aid kit that will fully restore your health.", 1, 100, 0)
+hk = Weapon("KNIFE", "A plain hunting knife.", 10, 15)
+hunter = create_character("HUNTER",
+                            "You see a <n> leaning against a nearby tree.",
+                            "\"Hello there. If you have a <iw>, I'll trade you this <io> for it.\"",
+                            deepcopy(mp), deepcopy(meat))
+bunny = create_animal("BUNNY",
+                "There is a small space <n> hopping about nearby.",
+                16, 0.5, 5, meat)
+level_1[0].character = hunter
+level_1[0].animal = bunny
+test_player = Player("Johnnie", level_1[0])
+test_player.add_item(deepcopy(mp))
+test_player.add_item(deepcopy(hk))
 
 ###Frames###
 f10 = Frame(root, bg='#3b444b')
@@ -469,3 +482,4 @@ canvas1.pack()
 f1.pack()
 f6.pack_forget()
 root.mainloop()
+
