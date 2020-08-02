@@ -13,24 +13,10 @@ import os
 from interface import *
 
 
-def main():    
-    random.seed()
-    level_3 = gen_random_level(10, 3)
-    test_player = Player("Johnnie", level_3[0])
+def main():
 
-    while True:
-
-        # To test the mini map remove these comments:
-
-        # root = tk.Tk(className=" Example Gameplay")
-        # root.config(bg='#3b444b')
-        # root.geometry("880x660")
-        # mapGUI.start_mini_map_IO(root, level_1[0])
-        # root.mainloop()
-
-        # Then close it to continue with rest of main()
-
-        test_player.get_user_input(level_3)
+    while not test_player.is_game_over():
+        test_player.get_user_input(level_1)
 
 
 if __name__ == "__main__":

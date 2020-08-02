@@ -15,6 +15,13 @@ class Player:
         self._weapon = create_knife()
         self._inventory = [create_medkit(1)]
 
+    def is_game_over(self):
+        """
+        Returns false if the player's health is greater than 0, otherwise
+        returns true.
+        """
+        return self._health <= 0
+
     def move(self, dir_str):
         """
         Updates the player's location to the adjacent room in the given
@@ -43,7 +50,7 @@ class Player:
             print("You can't go that way.")
             return
         else:
-            adj_room.apply_seen() #To view adjacent room contents in Maps
+            adj_room.apply_seen()  # To view adjacent room contents in Maps
             self.location = adj_room
             self.here()
 
@@ -88,7 +95,7 @@ class Player:
             print("There is nothing in that direction.")
             return
         else:
-            adj_room.apply_seen() #To view adjacent room contents in Maps
+            adj_room.apply_seen()  # To view adjacent room contents in Maps
             print("To the " + dir_str + " you see " + adj_room.get_shrt_desc())
 
     def add_item(self, new_item):
@@ -152,7 +159,8 @@ class Player:
 
         # If animal still has health, print message notifying player.
         else:
-            print("You hurt the " + animal.get_name() + ", but it's still alive.")
+            print("You hurt the " + animal.get_name() +
+                  ", but it's still alive.")
 
             # Check if animal injures player. If so, reduce player's health by
             # animal's damage and print message notifying player.
@@ -217,7 +225,7 @@ class Player:
             print("Your inventory is empty.")
         else:
             for item in self._inventory:
-                print("-",item)
+                print("-", item)
 
     def display_map(self, level):
         start_large_map_IO(level, self.location)
@@ -376,12 +384,13 @@ class Player:
 
             elif words[1] == "use":
                 print("Usage: use <item> OR use <item> <target>")
-                print(
-                    "Use the specified item. Optionally use item on specified target.")
+                print("Use the specified item." +
+                      "Optionally use item on specified target.")
 
             elif words[1] == "hunt":
                 print("Usage: hunt")
-                print("Hunt the Animal in the current room with the equipped weapon.")
+                print("Hunt the Animal in the current" +
+                      "room with the equipped weapon.")
 
             elif words[1] == "talk":
                 print("Usage: talk")
@@ -423,42 +432,7 @@ class Player:
 
         else:
             print(
-                "You didn't enter a valid command. Type \"help\" for a list of commands.")
+                "You didn't enter a valid command." +
+                "Type \"help\" for a list of commands.")
 
         print("**************************************************")
-
-
-def main():
-    random.seed()
-    level_1 = gen_random_level(10)
-    meat = Consumable("MEAT", "A hunk of meat. Eat it to gain health.", 10, 1)
-    mp = Consumable("MEDPACK", "A first aid kit that will fully restore your health.", 100, 1)
-    hk = Weapon("KNIFE", "A plain hunting knife.", 10, 15)
-    hunter = create_character("HUNTER",
-                              "You see a <n> leaning against a nearby tree.",
-                              "\"Hello there. If you have a <iw>, I'll trade you this <io> for it.\"",
-                              deepcopy(mp), deepcopy(meat))
-    bunny = create_animal("BUNNY",
-                   "There is a small space <n> hopping about nearby.",
-                   16, 0.5, 5, meat)
-    level_1[0].character = hunter
-    level_1[0].animal = bunny
-    test_player = Player("Johnnie", level_1[0])
-    test_player.add_item(deepcopy(mp))
-    test_player.add_item(deepcopy(hk))
-    while True:
-        #       To test the mini map remove these comments:
-        #
-        # root = tk.Tk(className=" Example Gameplay")
-        # root.config(bg='#3b444b')
-        # root.geometry("880x660")
-        # mapGUI.start_mini_map_IO(root, level_1[0])
-        # root.mainloop()
-        #
-        # Then close it to continue with rest of main()
-
-        test_player.get_user_input(level_1)
-
-
-if __name__ == "__main__":
-    main()
