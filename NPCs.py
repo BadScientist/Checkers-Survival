@@ -181,23 +181,23 @@ animal_master_list = [
 ]
 
 
-def gen_character(level):
+def gen_character(level_num):
     """
-    Returns None or a random character object based on the given level number.
+    Returns None or a random character object based on the given level_num number.
     """
     # 50% chance of returning character instead of None
     if randrange(0, 9) >= 5:
 
-        # Later levels can spawn higher index characters
-        if level + 1 > len(character_master_list):     # Prevent index out-of-bounds
+        # Later level_nums can spawn higher index characters
+        if level_num + 1 > len(character_master_list):     # Prevent index out-of-bounds
             range_max = len(character_master_list)
         else:
-            range_max = level + 1
+            range_max = level_num + 1
 
-        if level - 3 < 0:
+        if level_num - 3 < 0:
             range_min = 0
         else:
-            range_min = level - 3
+            range_min = level_num - 3
 
         char_index = randrange(range_min, range_max)
 
@@ -207,23 +207,23 @@ def gen_character(level):
         return None
 
 
-def gen_animal(level):
+def gen_animal(level_num):
     """
-    Returns None or a random animal object based on the given level number.
+    Returns None or a random animal object based on the given level_num number.
     """
     # 50% chance of returning animal instead of None
     if randrange(0, 9) >= 5:
 
-        # Later levels can spawn higher index animals
-        if level + 1> len(animal_master_list):  # Prevent index out-of-bounds
+        # Later level_nums can spawn higher index animals
+        if level_num + 1> len(animal_master_list):  # Prevent index out-of-bounds
             range_max = len(animal_master_list)
         else:
-            range_max = level + 1
+            range_max = level_num + 1
 
-        if level - 2 < 0:
+        if level_num - 2 < 0:
             range_min = 0
         else:
-            range_min = level - 2
+            range_min = level_num - 2
 
         animal_index = randrange(range_min, range_max)
 

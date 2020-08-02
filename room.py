@@ -10,7 +10,7 @@ random.seed()
 
 class Room: 
     
-    def __init__(self, level, x=0, y=0, long_desc='Standard Room',
+    def __init__(self, level_num, x=0, y=0, long_desc='Standard Room',
                  shrt_desc='Standard', N=None, S=None, E=None, W=None,
                  item=None):
         """
@@ -38,8 +38,8 @@ class Room:
         self.E = E
         self.W = W
         self.seen = False
-        self.character = gen_character(level)
-        self.animal = gen_animal(level)
+        self.character = gen_character(level_num)
+        self.animal = gen_animal(level_num)
         self.item = item
     
     def apply_position(self, x, y):
@@ -205,12 +205,12 @@ def create_path(level, parent, target, paths):
         return False
 
 
-def gen_random_level(room_num, level):
+def gen_random_level(room_num, level_num):
     # see Concept above for better understanding of function
     all_rooms = []
     avail_rooms = []  # has index of rooms with an available path
     for i in range(0, room_num):
-        all_rooms.append(Room(level))  # create the new room (target)
+        all_rooms.append(Room(level_num))  # create the new room (target)
         avail_rooms.append(i)
         if i == 0:
             continue
