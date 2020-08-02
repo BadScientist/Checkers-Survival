@@ -383,6 +383,18 @@ def searchDirection():
     test_player.get_user_input(level_1, result)
     entry10.delete(0,END)
 
+    midright.destroy()
+    newMiniMap()
+
+#this refreshes the mini map in the corner
+def newMiniMap():
+    midright = Canvas(canvas1, bg="#bbbbbb", width=290, height=290,highlightthickness=3, highlightbackground="black")
+    start_mini_map_IO(midright, test_player.location)
+
+    midright.pack()
+    canvas1.create_window(730, 230, window=midright)
+
+
 #GAME SETTINGS
 random.seed()
 level_1 = gen_random_level(10, 1)
