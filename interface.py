@@ -1,7 +1,9 @@
 from tkinter import *
-# from PIL import ImageTk, Image
 import tkinter.font as tkFont
-# from PIL import Image, ImageTk
+import time
+
+from player import *
+from copy import deepcopy
 
 import os
 
@@ -42,6 +44,13 @@ def back_menu():
     f4.pack_forget()
 
 def new_game():
+    f10.pack()
+    title.pack_forget()
+    f1.pack_forget()
+    f2.pack_forget()
+    f3.pack_forget()
+    f4.pack_forget()
+
     print("Start New Game")
 
 def load_game():
@@ -317,5 +326,146 @@ c2.pack()
 
 ###End Help Tab###
 
+
+#############################################################################
+###GAME INTERFACE###
+#changes the color of the score
+def healthcolor():
+    score = healthScore()
+    
+    if score == 100:
+        return "Green"
+    elif 90 > score > 40:
+        return "Black"
+    else:
+        return "Red"
+
+#this will be where the score is optained
+def healthScore():
+    return test_player._health
+
+#grabs the day
+def specDay():
+    day = 1
+    #this will be where it grabs the day
+    return day
+
+#we will have to talk to see what we want to do abou this feature
+def clock():
+    time= "00:00"
+
+    return time
+
+#how many health packs the user has
+def hpNumber():
+    hp = 0 
+    i = 0
+    for D in test_player._inventory:
+        # if test_player._inventory[i] == "MEDPACK":
+        #     hp += 1
+        #     break
+        i +=1
+    return hp
+
+#how much meat the user has
+def meatNumber():
+    meat = 0
+    return meat
+
+#the amount of hunting knifes the user has
+def hkNumber():
+    hk = 0
+    return hk
+
+#this will be where it figures out what the text says
+def searchDirection():
+    result = entry10.get()
+    print(result)
+    test_player.get_user_input( level_3)
+    entry10.delete(0,END)
+
+#GAME SETTINGS
+random.seed()
+level_3 = gen_random_level(10, 3)
+test_player = Player("Johnnie", level_3[0])
+
+###Frames###
+f10 = Frame(root, bg='#3b444b')
+
+###End Frames
+
+canvas1 = Canvas(f10, bg='#3b444b', width=900, height=700)
+
+#font for texts on screen
+font2 = tkFont.Font(family="Courier",size=13, weight="bold")
+
+#dialog box on the left
+dialogleft = Canvas(canvas1, bg="#bbbbbb",width=550, height= 600, highlightthickness=3, highlightbackground="black")
+dialogleft.pack()
+canvas1.create_window(300, 325, window=dialogleft)
+
+#the box you can type on on the bottom right
+textbox= Canvas(canvas1, bg="white", width=550, height=40, highlightthickness=3, highlightbackground="black")
+
+textbox.create_text(15, 23, text=">", font=font2, fill="black")
+entry10 = Entry(textbox, width=65) #this is the entry box
+entry10.pack()
+textbox.create_window(230, 23, window=entry10) #packing the entry box
+
+textbox_button = Button(textbox, text="Submit", bg='#cc5500', fg='white', height=2, width=15, command=searchDirection) #new button for submit
+textbox_button.pack()
+textbox.create_window(496, 23, window=textbox_button) #pack the box
+
+textbox.pack()
+canvas1.create_window(300, 660, window=textbox)
+
+#top right health and day box
+topright = Canvas(canvas1, bg="#bbbbbb", width=290, height=50, highlightthickness=3, highlightbackground="black")
+
+topright.create_text(43, 27, text="Health ", font=font2, fill="black")
+topright.create_text(90, 27, text= healthScore(), font=font2, fill= healthcolor()) #this will be the changable variable for health also color changes for health
+topright.create_text(125, 27, text="/100", font=font2, fill="black")
+
+topright.create_text(195, 27, text="Day ", font=font2, fill="black")
+topright.create_text(218, 27, text= specDay(), font=font2, fill= "black")
+topright.create_text(227, 27, text=",", font=font2, fill="black")
+
+topright.create_text(260, 27, text= clock(), font=font2, fill= "black")
+
+
+topright.pack()
+canvas1.create_window(730, 50, window=topright)
+
+#map box middle right
+midright = Canvas(canvas1, bg="#bbbbbb", width=290, height=290,highlightthickness=3, highlightbackground="black")
+
+start_mini_map_IO(midright, test_player.location)
+
+midright.pack()
+canvas1.create_window(730, 230, window=midright)
+
+#inventory box bottom right
+botright = Canvas(canvas1, bg="#bbbbbb", width=290, height=295, highlightthickness=3, highlightbackground="black")
+
+botright.create_text(60, 27, text="Health Pack", font=font2, fill="black")
+botright.create_text(27, 47, text="Meat", font=font2, fill="black")
+botright.create_text(75, 67, text="Hunting Knife ", font=font2, fill="black")
+
+botright.create_text(275, 27, text=hpNumber(), font=font2, fill="black")
+botright.create_text(275, 47, text=meatNumber(), font=font2, fill="black")
+botright.create_text(275, 67, text=hkNumber(), font=font2, fill="black")
+
+botright.pack()
+canvas1.create_window(730, 533, window=botright)
+
+canvas1.pack()
+
+# f10.pack()
+
+
+###END GAME INTERFACE###
+#############################################################################
+
 f1.pack()
+f6.pack_forget()
 root.mainloop()
