@@ -1,4 +1,4 @@
-import random
+from random import *
 from item import *
 from room import *
 from player import *
@@ -13,13 +13,27 @@ import os
 # Import the Main Menu from interface like a Macro
 from interface import *
 
-level_1 = gen_random_level(10, 1)
-level_2 = gen_random_level(10, 2)
-level_3 = gen_random_level(10, 3)
-level_4 = gen_random_level(10, 4)
-level_5 = gen_random_level(10, 5)
-cur_level = level_1
-player = Player(cur_level[0])
+# TODO: ensure user doesn't spawn in room with 'next-level' event
+
+level_idx = 0
+level_size = [10, 15, 20, 25, 30]
+levels = [
+    gen_random_level(level_size[0], 1),
+    gen_random_level(level_size[1], 2),
+    gen_random_level(level_size[2], 3),
+    gen_random_level(level_size[3], 4),
+    gen_random_level(level_size[4], 5),
+]
+
+#repeat following commands for each level (once user progresses to new lvl)
+cur_level = levels[level_idx]
+start_room = cur_level[randint( 0, level_size[level_idx]-1 )]
+while start_room.get_next_level() == True:
+    start_room = cur_level[randint( 0, level_size[level_idx]-1 )]
+
+player = Player(start_room)
+
+print('here')
 
 
 def main():

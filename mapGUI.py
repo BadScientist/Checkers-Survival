@@ -110,6 +110,8 @@ def display_room(canvas, room, x, y, flag=False):
         symbol += room.get_animal().get_name() + '\n'
     if room.get_item() != None:
         symbol += room.get_item().get_name() + '\n'
+    if room.get_next_level() == True:
+        symbol += 'NXT-LVL\n'
     if room.get_seen() == False:
         symbol = '?'
     

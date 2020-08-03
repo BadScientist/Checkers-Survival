@@ -20,7 +20,7 @@ class Player:
         returns true.
         """
         return self._health <= 0
-
+   
     def move(self, dir_str):
         """
         Updates the player's location to the adjacent room in the given

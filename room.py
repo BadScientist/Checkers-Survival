@@ -34,6 +34,7 @@ class Room:
         :param character: Character object located in Room
         :param animal: Animal object located in Room
         :param item: Item object located in Room
+        :param next_level: If True, allows user to progress to next level
         """
         self.x = x
         self.y = y
@@ -47,6 +48,7 @@ class Room:
         self.character = gen_character(level_num)
         self.animal = gen_animal(level_num)
         self.item = gen_item(level_num)
+        self.next_level = False
     
     def apply_position(self, x, y):
         self.x = x
@@ -94,6 +96,9 @@ class Room:
     def apply_seen(self, state=True):
         # default is True because this will mostly be called to set seen to T
         self.seen = state
+        
+    def apply_next_level(self, state=True):
+        self.next_level = state
     
     def get_position(self):
         return [self.x, self.y]
@@ -151,6 +156,9 @@ class Room:
         # pass direction eg 'N' ie North, and it returns the room N of self. If
         # there's no room to the N, then it returns None (the default value)
         return getattr(self, direction)
+    
+    def get_next_level(self):
+        return self.next_level
     
     def get_existing_paths(self):  # used for level display
         # returns an array with all paths/directions that have an assigned room
@@ -262,4 +270,6 @@ def gen_random_level(room_num, level_num):
             if flag is False:
                 if idx in avail_rooms:       # remove room from
                     avail_rooms.remove(idx)  # 'bunch'-paths filled
+    #choose room with 'next_level' event allowing user to progress to nxt lvl
+    all_rooms[randint(0, room_num-1)].apply_next_level(True)
     return all_rooms
