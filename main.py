@@ -25,8 +25,15 @@ levels = [
     gen_random_level(level_size[4], 5),
 ]
 
+#repeat following commands for each level (once user progresses to new lvl)
 cur_level = levels[level_idx]
-player = Player(cur_level[randint( 0, level_size[level_idx]-1 )])
+start_room = cur_level[randint( 0, level_size[level_idx]-1 )]
+while start_room.get_next_level() == True:
+    start_room = cur_level[randint( 0, level_size[level_idx]-1 )]
+
+player = Player(start_room)
+
+print('here')
 
 
 def main():
