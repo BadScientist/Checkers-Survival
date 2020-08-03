@@ -34,6 +34,17 @@ import sqlHash
 class sqlServer:
     
     def __init__(self, user="cs361_condreab", password="Checkers_Studio", host="classmysql.engr.oregonstate.edu", port=3306, database="cs361_condreab"):
+        """sqlServer Constructor: creates a sql server object. Defaults to project values.\n
+        user: string
+        \t sql server user
+        password: string 
+        \tsql server password
+        host: string
+        \tsql server host
+        port: int
+        \tsql server port number
+        database: string 
+        \tsql server database"""
         self._user = user
         self._password = password
         self._host = host
@@ -56,6 +67,11 @@ class sqlServer:
         self._cur = self._conn.cursor()
 
     def check_username_exists(self, username):
+        """
+            Checks if username exists in database. Returns boolean.\n
+            username: string
+            \tUsername in database (case sensitive).
+        """
         try:
             self._cur.execute("SELECT username FROM "+self._database+".User WHERE username=?",
             (username,))
@@ -68,6 +84,13 @@ class sqlServer:
         return True
 
     def check_login(self, username, password):
+        """
+            Checks username and password (hash). Returns boolean.\n
+            username: string
+            \tusername of account (case sensitive).
+            password: string
+            \tpassword of account (case sensitive). Converted to hash byte.
+        """
         # convert password to hash
         hash = self._hash.generate_sql_string_hash(password)
         try:
@@ -83,6 +106,12 @@ class sqlServer:
         return True
 
     def create_account(self, username, email, password):
+        """
+        Creates an account on the User table
+        username: string
+        email: string
+        password: string
+        """
         #create hash byte string for storage
         hash = self._hash.generate_sql_string_hash(password)
         try:
@@ -94,6 +123,12 @@ class sqlServer:
         return True
 
     def update_email(self, email, username, password):
+        """
+        Updates the email of an existing user account. Requires password.
+        email: string
+        username: string
+        passsword: string
+        """
         #get hash string
         hash = self._hash.generate_sql_string_hash(password)
         try:
@@ -105,6 +140,12 @@ class sqlServer:
         return True
 
     def update_password(self, new_password, username, old_password):
+        """
+        Updates the password of an exsiting user account. Requiers old password.
+        new_password: string
+        username: string
+        old_password: string
+        """
         new_hash = self._hash.generate_sql_string_hash(new_password)
         old_hash = self._hash.generate_sql_string_hash(old_password)
         try:
@@ -116,6 +157,11 @@ class sqlServer:
         return True
 
     def delete_account(self, username, password):
+        """
+        Deletes an account of an existing user accout. Requires password.
+        username: string
+        password: string
+        """
         #require password to be correct
         hash = self._hash.generate_sql_string_hash(password)
         try:
@@ -128,5 +174,8 @@ class sqlServer:
 
 
     def __del__(self):
+        """
+        sqlServer destructor. closes sql connection.
+        """
         # close connection when object deletes from garbage collection
         self._conn.close()

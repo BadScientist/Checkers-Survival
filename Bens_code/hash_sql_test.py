@@ -8,6 +8,7 @@ class testHashClass(unittest.TestCase):
         print(test_hash.generate_sql_string_hash("test123"))
         print(test_hash.check_sql_string_hash("test123", "$2b$12$MuHPMaxTyaX.cr8FPAgmqeoGJymzqLh.iREvNOjUBQLvLBJ71Ucde"))
         print(len(test_hash.generate_sql_string_hash("test123")))
+        
 class testServerClass(unittest.TestCase):
     def test_1(self):
         server_test = sqlServer.sqlServer()
@@ -32,6 +33,7 @@ class testServerClass(unittest.TestCase):
         #change password and check if new password works
         server_test.update_password("newpass", "condreab", "test123")
         print(server_test.check_login("condreab","newpass"))
+
 
 if __name__ == '__main__':
     unittest.main(exit=False)
