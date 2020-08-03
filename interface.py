@@ -3,6 +3,7 @@ import tkinter.font as tkFont
 import time
 
 from player import *
+from main import *
 from copy import deepcopy
 
 import os
@@ -342,7 +343,7 @@ def healthcolor():
 
 #this will be where the score is optained
 def healthScore():
-    return test_player._health
+    return player._health
 
 #grabs the day
 def specDay():
@@ -360,8 +361,8 @@ def clock():
 def hpNumber():
     hp = 0 
     i = 0
-    # for D in test_player._inventory:
-    #     # if test_player._inventory[i] == "MEDPACK":
+    # for D in player._inventory:
+    #     # if player._inventory[i] == "MEDPACK":
     #     #     hp += 1
     #     #     break
     #     i +=1
@@ -380,8 +381,8 @@ def hkNumber():
 #this will be where it figures out what the text says
 def searchDirection():
     result = entry10.get()
-    test_player.get_user_input(level_1, result)
-    entry10.delete(0,END)
+    player.get_user_input(cur_level, result)
+    entry10.delete(0, END)
 
     midright.destroy()
     newMiniMap()
@@ -389,17 +390,13 @@ def searchDirection():
 #this refreshes the mini map in the corner
 def newMiniMap():
     midright = Canvas(canvas1, bg="#bbbbbb", width=290, height=290,highlightthickness=3, highlightbackground="black")
-    start_mini_map_IO(midright, test_player.location)
+    start_mini_map_IO(midright, player.location)
 
     midright.pack()
     canvas1.create_window(730, 230, window=midright)
 
 
 #GAME SETTINGS
-
-random.seed()
-level_1 = gen_random_level(10, 1)
-test_player = Player("Johnnie", level_1[0])
 
 ###Frames###
 f10 = Frame(root, bg='#3b444b')
@@ -451,7 +448,7 @@ canvas1.create_window(730, 50, window=topright)
 #map box middle right
 midright = Canvas(canvas1, bg="#bbbbbb", width=290, height=290,highlightthickness=3, highlightbackground="black")
 
-start_mini_map_IO(midright, test_player.location)
+start_mini_map_IO(midright, player.location)
 
 midright.pack()
 canvas1.create_window(730, 230, window=midright)

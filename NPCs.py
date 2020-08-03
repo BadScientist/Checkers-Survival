@@ -1,5 +1,6 @@
 from item import *
 from random import randrange
+from copy import deepcopy
 
 
 class Character:
@@ -186,10 +187,10 @@ def gen_character(level_num):
     Returns None or a random character object based on the given level_num number.
     """
     # 50% chance of returning character instead of None
-    if randrange(0, 9) >= 5:
+    if randrange(0, 10) >= 5:
 
         # Later level_nums can spawn higher index characters
-        if level_num + 1 > len(character_master_list):     # Prevent index out-of-bounds
+        if level_num + 1 > len(character_master_list):  # Prevent index o.o.b.
             range_max = len(character_master_list)
         else:
             range_max = level_num + 1
@@ -201,7 +202,7 @@ def gen_character(level_num):
 
         char_index = randrange(range_min, range_max)
 
-        return character_master_list[char_index]
+        return deepcopy(character_master_list[char_index])
 
     else:
         return None
@@ -212,10 +213,10 @@ def gen_animal(level_num):
     Returns None or a random animal object based on the given level_num number.
     """
     # 50% chance of returning animal instead of None
-    if randrange(0, 9) >= 5:
+    if randrange(0, 10) >= 5:
 
         # Later level_nums can spawn higher index animals
-        if level_num + 1> len(animal_master_list):  # Prevent index out-of-bounds
+        if level_num + 1> len(animal_master_list):  # Prevent index o.o.b.
             range_max = len(animal_master_list)
         else:
             range_max = level_num + 1
@@ -227,7 +228,7 @@ def gen_animal(level_num):
 
         animal_index = randrange(range_min, range_max)
 
-        return animal_master_list[animal_index]
+        return deepcopy(animal_master_list[animal_index])
 
     else:
         return None

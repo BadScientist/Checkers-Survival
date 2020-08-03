@@ -1,4 +1,4 @@
-import random
+from random import *
 
 # =============================================================================
 # use functions below the classes to initialize an item
@@ -6,16 +6,14 @@ import random
 # =============================================================================
 
 
-# TODO: adjust the attributes of the items e.g. damage and use_count
-
 class Item:
     """Item class of the game."""
-    def __init__(self, name, str_desc, type):
+    def __init__(self, name, str_desc, item_type):
         """Creates an  item object.\n
         parameters: name, str_desc"""
         self._name = name
         self._str_desc = str_desc
-        self._type = type
+        self._type = item_type
     
     def get_name(self):
         return self._name
@@ -50,13 +48,14 @@ class Weapon(Item):
         self._dmg_high = dmg_high
     
     def __str__(self):
-        return self._name + ": " + self._str_desc + " low: " + str(self._dmg_low) + ", high:" + str(self._dmg_high) 
+        return self._name + ": " + self._str_desc + " low: " + \
+               str(self._dmg_low) + ", high:" + str(self._dmg_high)
     
     def rand_dmg(self):
         """
         Returns randomized dmg value between dmg low and dmg_high (inclusive).
         """
-        return random.randrange(self._dmg_low, self._dmg_high + 1)
+        return randrange(self._dmg_low, self._dmg_high + 1)
 
     def get_low(self):
         """Returns low range of damage."""
@@ -74,40 +73,40 @@ def create_weapon(name, str_desc, dmg_low, dmg_high):
 def create_knife():
     name = 'KNIFE'
     str_desc = 'A simple KNIFE.'
-    dmg_low = 10
-    dmg_high = 30
+    dmg_low = 5
+    dmg_high = 15
     return create_weapon(name, str_desc, dmg_low, dmg_high)
 
 
 def create_slingshot():
     name = 'SLINGSHOT'
     str_desc = 'A simple SLINGSHOT that can be used to fire small rocks.'
-    dmg_low = 20
-    dmg_high = 50
+    dmg_low = 15
+    dmg_high = 25
     return create_weapon(name, str_desc, dmg_low, dmg_high)
 
 
 def create_axe():
     name = 'AXE'
     str_desc = 'A crudely made stone AXE.'
-    dmg_low = 40
-    dmg_high = 100
+    dmg_low = 25
+    dmg_high = 40
     return create_weapon(name, str_desc, dmg_low, dmg_high)
 
 
 def create_bow():
     name = 'BOW'
     str_desc = 'A wooden BOW with plenty of arrows.'
-    dmg_low = 50
-    dmg_high = 100
+    dmg_low = 40
+    dmg_high = 55
     return create_weapon(name, str_desc, dmg_low, dmg_high)
 
 
 def create_gun():
     name = 'GUN'
     str_desc = 'A strange alien GUN that fires high-energy blasts.'
-    dmg_low = 90
-    dmg_high = 100
+    dmg_low = 75
+    dmg_high = 110
     return create_weapon(name, str_desc, dmg_low, dmg_high)
 
 
@@ -124,7 +123,8 @@ class Consumable(Item):
         self._use_count = use_count
 
     def __str__(self):
-        return self._name + ": " + self._str_desc + " value: " + str(self._value) + ", use count:" + str(self._use_count) 
+        return self._name + ": " + self._str_desc + " value: " + \
+               str(self._value) + ", use count:" + str(self._use_count)
         
     def get_value(self):
         """get the value of the consumable."""
@@ -199,3 +199,59 @@ def create_meat(quantity):
     health_gain = 15
     use_count = quantity
     return create_consumable(name, str_desc, value, health_gain, use_count)
+
+
+def gen_item(level_num):
+    """
+    Returns None or a random item based on the given level_num number.
+    """
+    consumable_list = [create_berries, create_rations,
+                       create_vitamins, create_medkit]
+    weapon_list = [create_slingshot, create_bow, create_gun]
+
+    # 50% chance of returning item instead of None
+    if randrange(0, 10) >= 5:
+
+        # 40% chance of creating a weapon
+        if randrange(0, 10) >= 6:
+
+            # Set range of weapon_list index for randrange
+            if level_num - 1 > len(weapon_list):
+                range_max = len(weapon_list)
+            elif level_num - 1 < 1:
+                range_max = 1
+            else:
+                range_max = level_num - 1
+
+            if range_max < 3:
+                range_min = 0
+            else:
+                range_min = range_max - 2
+
+            # Return a random item from the weapon_list.
+            return weapon_list[randrange(range_min, range_max)]()
+
+        else:
+            # Set range of consumable_list index for randrange
+            if level_num > len(consumable_list):
+                range_max = len(consumable_list)
+            else:
+                range_max = level_num
+
+            # Select a random item from the consumable_list and return a random
+            # number of them from 1 to 3.
+            return consumable_list[randrange(0, range_max)](randrange(1, 4))
+
+    else:
+        return None
+
+
+# Test item generation.
+#
+# for i in range(0, 10):
+#     item = gen_item(5)
+#     if item is not None:
+#         item_name = item.get_name()
+#     else:
+#         item_name = "None"
+#     print(item_name)
