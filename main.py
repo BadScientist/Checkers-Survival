@@ -14,9 +14,9 @@ from interface import *
 
 
 def main():
-
-    while not test_player.is_game_over():
-        test_player.get_user_input(level_1)
+    print("Crashed")
+    # while not test_player.is_game_over():
+    #     test_player.get_user_input(level_1)
 
 
 if __name__ == "__main__":
