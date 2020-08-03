@@ -387,18 +387,17 @@ class Player:
                 print("Look in the specified direction.")
 
             elif words[1] == "take":
-                print("Usage: take <item>")
-                print("Take the specified item.")
+                print("Usage: take")
+                print("Take the item in the current location.")
 
             elif words[1] == "use":
-                print("Usage: use <item> OR use <item> <target>")
-                print("Use the specified item." +
-                      "Optionally use item on specified target.")
+                print("Usage: use <item>")
+                print("Use the specified consumable item.")
 
             elif words[1] == "hunt":
                 print("Usage: hunt")
                 print("Hunt the Animal in the current" +
-                      "room with the equipped weapon.")
+                      "location with the equipped weapon.")
 
             elif words[1] == "talk":
                 print("Usage: talk")
