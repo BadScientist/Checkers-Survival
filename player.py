@@ -1,4 +1,4 @@
-import random
+from random import *
 from copy import deepcopy
 from room import *
 from item import *
@@ -7,8 +7,7 @@ from NPCs import *
 
 # example use of functions below class definition
 class Player:
-    def __init__(self, name, start_room):
-        self._name = name
+    def __init__(self, start_room):
         self._health = 100
         start_room.apply_seen()  # To view adjacent room contents in Maps
         self.location = start_room
@@ -105,20 +104,45 @@ class Player:
         # Add the new item to the inventory.
         self._inventory.append(new_item)
 
-    def take(self, item_str):
-
-        # FIXME: method is still placeholder
-
-        print("Took " + item_str)
-
-    def use(self, item_str, target_str=None):
-
-        # FIXME: method is still placeholder
-
-        if target_str is None:
-            print("Used " + item_str)
+    def take(self):
+        """Add the item in the room to the inventory."""
+        item = self.location.get_item()
+        if item is not None:
+            self.add_item(item)
+            self.location.remove_item()
+            print("You picked up the " + item.get_name() + '.')
         else:
-            print("Used " + item_str + " on " + target_str)
+            print("There is nothing here to take.")
+
+    def use(self, item_str):
+        """Use the specified consumable item."""
+
+        # Check if the specified item is in the inventory.
+        for item in self._inventory:
+            if item.get_name() == item_str.upper():
+
+                # Check if the item is a consumable.
+                if item.get_type() != "CONSUMABLE":
+                    print("You can't use that.")
+
+                else:
+                    # Adjust the player's health and item's use count.
+                    self._health += item.get_health_gein()
+
+                    # Make sure current health doesn't exceed maximum of 100.
+                    if self._health > 100:
+                        self._health = 100
+
+                    item.use_item()
+
+                    # Remove item from inventory if no more uses.
+                    if not item.usable():
+                        self._inventory.remove(item)
+
+                    print("You used " + item.get_name() + ".")
+                    return
+
+        print("You don't have that.")
 
     def hunt(self):
         """Hunt the animal in the current location with the equipped weapon."""
@@ -156,7 +180,7 @@ class Player:
 
             # Check if animal injures player. If so, reduce player's health by
             # animal's damage and print message notifying player.
-            if random.random() < animal.get_injure_chance():
+            if random() < animal.get_injure_chance():
                 self._health -= animal.get_damage()
                 print("You were hurt by the " + animal.get_name())
 
@@ -306,10 +330,7 @@ class Player:
                 self.look(words[1])  # To be updated based on player class
 
         elif words[0] == "take":
-            if len(words) == 1:
-                print("You must specify a valid item to take.")
-            else:
-                self.take(words[1])  # To be updated based on player class
+            self.take()  # To be updated based on player class
 
         elif words[0] == "use":
 
@@ -317,13 +338,8 @@ class Player:
                 print("You must specify a valid item to use.")
 
             # Use item.
-            elif len(words) == 2:
-                self.use(words[1])  # To be updated based on player class
-
-            # Use item on target.
             else:
-                self.use(words[1],
-                         words[2])  # To be updated based on player class
+                self.use(words[1])  # To be updated based on player class
 
         elif words[0] == "hunt":
             self.hunt()  # To be updated based on player class
@@ -371,18 +387,17 @@ class Player:
                 print("Look in the specified direction.")
 
             elif words[1] == "take":
-                print("Usage: take <item>")
-                print("Take the specified item.")
+                print("Usage: take")
+                print("Take the item in the current location.")
 
             elif words[1] == "use":
-                print("Usage: use <item> OR use <item> <target>")
-                print("Use the specified item." +
-                      "Optionally use item on specified target.")
+                print("Usage: use <item>")
+                print("Use the specified consumable item.")
 
             elif words[1] == "hunt":
                 print("Usage: hunt")
                 print("Hunt the Animal in the current" +
-                      "room with the equipped weapon.")
+                      "location with the equipped weapon.")
 
             elif words[1] == "talk":
                 print("Usage: talk")

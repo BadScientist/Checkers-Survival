@@ -1,9 +1,7 @@
-import random
+from random import *
 from NPCs import *
 import tkinter as tk
 from mapGUI import *
-
-random.seed()
 
 # TODO: Room descriptions (short description) needs the landscape description
 
@@ -16,11 +14,11 @@ random.seed()
     # long_desc, the contents' descriptions, and the shrt_desc of the adjacent 
     # rooms that have been seen.
 
+
 class Room: 
     
     def __init__(self, level_num, x=0, y=0, long_desc='You are in Standard Room',
-                 shrt_desc='Standard', N=None, S=None, E=None, W=None,
-                 item=None):
+                 shrt_desc='Standard', N=None, S=None, E=None, W=None):
         """
         Creates a Room object that can be added to the level map.
         :param x: room's position (y axis), to prevent overlaps between rooms
@@ -48,7 +46,7 @@ class Room:
         self.seen = False
         self.character = gen_character(level_num)
         self.animal = gen_animal(level_num)
-        self.item = item
+        self.item = gen_item(level_num)
     
     def apply_position(self, x, y):
         self.x = x
@@ -111,12 +109,21 @@ class Room:
         # If present, print animal's description.
         if self.animal is not None:
             desc += self.animal.get_description() + '\n'
+        # If present, print item's name.
+        if self.item is not None:
+            item_name = self.item.get_name()
+            desc += "You spot "
+            if item_name[-1] == 'S':
+                desc += "some "
+            else:
+                desc += "a "
+            desc += item_name + ".\n"
         
         # get seen rooms' short descriptions
         for path in self.get_existing_paths():
             adj_room = self.get_adjacent_room(path)
             if adj_room is not None:
-                if adj_room.get_seen() == True:
+                if adj_room.get_seen():
                     desc += 'To the ' + path + ' you see '
                     desc += adj_room.get_shrt_desc() + '\n'
         return desc
@@ -136,6 +143,9 @@ class Room:
         
     def get_item(self):
         return self.item
+
+    def remove_item(self):
+        self.item = None
     
     def get_adjacent_room(self, direction):
         # pass direction eg 'N' ie North, and it returns the room N of self. If
@@ -209,7 +219,7 @@ def create_path(level, parent, target, paths):
         'W': 'E'
     }
     if paths:
-        idx = random.randint(0,len(paths)-1)  # randomise direction
+        idx = randint(0, len(paths) - 1)  # randomise direction
         direction = paths[idx]
         
         position = parent.get_position()
@@ -245,7 +255,7 @@ def gen_random_level(room_num, level_num):
             if i == 1:  # 2 rooms only
                 parent = all_rooms[0]
             if i > 1:  # more than 2 rooms
-                idx = random.randint(0,len(avail_rooms)-2)
+                idx = randint(0,len(avail_rooms)-2)
                 parent = all_rooms[avail_rooms[idx]]
             avail_paths = parent.get_empty_paths()  # parent's available paths
             flag = create_path(all_rooms, parent, all_rooms[i], avail_paths)
