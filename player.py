@@ -295,6 +295,9 @@ class Player:
 
     def get_item(self, item_num):
         return self._inventory[item_num]
+    
+    def get_location(self):
+        return self.location
 
     def get_user_input(self, level, text):
 
