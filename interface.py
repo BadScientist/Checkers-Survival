@@ -385,16 +385,15 @@ def searchDirection():
     result = entry10.get()
     player.get_user_input(cur_level, result)
     entry10.delete(0, END)
-    print('cur level', cur_level)
-    # TODO: These are the proposed changes:
+    
     if player.get_location().get_next_level() == True:
         new_level = next_level(level_idx, player)
         if new_level != cur_level:
             cur_level = new_level
             level_idx += 1
-    #     elif new_level == cur_level: #this is last level
-    #         #Stop execution
-    #         next
+        elif new_level == None: #all levels complete
+            print('All Levels Complete')
+            #root.destroy()
     
     midright.destroy()
     newMiniMap()

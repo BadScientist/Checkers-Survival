@@ -15,19 +15,18 @@ from interface import *
 
 def next_level(curr_level_idx, player):
     #returns the next level
-    print('next level function')
     curr_level_idx += 1
-    if curr_level_idx < len(levels)-1: #if all levels are complete
+    if curr_level_idx < len(levels):
         new_level = levels[curr_level_idx]
         start_room = new_level[randint( 0, level_size[curr_level_idx]-1 )]
         while start_room.get_next_level() == True:
             start_room = new_level[randint( 0, level_size[curr_level_idx]-1 )]
         player.set_start_position(start_room)
         return new_level
-    else:
+    else: #if all levels are complete
         return None
 
-level_size = [10, 15, 20, 25, 30]
+level_size = [10, 12, 15, 18, 23]
 levels = [
     gen_random_level(level_size[0], 1),
     gen_random_level(level_size[1], 2),
