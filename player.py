@@ -5,13 +5,14 @@ from item import *
 from NPCs import *
 
 # FIXME: "Map" command doesn't clear from the textbox. Doesn't act like other
-#        commands.
+#  commands.
+
 
 # example use of functions below class definition
 class Player:
-    def __init__(self, start_room):
+    def __init__(self):
         self._health = 100
-        self.set_start_position(start_room)
+        self.location = None
         self._weapon = create_knife()
         self._inventory = [create_medkit(1)]
 
@@ -50,9 +51,15 @@ class Player:
             print("You can't go that way.")
             return
         else:
+            event = self.location.get_event()
+            if event is not None:
+                self._health -= event()
             adj_room.apply_seen()  # To view adjacent room contents in Maps
             self.location = adj_room
-            self.here()
+
+            # Check if player was killed by event.
+            if not self.is_game_over():
+                self.here()
 
     def here(self):
         """

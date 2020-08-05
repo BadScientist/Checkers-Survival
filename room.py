@@ -2,6 +2,7 @@ from random import *
 from NPCs import *
 import tkinter as tk
 from mapGUI import *
+from events import gen_event
 
 # TODO: Room descriptions (short description) needs the landscape description
 
@@ -42,6 +43,7 @@ class Room:
         self.animal = gen_animal(level_num)
         self.item = gen_item(level_num)
         self.next_level = False
+        self.event = gen_event()
     
     def apply_position(self, x, y):
         self.x = x
@@ -144,6 +146,9 @@ class Room:
 
     def remove_item(self):
         self.item = None
+
+    def get_event(self):
+        return self.event
     
     def get_adjacent_room(self, direction):
         # pass direction eg 'N' ie North, and it returns the room N of self. If

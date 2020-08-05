@@ -22,14 +22,16 @@ levels = [
     gen_random_level(level_size[4], 5),
 ]
 
-#Initialize first Level and Player
+# Initialize first Level and Player
 level_idx = 0
 cur_level = levels[level_idx]
 start_room = cur_level[randint( 0, level_size[level_idx]-1 )]
-while start_room.get_next_level() == True:
+while start_room.get_next_level():
     start_room = cur_level[randint( 0, level_size[level_idx]-1 )]
 
-player = Player(start_room)
+player = Player()
+player.set_start_position(start_room)
+
 
 def main():
     print("Crashed")
