@@ -379,21 +379,21 @@ def hkNumber():
     return hk
 
 #this will be where it figures out what the text says
-# FIXME: find a way NOT to use globals
 def searchDirection():
+    # FIXME: find a way NOT to use globals
     global cur_level, level_idx, player
     result = entry10.get()
     player.get_user_input(cur_level, result)
     entry10.delete(0, END)
-    
+
     if player.get_location().get_next_level() == True:
         new_level = next_level(level_idx, player)
-        if new_level != cur_level:
+        if new_level == None: #all levels complete
+            print_prompt('All Levels Complete')
+            #root.destroy()
+        elif new_level != cur_level:
             cur_level = new_level
             level_idx += 1
-        elif new_level == None: #all levels complete
-            print('All Levels Complete')
-            #root.destroy()
     
     midright.destroy()
     newMiniMap()
@@ -406,6 +406,14 @@ def newMiniMap():
     midright.pack()
     canvas1.create_window(730, 230, window=midright)
 
+#Prints a prompt to the dialog box to the left
+def print_prompt(value):
+    dialogleft = Canvas(canvas1, bg="#bbbbbb",width=550, height=600, highlightthickness=3, highlightbackground="black")
+    prompt = Text(dialogleft, height=43, width=75, bg = "#bbbbbb", highlightthickness=0)
+    prompt.insert(END, value)
+    dialogleft.pack()
+    prompt.pack()
+    canvas1.create_window(300, 325, window=dialogleft)
 
 #GAME SETTINGS
 
@@ -489,4 +497,3 @@ canvas1.pack()
 f1.pack()
 f6.pack_forget()
 root.mainloop()
-
