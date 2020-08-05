@@ -88,7 +88,10 @@ class Player:
         else:
             adj_room.apply_seen()  # To view adjacent room contents in Maps
             print("To the " + dir_str + " you see " + adj_room.get_shrt_desc())
-
+    
+    def set_start_position(self, start_room):
+        self.location = start_room
+    
     def add_item(self, new_item):
         """Add the given item to the inventory."""
 
