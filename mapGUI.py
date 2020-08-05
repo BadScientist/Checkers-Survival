@@ -162,18 +162,18 @@ def start_mini_map_IO(root, location):
 
 def start_large_map_IO(level, location):
     #Defines the Enlarged Map Window and Creates the Canvas to generate map
-    root = tk.Tk(className=" Map")
-    root.config(bg='#3b444b')
-    root.geometry("1080x800")
-    canvas = tk.Canvas(root, width=1040, height=610, highlightthickness=0)
+    Map = tk.Tk(className=" Map")
+    Map.config(bg='#3b444b')
+    Map.geometry("1080x800")
+    canvas = tk.Canvas(Map, width=1040, height=610, highlightthickness=0)
     canvas.config(bg='#3b444b')
     
-    title = tk.Label(root, text="Map",font=("Courier",50), fg='white',
+    title = tk.Label(Map, text="Map",font=("Courier",50), fg='white',
                      bg='#3b444b')
     title.pack()
-    vert_scroll = tk.Scrollbar(root, orient='vertical')
+    vert_scroll = tk.Scrollbar(Map, orient='vertical')
     vert_scroll.pack(side='right', fill='y')
-    hori_scroll = tk.Scrollbar(root, orient='horizontal')
+    hori_scroll = tk.Scrollbar(Map, orient='horizontal')
     hori_scroll.pack(side='bottom', fill='x')
     
     #Print pivot first at CENTER of window, then display the rest
@@ -183,7 +183,7 @@ def start_large_map_IO(level, location):
     display_level(canvas, pivot, location, x, y)
     canvas.pack()
     
-    returnButton = tk.Button(root, text="OK", padx=80, pady=10, 
-                             command=root.destroy, bg='#cc5500', fg='white')
+    returnButton = tk.Button(Map, text="OK", padx=80, pady=10, 
+                             command=Map.destroy, bg='#cc5500', fg='white')
     returnButton.pack(side='bottom')
-    root.mainloop()
+    Map.mainloop()

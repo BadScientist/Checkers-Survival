@@ -12,11 +12,8 @@ import os
 
 # Import the Main Menu from interface like a Macro
 from interface import *
-
-# TODO: ensure user doesn't spawn in room with 'next-level' event
-
-level_idx = 0
-level_size = [10, 15, 20, 25, 30]
+    
+level_size = [10, 12, 15, 18, 23]
 levels = [
     gen_random_level(level_size[0], 1),
     gen_random_level(level_size[1], 2),
@@ -25,16 +22,14 @@ levels = [
     gen_random_level(level_size[4], 5),
 ]
 
-#repeat following commands for each level (once user progresses to new lvl)
+#Initialize first Level and Player
+level_idx = 0
 cur_level = levels[level_idx]
 start_room = cur_level[randint( 0, level_size[level_idx]-1 )]
 while start_room.get_next_level() == True:
     start_room = cur_level[randint( 0, level_size[level_idx]-1 )]
 
 player = Player(start_room)
-
-print('here')
-
 
 def main():
     print("Crashed")

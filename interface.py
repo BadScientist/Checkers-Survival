@@ -384,6 +384,9 @@ def searchDirection():
     player.get_user_input(cur_level, result)
     entry10.delete(0, END)
 
+    if player.get_location().get_next_level() == True:
+        prompt_move_nxt_level()
+
     midright.destroy()
     newMiniMap()
 
@@ -395,7 +398,61 @@ def newMiniMap():
     midright.pack()
     canvas1.create_window(730, 230, window=midright)
 
+#Prints a prompt to the dialog box to the left
+def print_prompt(value):
+    dialogleft = Canvas(canvas1, bg="#bbbbbb",width=550, height=600, highlightthickness=3, highlightbackground="black")
+    prompt = Text(dialogleft, height=43, width=75, bg="#bbbbbb", highlightthickness=0)
+    prompt.insert(END, value)
+    dialogleft.pack()
+    prompt.pack()
+    canvas1.create_window(300, 325, window=dialogleft)
 
+#handles the transition between levels
+def transition_new_level():
+    #FIXME: find a way to work without globals
+    #TODO: way of destroying or quitting once game is over
+    global cur_level, level_idx, player
+    level_idx+=1
+    
+    if level_idx < len(levels):
+        new_level = levels[level_idx]
+        start_room = new_level[randint( 0, level_size[level_idx]-1 )]
+        while start_room.get_next_level() == True:
+            start_room = new_level[randint( 0, level_size[level_idx]-1 )]
+        player.set_start_position(start_room)
+    else: #if all levels are complete
+        new_level = None
+    
+    if new_level == None: #all levels complete
+        print_prompt('All Levels Complete')
+        #root.destroy()
+    elif new_level != cur_level:
+        cur_level = new_level
+
+def combine_funcs(*funcs):
+    def combined_func(*args, **kwargs):
+        for f in funcs:
+            f(*args, **kwargs)
+    return combined_func    
+
+#prompt user whether they want to move to the next level
+def prompt_move_nxt_level():
+    #Returns either True/False
+    response = Tk(className=" Progression")
+    response.config(bg='#3b444b')
+    response.geometry("390x200")
+    title = tk.Label(response, text='Advance to the next level?', pady=30,
+                     font=("Courier",15), fg='white', bg='#3b444b')
+    Yes = Button(response, text="Yes", padx=10, pady=5,
+                 command=combine_funcs(transition_new_level,response.destroy,
+                                       midright.destroy, newMiniMap),
+                 bg='#cc5500', fg='white', highlightthickness=0)
+    No = Button(response, text="No", padx=10, pady=5, command=response.destroy,
+                bg='#cc5500', fg='white', highlightthickness=0)
+    title.grid(row=0, column=1)
+    Yes.grid(row=1, column=0)
+    No.grid(row=1, column=2)
+    
 #GAME SETTINGS
 
 ###Frames###
@@ -478,4 +535,3 @@ canvas1.pack()
 f1.pack()
 f6.pack_forget()
 root.mainloop()
-
