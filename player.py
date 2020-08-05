@@ -4,13 +4,14 @@ from room import *
 from item import *
 from NPCs import *
 
+# FIXME: "Map" command doesn't clear from the textbox. Doesn't act like other
+#        commands.
 
 # example use of functions below class definition
 class Player:
     def __init__(self, start_room):
         self._health = 100
-        start_room.apply_seen()  # To view adjacent room contents in Maps
-        self.location = start_room
+        self.set_start_position(start_room)
         self._weapon = create_knife()
         self._inventory = [create_medkit(1)]
 
@@ -90,6 +91,7 @@ class Player:
             print("To the " + dir_str + " you see " + adj_room.get_shrt_desc())
     
     def set_start_position(self, start_room):
+        start_room.apply_seen()
         self.location = start_room
     
     def add_item(self, new_item):

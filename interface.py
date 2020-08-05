@@ -379,11 +379,23 @@ def hkNumber():
     return hk
 
 #this will be where it figures out what the text says
+# FIXME: find a way NOT to use globals
 def searchDirection():
+    global cur_level, level_idx, player
     result = entry10.get()
     player.get_user_input(cur_level, result)
     entry10.delete(0, END)
-
+    print('cur level', cur_level)
+    # TODO: These are the proposed changes:
+    if player.get_location().get_next_level() == True:
+        new_level = next_level(level_idx, player)
+        if new_level != cur_level:
+            cur_level = new_level
+            level_idx += 1
+    #     elif new_level == cur_level: #this is last level
+    #         #Stop execution
+    #         next
+    
     midright.destroy()
     newMiniMap()
 
