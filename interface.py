@@ -1,12 +1,7 @@
+from main import *
 from tkinter import *
 import tkinter.font as tkFont
-import time
-
-from player import *
-from main import *
-from copy import deepcopy
-
-import os
+from mapGUI import start_mini_map_IO
 
 root = Tk()
 
@@ -343,7 +338,7 @@ def healthcolor():
 
 #this will be where the score is optained
 def healthScore():
-    return player._health
+    return cur_player._health
 
 #grabs the day
 def specDay():
@@ -381,10 +376,10 @@ def hkNumber():
 #this will be where it figures out what the text says
 def searchDirection():
     result = entry10.get()
-    player.get_user_input(cur_level, result)
+    cur_player.get_user_input(cur_level, result)
     entry10.delete(0, END)
 
-    if player.get_location().get_next_level() == True:
+    if cur_player.get_location().get_next_level() == True:
         prompt_move_nxt_level()
 
     midright.destroy()
@@ -393,7 +388,7 @@ def searchDirection():
 #this refreshes the mini map in the corner
 def newMiniMap():
     midright = Canvas(canvas1, bg="#bbbbbb", width=290, height=290,highlightthickness=3, highlightbackground="black")
-    start_mini_map_IO(midright, player.location)
+    start_mini_map_IO(midright, cur_player.get_location())
 
     midright.pack()
     canvas1.create_window(730, 230, window=midright)
@@ -419,7 +414,7 @@ def transition_new_level():
         start_room = new_level[randint( 0, level_size[level_idx]-1 )]
         while start_room.get_next_level() == True:
             start_room = new_level[randint( 0, level_size[level_idx]-1 )]
-        player.set_start_position(start_room)
+        cur_player.set_start_position(start_room)
     else: #if all levels are complete
         new_level = None
     
@@ -441,7 +436,7 @@ def prompt_move_nxt_level():
     response = Tk(className=" Progression")
     response.config(bg='#3b444b')
     response.geometry("390x200")
-    title = tk.Label(response, text='Advance to the next level?', pady=30,
+    title = Label(response, text='Advance to the next level?', pady=30,
                      font=("Courier",15), fg='white', bg='#3b444b')
     Yes = Button(response, text="Yes", padx=10, pady=5,
                  command=combine_funcs(transition_new_level,response.destroy,
@@ -452,8 +447,28 @@ def prompt_move_nxt_level():
     title.grid(row=0, column=1)
     Yes.grid(row=1, column=0)
     No.grid(row=1, column=2)
-    
-#GAME SETTINGS
+
+
+# GAME SETTINGS
+level_size = [10, 12, 15, 18, 23]
+levels = [
+    gen_random_level(level_size[0], 1),
+    gen_random_level(level_size[1], 2),
+    gen_random_level(level_size[2], 3),
+    gen_random_level(level_size[3], 4),
+    gen_random_level(level_size[4], 5),
+]
+
+# Initialize first Level and Player
+level_idx = 0
+cur_level = levels[level_idx]
+start_room = cur_level[randint( 0, level_size[level_idx]-1 )]
+while start_room.get_next_level():
+    start_room = cur_level[randint( 0, level_size[level_idx]-1 )]
+
+cur_player = Player(print_prompt)
+cur_player.set_start_position(start_room)
+
 
 ###Frames###
 f10 = Frame(root, bg='#3b444b')
@@ -505,7 +520,7 @@ canvas1.create_window(730, 50, window=topright)
 #map box middle right
 midright = Canvas(canvas1, bg="#bbbbbb", width=290, height=290,highlightthickness=3, highlightbackground="black")
 
-start_mini_map_IO(midright, player.location)
+start_mini_map_IO(midright, cur_player.get_location())
 
 midright.pack()
 canvas1.create_window(730, 230, window=midright)

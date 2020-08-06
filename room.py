@@ -1,43 +1,40 @@
-from random import *
 from NPCs import *
-import tkinter as tk
-from mapGUI import *
-from events import gen_event
+from events import *
 
 # TODO: Room descriptions (short description) needs the landscape description
 
-#select from random list of landscapes
+# select from random list of landscapes
 
 
 class Room: 
     
     def __init__(self, level_num, x=0, y=0, long_desc='You are in Standard Room',
-                 shrt_desc='Standard', N=None, S=None, E=None, W=None):
+                 shrt_desc='Standard', n=None, s=None, e=None, w=None):
         """
         Creates a Room object that can be added to the level map.
         :param x: room's position (y axis), to prevent overlaps between rooms
         :param y: room's position (y axis), to prevent overlaps between rooms
         :param long_desc: string displayed by here command
         :param shrt_desc: string displayed by look command
-        :param N: adjacent Room object to the north
-        :param S: adjacent Room object to the south
-        :param E: adjacent Room object to the east
-        :param W: adjacent Room object to the west
-        :param seen: if Room has been looked at or entered (T/F). If T, Room's
+        :param n: adjacent Room object to the north
+        :param s: adjacent Room object to the south
+        :param e: adjacent Room object to the east
+        :param w: adjacent Room object to the west
+        :seen: if Room has been looked at or entered (T/F). If T, Room's
                      contents e.g. animal can be seen. Otherwise '?' appears
-        :param character: Character object located in Room
-        :param animal: Animal object located in Room
-        :param item: Item object located in Room
-        :param next_level: If True, allows user to progress to next level
+        :character: Character object located in Room
+        :animal: Animal object located in Room
+        :item: Item object located in Room
+        :next_level: If True, allows user to progress to next level
         """
         self.x = x
         self.y = y
         self.long_desc = long_desc
         self.shrt_desc = shrt_desc
-        self.N = N
-        self.S = S
-        self.E = E
-        self.W = W
+        self.N = n
+        self.S = s
+        self.E = e
+        self.W = w
         self.seen = False
         self.character = gen_character(level_num)
         self.animal = gen_animal(level_num)
