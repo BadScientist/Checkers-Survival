@@ -419,7 +419,7 @@ def transition_new_level():
         start_room = new_level[randint( 0, level_size[level_idx]-1 )]
         while start_room.get_next_level() == True:
             start_room = new_level[randint( 0, level_size[level_idx]-1 )]
-        player.set_start_position(start_room)
+        player.set_start_position(identify_start_room(cur_level))
     else: #if all levels are complete
         new_level = None
     
