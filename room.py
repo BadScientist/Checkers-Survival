@@ -11,8 +11,8 @@ from events import gen_event
 
 class Room: 
     
-    def __init__(self, level_num, x=0, y=0, long_desc='You are in Standard Room',
-                 shrt_desc='Standard', N=None, S=None, E=None, W=None):
+    def __init__(self, level_num, long_desc='You are in Standard Room',
+                 shrt_desc='Standard'):
         """
         Creates a Room object that can be added to the level map.
         :param x: room's position (y axis), to prevent overlaps between rooms
@@ -30,14 +30,14 @@ class Room:
         :param item: Item object located in Room
         :param next_level: If True, allows user to progress to next level
         """
-        self.x = x
-        self.y = y
+        self.x = 0
+        self.y = 0
         self.long_desc = long_desc
         self.shrt_desc = shrt_desc
-        self.N = N
-        self.S = S
-        self.E = E
-        self.W = W
+        self.N = None
+        self.S = None
+        self.E = None
+        self.W = None
         self.seen = False
         self.character = gen_character(level_num)
         self.animal = gen_animal(level_num)
@@ -57,7 +57,7 @@ class Room:
         # change the short description of the room. Supply a string as parameter
         self.shrt_desc = shrt_desc
         
-    def apply_path(self, level, direction, target):
+    def apply_path(self, direction, target):
         # Creates a path between one room and another e.g from room1 to room2.
         # If self is room1, and direction is 'N' i.e North, then the N variable
         # of room1 is set to room2.
@@ -70,12 +70,8 @@ class Room:
         #   'W' to point to room2 - doesn't make sense.
         # Also, to prevent overlaps, it ensures no other room is at same
         # position
-        
-        position = target.get_position()
-        for room in level:
-            if room.get_position() == position and room != target:
-                return False
-        if self != target:  # **********Might be the same as above
+
+        if self != target:
             if self.get_adjacent_room(direction) is None:
                 all_paths = ['N', 'S', 'E', 'W']
                 for path in all_paths:
@@ -209,7 +205,7 @@ class Room:
 #       that room is removed from avail_room[] such that it cant be selected
 
 
-def create_path(level, parent, target, paths):
+def create_path(parent, target, paths):
     # Function is necessary so that when a path between room1 and room2 is
     # created e.g. to the North of room1, the south of room2 will point to
     # room1
@@ -238,10 +234,10 @@ def create_path(level, parent, target, paths):
         elif direction == 'W':
             target.apply_position(position[0]-1, position[1])
             
-        if parent.apply_path(level, direction, target) is False:
+        if parent.apply_path(direction, target) is False:
             return False
         else:
-            return target.apply_path(level, opposite_dir[direction], parent)
+            return target.apply_path(opposite_dir[direction], parent)
     else:
         return False
 
@@ -264,7 +260,7 @@ def gen_random_level(room_num, level_num):
                 idx = randint(0,len(avail_rooms)-2)
                 parent = all_rooms[avail_rooms[idx]]
             avail_paths = parent.get_empty_paths()  # parent's available paths
-            flag = create_path(all_rooms, parent, all_rooms[i], avail_paths)
+            flag = create_path(parent, all_rooms[i], avail_paths)
             if flag is False:
                 if idx in avail_rooms:       # remove room from
                     avail_rooms.remove(idx)  # 'bunch'-paths filled
