@@ -29,7 +29,7 @@ class Player:
         
     def print_prompt(self, value):
         dialogleft = Canvas(self.canvas, bg="#bbbbbb",width=550, height=600, highlightthickness=3, highlightbackground="black")
-        prompt = Text(dialogleft, height=43, width=75, bg="#bbbbbb", highlightthickness=0)
+        prompt = Text(dialogleft, height=35, width=65, bg="#bbbbbb", highlightthickness=0)
         prompt.insert(END, value)
         dialogleft.pack()
         prompt.pack()

@@ -416,7 +416,7 @@ def newMiniMap():
 #Directly prints a prompt to the dialog box to the left
 def print_prompt(value):
     dialogleft = Canvas(canvas1, bg="#bbbbbb",width=550, height=600, highlightthickness=3, highlightbackground="black")
-    prompt = Text(dialogleft, height=43, width=75, bg="#bbbbbb", highlightthickness=0)
+    prompt = Text(dialogleft, height=35, width=65, bg="#bbbbbb", highlightthickness=0)
     prompt.insert(END, value)
     dialogleft.pack()
     prompt.pack()
@@ -575,7 +575,7 @@ canvas1.pack()
 
 #********Examples of how we can print to UI*************
 # print_prompt('sbclkhjsbdcj bisub o;s')
-# player.prompt('uhbcibw')
+# player.print_prompt('uhbcibw')
 #*************************************
 
 #f10.pack()
