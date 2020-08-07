@@ -24,6 +24,11 @@ How to Print to the UI from interface.py:
     pass string to print prompt below canvas1 definitions.
 '''
 
+#TODO: Keep refreshing and reprinting the:
+    #   1. Health
+    #   2. Time
+    #   3. Inventory
+
 root = Tk()
 
 ###Page Setup###
