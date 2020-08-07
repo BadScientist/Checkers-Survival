@@ -1,15 +1,30 @@
-from tkinter import *
-import tkinter.font as tkFont
 import time
-
+from random import *
+from item import *
+from room import *
 from player import *
-from main import *
 from copy import deepcopy
+import mapGUI
+from tkinter import *
+from PIL import ImageTk, Image
+import tkinter.font as tkFont
+from PIL import Image, ImageTk
+import os, math
 
-import os
+'''
+Changes:
+    The player is initialized via passing the UI canvas ie canvas1 to player
+    class.
+    The UI can then be modified from there.
+    ********* Note: you can only call it once every element of canvas1 has been
+                    initialized.
+    see bottom of Game Settings for example
+        
+How to Print to the UI from interface.py:
+    pass string to print prompt below canvas1 definitions.
+'''
 
 root = Tk()
-
 
 ###Page Setup###
 root.config(bg='#3b444b')
@@ -398,7 +413,7 @@ def newMiniMap():
     midright.pack()
     canvas1.create_window(730, 230, window=midright)
 
-#Prints a prompt to the dialog box to the left
+#Directly prints a prompt to the dialog box to the left
 def print_prompt(value):
     dialogleft = Canvas(canvas1, bg="#bbbbbb",width=550, height=600, highlightthickness=3, highlightbackground="black")
     prompt = Text(dialogleft, height=43, width=75, bg="#bbbbbb", highlightthickness=0)
@@ -406,6 +421,28 @@ def print_prompt(value):
     dialogleft.pack()
     prompt.pack()
     canvas1.create_window(300, 325, window=dialogleft)
+
+def identify_start_room(level):
+    #returns room with greatest distance from nxt_lvl event ie start_room
+    for room in level:
+        if room.get_next_level() == True:
+            nxt_lvl_room = room
+            break
+    nxt_lvl_position = nxt_lvl_room.get_position()
+    
+    #use below as standard in case there is only 1 room in level.
+    #otherwise it is bound to change
+    max_distance = 0
+    start_room = nxt_lvl_room 
+    
+    for room in set(level) - {nxt_lvl_room}:
+        room_position = room.get_position()
+        distance = math.hypot(nxt_lvl_position[0]-room_position[0],
+                              nxt_lvl_position[1]-room_position[1])
+        if distance > max_distance:
+            max_distance = distance
+            start_room = room
+    return start_room
 
 #handles the transition between levels
 def transition_new_level():
@@ -416,10 +453,6 @@ def transition_new_level():
     
     if level_idx < len(levels):
         new_level = levels[level_idx]
-        start_room = new_level[randint( 0, level_size[level_idx]-1 )]
-        while start_room.get_next_level() == True:
-            start_room = new_level[randint( 0, level_size[level_idx]-1 )]
-        player.set_start_position(identify_start_room(cur_level))
     else: #if all levels are complete
         new_level = None
     
@@ -428,6 +461,7 @@ def transition_new_level():
         #root.destroy()
     elif new_level != cur_level:
         cur_level = new_level
+        player.set_start_position(identify_start_room(cur_level))
 
 def combine_funcs(*funcs):
     def combined_func(*args, **kwargs):
@@ -457,10 +491,23 @@ def prompt_move_nxt_level():
 
 ###Frames###
 f10 = Frame(root, bg='#3b444b')
-
 ###End Frames
-
 canvas1 = Canvas(f10, bg='#3b444b', width=900, height=700)
+
+level_size = [10, 12, 15, 18, 23]
+levels = [
+    gen_random_level(level_size[0], 1),
+    gen_random_level(level_size[1], 2),
+    gen_random_level(level_size[2], 3),
+    gen_random_level(level_size[3], 4),
+    gen_random_level(level_size[4], 5),
+]
+
+# Initialize first Level and Player
+level_idx = 0
+cur_level = levels[level_idx]
+player = Player(canvas1)
+player.set_start_position(identify_start_room(cur_level))
 
 #font for texts on screen
 font2 = tkFont.Font(family="Courier",size=13, weight="bold")
@@ -526,7 +573,12 @@ canvas1.create_window(730, 533, window=botright)
 
 canvas1.pack()
 
-# f10.pack()
+#********Examples of how we can print to UI*************
+# print_prompt('sbclkhjsbdcj bisub o;s')
+# player.prompt('uhbcibw')
+#*************************************
+
+#f10.pack()
 
 
 ###END GAME INTERFACE###

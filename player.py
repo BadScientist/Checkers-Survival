@@ -3,19 +3,38 @@ from copy import deepcopy
 from room import *
 from item import *
 from NPCs import *
+from tkinter import *
 
 # FIXME: "Map" command doesn't clear from the textbox. Doesn't act like other
 #  commands.
 
+'''
+Changes:
+    The canvas (which is basically the game UI) has been passed to player class
+    It can then be modified just like it is modified in the function
+        print_prompt(value)
+        
+How to Print to the UI from player class:
+    pass string to print prompt.
+'''
 
 # example use of functions below class definition
 class Player:
-    def __init__(self):
+    def __init__(self, canvas):
         self._health = 100
         self.location = None
         self._weapon = create_knife()
         self._inventory = [create_medkit(1)]
-
+        self.canvas = canvas #the UI
+        
+    def print_prompt(self, value):
+        dialogleft = Canvas(self.canvas, bg="#bbbbbb",width=550, height=600, highlightthickness=3, highlightbackground="black")
+        prompt = Text(dialogleft, height=43, width=75, bg="#bbbbbb", highlightthickness=0)
+        prompt.insert(END, value)
+        dialogleft.pack()
+        prompt.pack()
+        self.canvas.create_window(300, 325, window=dialogleft)
+    
     def is_game_over(self):
         """
         Returns false if the player's health is greater than 0, otherwise

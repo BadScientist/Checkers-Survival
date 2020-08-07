@@ -48,14 +48,11 @@ levels = [
 # Initialize first Level and Player
 level_idx = 0
 cur_level = levels[level_idx]
-start_room = cur_level[randint( 0, level_size[level_idx]-1 )]
-while start_room.get_next_level():
-    start_room = cur_level[randint( 0, level_size[level_idx]-1 )]
 
 player = Player()
 player.set_start_position(identify_start_room(cur_level))
 
-identify_start_room(cur_level)
+print_prompt('HAHSHCJSBCJBASJK')
 
 def main():
     print("Crashed")
