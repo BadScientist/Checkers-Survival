@@ -121,7 +121,7 @@ def display_room(canvas, room, x, y, flag=False):
     else:
         canvas.create_rectangle(x-20, y-20, x+20, y+20, outline="#fb0",
                                 fill="#fb0")
-    canvas.create_text(x, y, text=symbol, font=("sans serif", 9), fill='#fff')
+    canvas.create_text(x, y, text=symbol, font=("sans serif", 8), fill='#fff')
 
 def display_level(canvas, room, location, x, y, prev_dir=None):
     #room is the current room being examined to be printed
@@ -168,7 +168,7 @@ def start_large_map_IO(level, location):
     canvas = tk.Canvas(Map, width=1040, height=610, highlightthickness=0)
     canvas.config(bg='#3b444b')
     
-    title = tk.Label(Map, text="Map",font=("Courier",50), fg='white',
+    title = tk.Label(Map, text="Full Map",font=("Courier",50), fg='white',
                      bg='#3b444b')
     title.pack()
     vert_scroll = tk.Scrollbar(Map, orient='vertical')
