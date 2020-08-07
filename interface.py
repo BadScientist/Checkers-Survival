@@ -474,14 +474,14 @@ def prompt_move_nxt_level():
     #Returns either True/False
     response = Tk(className=" Progression")
     response.config(bg='#3b444b')
-    response.geometry("390x200")
+    response.geometry("450x200")
     title = tk.Label(response, text='Advance to the next level?', pady=30,
-                     font=("Courier",15), fg='white', bg='#3b444b')
-    Yes = Button(response, text="Yes", padx=10, pady=5,
+                     font=("Courier",12), fg='white', bg='#3b444b')
+    Yes = Button(response, text="Yes", padx=30, pady=5,
                  command=combine_funcs(transition_new_level,response.destroy,
                                        midright.destroy, newMiniMap),
                  bg='#cc5500', fg='white', highlightthickness=0)
-    No = Button(response, text="No", padx=10, pady=5, command=response.destroy,
+    No = Button(response, text="No", padx=30, pady=5, command=response.destroy,
                 bg='#cc5500', fg='white', highlightthickness=0)
     title.grid(row=0, column=1)
     Yes.grid(row=1, column=0)
