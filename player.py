@@ -1,45 +1,30 @@
-from random import *
-from copy import deepcopy
 from room import *
-from item import *
-from NPCs import *
+from mapGUI import start_large_map_IO
 from tkinter import *
 
 # FIXME: "Map" command doesn't clear from the textbox. Doesn't act like other
 #  commands.
 
-'''
-Changes:
-    The canvas (which is basically the game UI) has been passed to player class
-    It can then be modified just like it is modified in the function
-        print_prompt(value)
-        
-How to Print to the UI from player class:
-    pass string to print prompt.
-'''
 
-# example use of functions below class definition
 class Player:
     def __init__(self, canvas):
         self._health = 100
         self.location = None
         self._weapon = create_knife()
         self._inventory = [create_medkit(1)]
-        self.canvas = canvas #the UI
+        self.canvas = canvas  # the UI
         
     def print_prompt(self, value):
-        dialogleft = Canvas(self.canvas, bg="#bbbbbb",width=550, height=600, highlightthickness=3, highlightbackground="black")
-        prompt = Text(dialogleft, height=35, width=65, bg="#bbbbbb", highlightthickness=0)
+        dialogleft = Canvas(self.canvas, bg="#bbbbbb", width=550, height=600,
+                            highlightthickness=3, highlightbackground="black")
+        prompt = Text(dialogleft, height=35, width=65, bg="#bbbbbb", 
+                      highlightthickness=0)
         prompt.insert(END, value)
         dialogleft.pack()
         prompt.pack()
         self.canvas.create_window(300, 325, window=dialogleft)
     
     def is_game_over(self):
-        """
-        Returns false if the player's health is greater than 0, otherwise
-        returns true.
-        """
         return self._health <= 0
    
     def move(self, dir_str):
@@ -62,17 +47,18 @@ class Player:
 
         # Invalid entry error message
         else:
-            print("You didn't enter a valid direction.")
+            self.print_prompt("You didn't enter a valid direction.")
             return
 
         # No adjacent room error message
         if adj_room is None:
-            print("You can't go that way.")
+            self.print_prompt("You can't go that way.")
             return
         else:
             event = self.location.get_event()
             if event is not None:
                 self._health -= event()
+                self.location.remove_event()
             adj_room.apply_seen()  # To view adjacent room contents in Maps
             self.location = adj_room
 
@@ -81,15 +67,13 @@ class Player:
                 self.here()
 
     def here(self):
-        """
-        Displays the long_desc of the Room that is currently set as the Player's
-        location.
-         """
-        # Print current room's long description
-        print(self.location.get_long_desc())
+        self.print_prompt(self.location.get_long_desc())
 
     def look(self, dir_str):
-
+        """
+        Displays the short description of the room in the given direction, if
+        present.
+        """
         # Get the room in the given direction
         if dir_str == 'n' or dir_str == "north":
             adj_room = self.location.get_adjacent_room('N')
@@ -105,16 +89,17 @@ class Player:
         
         # Invalid entry error message
         else:
-            print("You didn't enter a valid direction.")
+            self.print_prompt("You didn't enter a valid direction.")
             return
 
         # No adjacent room error message
         if adj_room is None:
-            print("There is nothing in that direction.")
+            self.print_prompt("There is nothing in that direction.")
             return
         else:
             adj_room.apply_seen()  # To view adjacent room contents in Maps
-            print("To the " + dir_str + " you see " + adj_room.get_shrt_desc())
+            self.print_prompt("To the " + dir_str + " you see " +
+                              adj_room.get_shrt_desc())
     
     def set_start_position(self, start_room):
         start_room.apply_seen()
@@ -122,13 +107,10 @@ class Player:
     
     def add_item(self, new_item):
         """Add the given item to the inventory."""
-
-        # If the item is a Consumable, check if the player already has the same
-        # item. If so, add the use count to the new item, remove the current
-        # item from the inventory, and then add the new item.
         if new_item.get_type() == "CONSUMABLE":
             for item in self._inventory:
                 if item.get_name() == new_item.get_name():
+                    # Add existing use count to new item use count
                     new_item.adj_use_count(item.get_use_count())
                     self._inventory.remove(item)
 
@@ -141,9 +123,9 @@ class Player:
         if item is not None:
             self.add_item(item)
             self.location.remove_item()
-            print("You picked up the " + item.get_name() + '.')
+            self.print_prompt("You picked up the " + item.get_name() + '.')
         else:
-            print("There is nothing here to take.")
+            self.print_prompt("There is nothing here to take.")
 
     def use(self, item_str):
         """Use the specified consumable item."""
@@ -154,7 +136,7 @@ class Player:
 
                 # Check if the item is a consumable.
                 if item.get_type() != "CONSUMABLE":
-                    print("You can't use that.")
+                    self.print_prompt("You can't use that.")
 
                 else:
                     # Adjust the player's health and item's use count.
@@ -170,10 +152,10 @@ class Player:
                     if not item.usable():
                         self._inventory.remove(item)
 
-                    print("You used " + item.get_name() + ".")
+                    self.print_prompt("You used " + item.get_name() + ".")
                     return
 
-        print("You don't have that.")
+        self.print_prompt("You don't have that.")
 
     def hunt(self):
         """Hunt the animal in the current location with the equipped weapon."""
@@ -181,39 +163,40 @@ class Player:
         animal = self.location.get_animal()
 
         if animal is None:
-            print("There is nothing here to hunt.")
+            self.print_prompt("There is nothing here to hunt.")
             return
 
         if weapon is None:
-            print("You must equip a weapon to hunt.")
+            self.print_prompt("You must equip a weapon to hunt.")
             return
 
-        # Reduce the animal's health by an amount
-        # in the equipped weapon's damage range
+        # Reduce the animal's health by an amount in equipped weapon's dmg range
         dmg = int(weapon.rand_dmg())
         animal.adj_health(dmg)
-        print("You attack the " + animal.get_name() + " with your " +
-              weapon.get_name() + ".")
+        hunt_string = "You attack the " + animal.get_name() + " with your " + \
+                      weapon.get_name() + ".\n"
 
-        # Check if animal has health remaining. If not, give player the reward,
+        # If animal has no health remaining, give player the reward,
         # print success message, and remove animal from room.
         if animal.get_health() <= 0:
             reward = animal.get_hunt_reward()
             self.add_item(reward)
-            print("You killed the " + animal.get_name() + " and got " +
-                  reward.get_name() + ".")
+            hunt_string += "You killed the " + animal.get_name() + \
+                           " and got " + reward.get_name() + "."
             self.location.remove_animal()
 
         # If animal still has health, print message notifying player.
         else:
-            print("You hurt the " + animal.get_name() +
-                  ", but it's still alive.")
+            hunt_string += "You hurt the " + animal.get_name() + \
+                           ", but it's still alive.\n"
 
-            # Check if animal injures player. If so, reduce player's health by
+            # If animal injures player, reduce player's health by
             # animal's damage and print message notifying player.
             if random() < animal.get_injure_chance():
                 self._health -= animal.get_damage()
-                print("You were hurt by the " + animal.get_name())
+                hunt_string += "You were hurt by the " + animal.get_name()
+
+        self.print_prompt(hunt_string)
 
     def talk(self):
         """
@@ -221,21 +204,21 @@ class Player:
         """
         character = self.location.get_character()
         if character is not None:
-            print("The " + character.get_name() + " greets you:")
-            print(self.location.get_character().get_dialogue())
+            self.print_prompt("The " + character.get_name() + " greets you:\n" +
+                              self.location.get_character().get_dialogue())
 
         else:
-            print("There is no one here to talk to.")
+            self.print_prompt("There is no one here to talk to.")
 
     def trade(self):
         """
         Trade with the Character in the Room in which the Player is located.
         """
         character = self.location.get_character()
-        item_wanted = character.get_item_wanted()
-        item_offered = character.get_item_offered()
 
         if character is not None:
+            item_wanted = character.get_item_wanted()
+            item_offered = character.get_item_offered()
             if not character.is_trade_complete():
 
                 # Check if the player has the item_wanted.
@@ -252,45 +235,47 @@ class Player:
                             self._inventory.remove(item1)
 
                         character.set_trade_complete()
-                        print("You hand the " + character.get_name() + " the " +
-                              item_wanted.get_name() + " and they give you a " +
-                              item_offered.get_name() + " in return.")
-                        print("\"Thanks for the trade.\"")
+                        self.print_prompt("You hand the " +
+                                          character.get_name() + " the " +
+                                          item_wanted.get_name() +
+                                          " and they give you a " +
+                                          item_offered.get_name() +
+                                          " in return.\n\"Thanks for the " +
+                                          "trade.\"")
                         return
 
-                print("You don't have the correct item to trade.")
+                self.print_prompt("You don't have the correct item to trade.")
 
             else:
-                print("\"Sorry, I have nothing left to trade.\"")
+                self.print_prompt("\"Sorry, I have nothing left to trade.\"")
 
         else:
-            print("There is no one here to trade with.")
+            self.print_prompt("There is no one here to trade with.")
 
     def display_inventory(self):
-        print("Equipped Weapon:\n-", self._weapon, "\n\nInventory:")
+        inventory_string = "Equipped Weapon:\n- " + str(self._weapon) + \
+                           "\n\nInventory:\n"
         if len(self._inventory) == 0:
-            print("Your inventory is empty.")
+            inventory_string += "Your inventory is empty."
         else:
             for item in self._inventory:
-                print("-", item)
+                inventory_string += "- " + str(item) + "\n"
+        self.print_prompt(inventory_string)
 
     def display_map(self, level):
         start_large_map_IO(level, self.location)
-        print("You look at your map.")
+        self.print_prompt("You look at your map.")
 
     def display_status(self):
-        print("Health: " + str(self._health) + "/100")
+        self.print_prompt("Health: " + str(self._health) + "/100")
 
-    # set functions
     def adj_health(self, amount):
-        """Adjusts the player's health by the given amount."""
         self._health += amount
 
     def equip(self, weapon_str):
         """
         Exchange the equipped weapon for the specified weapon in the inventory.
         :param weapon_str: user input string from get_player_input
-        :return:
         """
         weapon = None
 
@@ -300,7 +285,7 @@ class Player:
 
                 # Check that the item is a weapon.
                 if item.get_type() != "WEAPON":
-                    print("You can't equip that.")
+                    self.print_prompt("You can't equip that.")
                     return
 
                 weapon = item
@@ -315,9 +300,9 @@ class Player:
             self.display_inventory()
 
         else:
-            print("You don't have a " + weapon_str + " in your inventory.")
+            self.print_prompt("You don't have a " + weapon_str +
+                              " in your inventory.")
 
-    # get functions
     def get_health(self):
         return self._health
 
@@ -332,18 +317,13 @@ class Player:
 
     def get_user_input(self, level, text):
 
-        # Get input. Prompt is placeholder.
         curr_input = text
         words = []
         curr_word = ""
 
         for letter in curr_input.lower():
-
-            # Concat non-space characters into words
             if letter != ' ':
                 curr_word += letter
-
-            # Add words separated by spaces to words list
             else:
                 words.append(curr_word)
                 curr_word = ""
@@ -353,127 +333,124 @@ class Player:
         # Call methods based on user input.
         if words[0] == "move":
             if len(words) == 1:
-                print("You must specify a valid direction to move.")
+                self.print_prompt("You must specify a valid direction to move.")
             else:
-                self.move(words[1])  # To be updated based on player class
+                self.move(words[1])
 
         elif words[0] == "look":
             if len(words) == 1:
-                print("You must specify a valid direction to look.")
+                self.print_prompt("You must specify a valid direction to look.")
             else:
-                self.look(words[1])  # To be updated based on player class
+                self.look(words[1])
 
         elif words[0] == "take":
-            self.take()  # To be updated based on player class
+            self.take()
 
         elif words[0] == "use":
 
             if len(words) == 1:
-                print("You must specify a valid item to use.")
+                self.print_prompt("You must specify a valid item to use.")
 
             # Use item.
             else:
-                self.use(words[1])  # To be updated based on player class
+                self.use(words[1])
 
         elif words[0] == "hunt":
-            self.hunt()  # To be updated based on player class
+            self.hunt()
 
         elif words[0] == "talk":
-            self.talk()  # To be updated based on player class
+            self.talk()
 
         elif words[0] == "trade":
             self.trade()
 
         elif words[0] == "inventory":
-            self.display_inventory()  # To be updated based on player class
+            self.display_inventory()
 
         elif words[0] == "equip":
             if len(words) < 2:
-                print("You must specify an item to equip.")
+                self.print_prompt("You must specify an item to equip.")
             else:
                 self.equip(words[1].upper())
 
         elif words[0] == "map":
-            self.display_map(level)  # To be updated based on player class
+            self.display_map(level)
 
         elif words[0] == "status":
-            self.display_status()  # To be updated based on player class
+            self.display_status()
 
         elif words[0] == "here":
-            self.here()  # To be updated based on player class
+            self.here()
 
         # Display help information about commands
         elif words[0] == "help":
 
-            # Display command list
             if len(words) == 1:
-                print("Commands: move, look, take, use, hunt, talk, trade, " +
-                      "inventory, map, status, here, help")
-                print("Items, Characters, and NPCs that can be interacted with"
-                      + " are displayed in ALL CAPS.")
+                self.print_prompt("Commands: move, look, take, use, hunt, " +
+                                  "talk, trade, inventory, \nmap, status, " +
+                                  "here, help\nItems, Characters, and NPCs " +
+                                  "that can be interacted with are " +
+                                  "\ndisplayed in ALL CAPS.")
 
             elif words[1] == "move":
-                print("Usage: move <direction>")
-                print("Move to the location in the specified direction.")
+                self.print_prompt("Usage: move <direction>\nMove to the " +
+                                  "location in the specified direction.")
 
             elif words[1] == "look":
-                print("Usage: look <direction>")
-                print("Look in the specified direction.")
+                self.print_prompt("Usage: look <direction>\nLook in the " +
+                                  "specified direction.")
 
             elif words[1] == "take":
-                print("Usage: take")
-                print("Take the item in the current location.")
+                self.print_prompt("Usage: take\nTake the item in the current " +
+                                  "location.")
 
             elif words[1] == "use":
-                print("Usage: use <item>")
-                print("Use the specified consumable item.")
+                self.print_prompt("Usage: use <item>\nUse the specified " +
+                                  "consumable item.")
 
             elif words[1] == "hunt":
-                print("Usage: hunt")
-                print("Hunt the Animal in the current" +
-                      "location with the equipped weapon.")
+                self.print_prompt("Usage: hunt\nHunt the Animal in the " +
+                                  "current location with the equipped weapon.")
 
             elif words[1] == "talk":
-                print("Usage: talk")
-                print("Talk to the Character in the current location.")
+                self.print_prompt("Usage: talk\nTalk to the Character in the" +
+                                  " current location.")
 
             elif words[1] == "trade":
-                print("Usage: trade")
-                print("Trade with the Character in the current location.")
+                self.print_prompt("Usage: trade\nTrade with the Character in " +
+                                  "the current location.")
 
             elif words[1] == "inventory":
-                print("Usage: inventory")
-                print("Display the player's equipped weapon and inventory.")
+                self.print_prompt("Usage: inventory\nDisplay the player's " +
+                                  "equipped weapon and inventory.")
 
             elif words[1] == "map":
-                print("Usage: map")
-                print("Display the rooms the player has visited.")
+                self.print_prompt("Usage: map\nDisplay the rooms the player " +
+                                  "has visited.")
 
             elif words[1] == "status":
-                print("Usage: status")
-                print("Display the player's status.")
+                self.print_prompt("Usage: status\nDisplay the player's status.")
 
             elif words[1] == "here":
-                print("Usage: here")
-                print("Display the description of current location.")
+                self.print_prompt("Usage: here\nDisplay the description of " +
+                                  "current location.")
 
             elif words[1] == "equip":
-                print("Usage: equip <weapon name>")
-                print("Equip the specified weapon from the inventory.")
+                self.print_prompt("Usage: equip <weapon name>\nEquip the " +
+                                  "specified weapon from the inventory.")
 
             elif words[1] == "help":
-                print("Usage: help OR help <command>")
-                print("Display command help information.")
+                self.print_prompt("Usage: help OR help <command>\nDisplay " +
+                                  "command help information.")
 
             else:
-                print("Commands: move, look, take, use, hunt, talk, trade, " +
-                      "inventory, map, status, here, help")
-                print("Items, Characters, and NPCs that can be interacted with"
-                      + " are displayed in ALL CAPS.")
+                self.print_prompt("Commands: move, look, take, use, hunt, " +
+                                  "talk, trade, inventory, map, status, here," +
+                                  " help\nItems, Characters, and NPCs that " +
+                                  "can be interacted with are displayed in " +
+                                  "ALL CAPS.")
 
         else:
-            print(
-                "You didn't enter a valid command." +
+            self.print_prompt(
+                "You didn't enter a valid command.\n" +
                 "Type \"help\" for a list of commands.")
-
-        print("**************************************************")
