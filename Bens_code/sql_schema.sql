@@ -7,6 +7,16 @@ CREATE TABLE cs361_condreab.User
   CONSTRAINT user_info UNIQUE(username, email)  
 );
 
+-- create player table
+
+-- create rooms table
+
+-- create character table
+
+-- create animal table
+
+-- create item table
+
 -- delete table
 DROP TABLE cs361_condreab.User;
 
@@ -42,6 +52,19 @@ SELECT 1
 ELSE
 SELECT 0
 
+-- test
 SELECT COUNT(*)
 FROM cs361_condreab.User
 WHERE username = 'condreab'
+
+-- get rooms with Username and gameID
+
+-- get player with username and gameID
+
+-- save player with username and gameID
+
+-- save rooms with username and gameID
+
+-- delete game data with gameID
+
+

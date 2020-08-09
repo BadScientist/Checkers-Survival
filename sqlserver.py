@@ -187,19 +187,19 @@ class SqlGame:
         self._database = database
         self._cur = cursor
 
-    def get_saves(self, username):
-        # return a list of games saved, sorted by most recent (date)
+    # def get_saves(self, username):
+    #     # return a list of games saved, sorted by most recent (date)
     
-    def save_game(self, username, player, rooms):
-        # saves the game state
+    # def save_game(self, username, player, rooms):
+    #     # saves the game state
 
-    def get_game(self, username, gameID):
-        # return the game state as a list
+    # def get_game(self, username, gameID):
+    #     # return the game state as a list
 
-        # 1. Get player object, append to dictionary
-        # 2. Get room objects, append to dictionary
+    #     # 1. Get player object, append to dictionary
+    #     # 2. Get room objects, append to dictionary
 
-    def delete_game(self, username, gameID):
+    # def delete_game(self, username, gameID):
         
         
         """
