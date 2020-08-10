@@ -1,12 +1,9 @@
-from random import *
 from NPCs import *
-import tkinter as tk
-from mapGUI import *
 from events import gen_event
 
 # TODO: Room descriptions (short description) needs the landscape description
 
-#select from random list of landscapes
+# select from random list of landscapes
 
 
 class Room: 
@@ -145,6 +142,9 @@ class Room:
 
     def get_event(self):
         return self.event
+
+    def remove_event(self):
+        self.event = None
     
     def get_adjacent_room(self, direction):
         # pass direction eg 'N' ie North, and it returns the room N of self. If

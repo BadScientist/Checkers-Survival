@@ -137,8 +137,6 @@ class Consumable(Item):
     def get_health_gein(self):
         return self._health_gain
 
-    # EDIT: this method should probably pass in a unit argument to change it
-    # def use_item(self, unit):
     def use_item(self):
         """uses the item, decrementing the use count"""
         self._use_count -= 1
@@ -244,14 +242,3 @@ def gen_item(level_num):
 
     else:
         return None
-
-
-# Test item generation.
-#
-# for i in range(0, 10):
-#     item = gen_item(5)
-#     if item is not None:
-#         item_name = item.get_name()
-#     else:
-#         item_name = "None"
-#     print(item_name)

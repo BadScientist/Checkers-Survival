@@ -1,15 +1,8 @@
-import time
-from random import *
-from item import *
-from room import *
 from player import *
-from copy import deepcopy
-import mapGUI
 from tkinter import *
-from PIL import ImageTk, Image
+from mapGUI import start_mini_map_IO
 import tkinter.font as tkFont
-from PIL import Image, ImageTk
-import os, math
+import math
 
 '''
 Changes:
@@ -479,8 +472,8 @@ def prompt_move_nxt_level():
     #Returns either True/False
     response = Tk(className=" Progression")
     response.config(bg='#3b444b')
-    title = tk.Label(response, text='Advance to the next level?', pady=30,
-                     font=("Courier",12), fg='white', bg='#3b444b')
+    title = Label(response, text='Advance to the next level?', pady=30,
+                  font=("Courier",12), fg='white', bg='#3b444b')
     Yes = Button(response, text="Yes", padx=30, pady=5,
                  command=combine_funcs(transition_new_level,response.destroy,
                                        midright.destroy, newMiniMap),
