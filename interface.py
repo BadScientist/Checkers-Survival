@@ -343,6 +343,12 @@ c2.pack()
 
 #############################################################################
 ###GAME INTERFACE###
+def combine_funcs(*funcs):
+    def combined_func(*args, **kwargs):
+        for f in funcs:
+            f(*args, **kwargs)
+    return combined_func    
+
 #changes the color of the score
 def healthcolor():
     score = healthScore()
@@ -461,29 +467,22 @@ def transition_new_level():
         cur_level = new_level
         player.set_start_position(identify_start_room(cur_level))
 
-def combine_funcs(*funcs):
-    def combined_func(*args, **kwargs):
-        for f in funcs:
-            f(*args, **kwargs)
-    return combined_func    
-
 #prompt user whether they want to move to the next level
 def prompt_move_nxt_level():
     #Returns either True/False
     response = Tk(className=" Progression")
     response.config(bg='#3b444b')
-    response.geometry("450x200")
     title = Label(response, text='Advance to the next level?', pady=30,
-                     font=("Courier",12), fg='white', bg='#3b444b')
+                  font=("Courier",12), fg='white', bg='#3b444b')
     Yes = Button(response, text="Yes", padx=30, pady=5,
                  command=combine_funcs(transition_new_level,response.destroy,
                                        midright.destroy, newMiniMap),
                  bg='#cc5500', fg='white', highlightthickness=0)
     No = Button(response, text="No", padx=30, pady=5, command=response.destroy,
                 bg='#cc5500', fg='white', highlightthickness=0)
-    title.grid(row=0, column=1)
+    title.grid(row=0, columnspan=2)
     Yes.grid(row=1, column=0)
-    No.grid(row=1, column=2)
+    No.grid(row=1, column=1)
     
 #GAME SETTINGS
 
