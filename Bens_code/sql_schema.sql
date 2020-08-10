@@ -171,12 +171,12 @@ CREATE TABLE cs361_condreab.Animal
 --   FOREIGN KEY (room_ID_2) REFERENCES cs361_condreab.Room(room_ID)
 -- );
 
-CREATE TRIGGER cs361_condreab.trgAfterUpdate ON cs361_condreab.Game
-AFTER INSERT, UPDATE 
-AS
-  UPDATE f set LastUpdate=GETDATE() 
-  FROM 
-  cs361_condreab.Game AS f 
-  INNER JOIN inserted 
-  AS i 
-  ON f.game_save_date = i.game_save_date;
+CREATE TRIGGER `GameSaveInsert` BEFORE INSERT ON `Game`
+ FOR EACH ROW BEGIN
+SET NEW.game_save_date = NOW();
+END
+
+CREATE TRIGGER `GameSaveUpdate` BEFORE UPDATE ON `Game`
+ FOR EACH ROW BEGIN
+SET NEW.game_save_date = NOW();
+END

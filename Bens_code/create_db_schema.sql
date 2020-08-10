@@ -155,3 +155,12 @@ ALTER TABLE cs361_condreab.Animal
 ADD FOREIGN KEY (room_ID) REFERENCES cs361_condreab.Room(room_ID);
 
 
+CREATE TRIGGER `GameSaveInsert` BEFORE INSERT ON `Game`
+ FOR EACH ROW BEGIN
+SET NEW.game_save_date = NOW();
+END
+
+CREATE TRIGGER `GameSaveUpdate` BEFORE UPDATE ON `Game`
+ FOR EACH ROW BEGIN
+SET NEW.game_save_date = NOW();
+END
