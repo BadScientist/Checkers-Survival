@@ -12,11 +12,22 @@ CREATE TABLE cs361_condreab.Game
   game_ID INT NOT NULL UNIQUE AUTO_INCREMENT,
   game_start_date DATETIME NOT NULL,
   game_save_date DATETIME NOT NULL,
-  player_ID INT NOT NULL,
   username VARCHAR(25) NOT NULL,
   PRIMARY KEY (game_ID)
---   FOREIGN KEY (player_ID) REFERENCES cs361_condreab.Player(player_ID),
 --   FOREIGN KEY (username) REFERENCES cs361_condreab.User(username)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE cs361_condreab.Player
+(
+  player_ID INT NOT NULL UNIQUE AUTO_INCREMENT,
+  game_ID INT NOT NULL,
+  health INT NOT NULL,
+  weapon INT NOT NULL,
+  room_ID INT NOT NULL,
+  PRIMARY KEY (player_ID)
+--   FOREIGN KEY (game_ID) REFERENCES cs361_condreab.Game(game_ID),
+--   FOREIGN KEY (weapon) REFERENCES cs361_condreab.Item(item_ID)
+--   FOREIGN KEY (room_ID) REFERENCES cs361_condreab.Room(room_ID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE cs361_condreab.Room
@@ -38,17 +49,6 @@ CREATE TABLE cs361_condreab.Room
 --   FOREIGN KEY (east_room) REFERENCES cs361_condreab.Room(room_ID)
 --   FOREIGN KEY (south_room) REFERENCES cs361_condreab.Room(room_ID)
 --   FOREIGN KEY (west_room) REFERENCES cs361_condreab.Room(room_ID)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-CREATE TABLE cs361_condreab.Player
-(
-  player_ID INT NOT NULL UNIQUE AUTO_INCREMENT,
-  health INT NOT NULL,
-  weapon INT NOT NULL,
-  room_ID INT NOT NULL,
-  PRIMARY KEY (player_ID)
---   FOREIGN KEY (weapon) REFERENCES cs361_condreab.Item(item_ID)
---   FOREIGN KEY (room_ID) REFERENCES cs361_condreab.Room(room_ID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE cs361_condreab.Item
@@ -108,14 +108,16 @@ CREATE TABLE cs361_condreab.Animal
   injure_chance FLOAT NOT NULL,
   damage INT NOT NULL,
   room_ID INT NOT NULL,
+  item_ID INT NOT NULL,
   PRIMARY KEY (animal_ID)
 --   FOREIGN KEY (room_ID) REFERENCES cs361_condreab.Room(room_ID)
+--   FOREIGN KEY (item_ID) REFEERENCES cs361_condreab.Item(item_ID)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- Foreign keys
 ALTER TABLE cs361_condreab.Game
-ADD FOREIGN KEY (player_ID) REFERENCES cs361_condreab.Player(player_ID);
-ALTER TABLE cs361_condreab.Game
+-- ADD FOREIGN KEY (player_ID) REFERENCES cs361_condreab.Player(player_ID);
+-- ALTER TABLE cs361_condreab.Game
 ADD FOREIGN KEY (username) REFERENCES cs361_condreab.User(username);
 
 ALTER TABLE cs361_condreab.Room
@@ -130,9 +132,12 @@ ALTER TABLE cs361_condreab.Room
 ADD FOREIGN KEY (west_room) REFERENCES cs361_condreab.Room(room_ID);
 
 ALTER TABLE cs361_condreab.Player
+ADD FOREIGN KEY (game_ID) REFERENCES cs361_condreab.Game(game_ID);
+ALTER TABLE cs361_condreab.Player
 ADD FOREIGN KEY (weapon) REFERENCES cs361_condreab.Item(item_ID);
 ALTER TABLE cs361_condreab.Player
 ADD FOREIGN KEY (room_ID) REFERENCES cs361_condreab.Room(room_ID);
+
 
 ALTER TABLE cs361_condreab.Item
 ADD FOREIGN KEY (player_ID) REFERENCES cs361_condreab.Player(player_ID);
@@ -153,14 +158,17 @@ ADD FOREIGN KEY (want_item_ID) REFERENCES cs361_condreab.Item(item_ID);
 
 ALTER TABLE cs361_condreab.Animal
 ADD FOREIGN KEY (room_ID) REFERENCES cs361_condreab.Room(room_ID);
+ALTER TABLE cs361_condreab.Animal
+ADD FOREIGN KEY (item_ID) REFERENCES cs361_condreab.Item(item_ID);
 
+-- add these triggers manually 
 
-CREATE TRIGGER `GameSaveInsert` BEFORE INSERT ON `Game`
- FOR EACH ROW BEGIN
-SET NEW.game_save_date = NOW();
-END
+-- CREATE TRIGGER `GameSaveInsert` BEFORE INSERT ON `Game`
+-- FOR EACH ROW BEGIN
+-- SET NEW.game_save_date = NOW();
+-- END;
 
-CREATE TRIGGER `GameSaveUpdate` BEFORE UPDATE ON `Game`
- FOR EACH ROW BEGIN
-SET NEW.game_save_date = NOW();
-END
+-- CREATE TRIGGER `GameSaveUpdate` BEFORE UPDATE ON `Game`
+-- FOR EACH ROW BEGIN
+-- SET NEW.game_save_date = NOW();
+-- END;
