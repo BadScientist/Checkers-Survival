@@ -1,41 +1,13 @@
+-- USER
+
 CREATE TABLE cs361_condreab.User
 (
-  username varchar(25) NOT NULL UNIQUE,
-  email varchar(25) NOT NULL UNIQUE,
-  credentials varchar(64) NOT NULL,
+  username VARCHAR(25) NOT NULL UNIQUE,
+  email VARCHAR(25) NOT NULL UNIQUE,
+  credentials VARCHAR(64) NOT NULL,
   PRIMARY KEY (username),
-  CONSTRAINT user_info UNIQUE(username, email)  
+  CONSTRAINT user_info UNIQUE(username, email)
 );
--- create game table
-CREATE TABLE cs361_condreab.Game
-(
-  gameID INT NOT NULL UNIQUE,
-  startDate DATETIME,
-  saveDate DATETIME,
-  username varchar(25),
-  PRIMARY KEY (gameID),
-  FOREIGN KEY (username) REFERENCES User(username)
-);
-
--- create player table
-CREATE TABLE cs361_condreab.Player
-(
-  health INT NOT NULL,
-  weapon INT,
-  roomID INT,
-  itemID INT,
-  gameID INT,
-  FOREIGN KEY (weapon) REFERENCES Item(ItemID),
-  
-);
-
--- create rooms table
-
--- create character table
-
--- create animal table
-
--- create item table
 
 -- delete table
 DROP TABLE cs361_condreab.User;
@@ -77,128 +49,117 @@ SELECT COUNT(*)
 FROM cs361_condreab.User
 WHERE username = 'condreab'
 
--- get rooms with username and gameID
-
--- get player with username and gameID
-
--- save player with username and gameID
-
--- save rooms with username and gameID
-
--- delete game data with gameID
-
-
-CREATE TABLE User
+-- GAME
+CREATE TABLE cs361_condreab.Game
 (
-  username VARCHAR(25) NOT NULL UNIQUE,
-  email VARCHAR(25) NOT NULL UNIQUE,
-  credentials VARCHAR(64) NOT NULL,
-  PRIMARY KEY (username),
-  CONSTRAINT user_info UNIQUE(username, email)
-);
-
-CREATE TABLE Game
-(
-  game_ID INT NOT NULL,
-  start_date DATETIME NOT NULL,
-  save_date DATETIME NOT NULL,
+  game_ID INT NOT NULL UNIQUE,
+  game_start_date DATETIME NOT NULL,
+  game_save_date DATETIME NOT NULL,
   player_ID INT NOT NULL,
   username VARCHAR(25) NOT NULL,
   PRIMARY KEY (game_ID),
-  FOREIGN KEY (player_ID) REFERENCES Player(player_ID),
-  FOREIGN KEY (username) REFERENCES User(username)
+  FOREIGN KEY (player_ID) REFERENCES cs361_condreab.Player(player_ID),
+  FOREIGN KEY (username) REFERENCES cs361_condreab.User(username)
 );
 
-CREATE TABLE Room
+CREATE TABLE cs361_condreab.Room
 (
-  room_ID INT NOT NULL,
+  room_ID INT NOT NULL UNIQUE,
   x_coord INT NOT NULL,
   y_coord INT NOT NULL,
   short_description TEXT NOT NULL,
   long_description TEXT NOT NULL,
   next_level BOOLEAN NOT NULL,
   game_ID INT NOT NULL,
+  north_room INT UNIQUE,
+  east_room INT UNIQUE,
+  south_room INT UNIQUE,
+  west_room INT UNIQUE,
   PRIMARY KEY (room_ID),
-  FOREIGN KEY (game_ID) REFERENCES Game(game_ID)
+  FOREIGN KEY (game_ID) REFERENCES cs361_condreab.Game(game_ID)
+  FOREIGN KEY (north_room) REFERENCES cs361_condreab.Room(room_ID)
+  FOREIGN KEY (east_room) REFERENCES cs361_condreab.Room(room_ID)
+  FOREIGN KEY (south_room) REFERENCES cs361_condreab.Room(room_ID)
+  FOREIGN KEY (west_room) REFERENCES cs361_condreab.Room(room_ID)
 );
 
-CREATE TABLE Player
+CREATE TABLE cs361_condreab.Player
 (
   health INT NOT NULL,
   weapon INT NOT NULL,
-  player_ID INT NOT NULL,
+  player_ID INT NOT NULL UNIQUE,
   room_ID INT NOT NULL,
   PRIMARY KEY (player_ID),
-  FOREIGN KEY (weapon) REFERENCES Item(item_ID)
-  FOREIGN KEY (room_ID) REFERENCES Room(room_ID)
+  FOREIGN KEY (weapon) REFERENCES cs361_condreab.Item(item_ID)
+  FOREIGN KEY (room_ID) REFERENCES cs361_condreab.Room(room_ID)
 );
 
-CREATE TABLE Item
+CREATE TABLE cs361_condreab.Item
 (
-  item_ID INT NOT NULL,
-  name VARCHAR(25) NOT NULL,
-  description TEXT NOT NULL,
-  type VARCHAR(25) NOT NULL,
+  item_ID INT NOT NULL UNIQUE,
+  item_name VARCHAR(25) NOT NULL,
+  item_description TEXT NOT NULL,
+  item_type VARCHAR(25) NOT NULL,
   dmg_low INT,
   dmg_high INT,
-  value INT,
+  item_value INT,
   health_gain INT,
   use_count INT,
   player_ID INT,
   room_ID INT,
   animal_ID INT,
   PRIMARY KEY (item_ID),
-  FOREIGN KEY (player_ID) REFERENCES Player(player_ID),
-  FOREIGN KEY (room_ID) REFERENCES Room(room_ID),
-  FOREIGN KEY (animal_ID) REFERENCES Animal(animal_ID)
+  FOREIGN KEY (player_ID) REFERENCES cs361_condreab.Player(player_ID),
+  FOREIGN KEY (room_ID) REFERENCES cs361_condreab.Room(room_ID),
+  FOREIGN KEY (animal_ID) REFERENCES cs361_condreab.Animal(animal_ID)
 );
 
-CREATE TABLE Event
+CREATE TABLE cs361_condreab.Event
 (
-  value INT NOT NULL,
-  description TEXT NOT NULL,
-  event_ID INT NOT NULL,
+  event_value INT NOT NULL,
+  event_description TEXT NOT NULL,
+  event_ID INT NOT NULL UNIQUE,
   number_of_choices INT NOT NULL,
-  name VARCHAR(25) NOT NULL,
+  event_name VARCHAR(25) NOT NULL,
   room_ID INT NOT NULL,
   PRIMARY KEY (event_ID),
-  FOREIGN KEY (room_ID) REFERENCES Room(room_ID)
+  FOREIGN KEY (room_ID) REFERENCES cs361_condreab.Room(room_ID)
 );
 
-CREATE TABLE Character
+CREATE TABLE cs361_condreab.Character
 (
-  character_ID INT NOT NULL,
-  name VARCHAR(25) NOT NULL,
-  description TEXT NOT NULL,
+  character_ID INT NOT NULL UNIQUE,
+  character_name VARCHAR(25) NOT NULL,
+  character_description TEXT NOT NULL,
   dialogue TEXT NOT NULL,
   trade_complete BOOLEAN NOT NULL,
   room_ID INT NOT NULL,
   offer_item_ID INT NOT NULL,
-  wanted_item_ID INT NOT NULL,
+  want_item_ID INT NOT NULL,
   PRIMARY KEY (character_ID),
-  FOREIGN KEY (room_ID) REFERENCES Room(room_ID),
-  FOREIGN KEY (offer_item_ID) REFERENCES Item(item_ID),
-  FOREIGN KEY (wanted_item_ID) REFERENCES Item(item_ID)
+  FOREIGN KEY (room_ID) REFERENCES cs361_condreab.Room(room_ID),
+  FOREIGN KEY (offer_item_ID) REFERENCES cs361_condreab.Item(item_ID),
+  FOREIGN KEY (wanted_item_ID) REFERENCES cs361_condreab.Item(item_ID)
 );
 
-CREATE TABLE Animal
+CREATE TABLE cs361_condreab.Animal
 (
-  animal_ID INT NOT NULL,
-  name VARCHAR(25) NOT NULL,
-  description TEXT NOT NULL,
+  animal_ID INT NOT NULL UNIQUE,
+  animal_name VARCHAR(25) NOT NULL,
+  animal_description TEXT NOT NULL,
   health INT NOT NULL,
   injure_chance FLOAT NOT NULL,
   damage INT NOT NULL,
   room_ID INT NOT NULL,
   PRIMARY KEY (animal_ID),
-  FOREIGN KEY (room_ID) REFERENCES Room(room_ID)
+  FOREIGN KEY (room_ID) REFERENCES cs361_condreab.Room(room_ID)
 );
 
-CREATE TABLE connected
-(
-  room_ID_1 INT NOT NULL,
-  room_ID_2 INT NOT NULL,
-  PRIMARY KEY (room_ID_1, room_ID_2),
-  FOREIGN KEY (room_ID_1) REFERENCES Room(room_ID),
-  FOREIGN KEY (room_ID_2) REFERENCES Room(room_ID)
-);
+-- CREATE TABLE cs361_condreab.connected
+-- (
+--   room_ID_1 INT NOT NULL,
+--   room_ID_2 INT NOT NULL,
+--   PRIMARY KEY (room_ID_1, room_ID_2),
+--   FOREIGN KEY (room_ID_1) REFERENCES cs361_condreab.Room(room_ID),
+--   FOREIGN KEY (room_ID_2) REFERENCES cs361_condreab.Room(room_ID)
+-- );

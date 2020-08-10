@@ -1,8 +1,9 @@
 # new maria db access
 # https://mariadb.com/resources/blog/how-to-connect-python-programs-to-mariadb/
-import mariadb
 import sys
+import mariadb
 import sqlhash
+import datetime
 
 # # Connect to MariaDB Platform
 # try:
@@ -188,20 +189,27 @@ class SqlGame:
     def __init__(self, database, cursor):
         self._database = database
         self._cur = cursor
-
-    # def get_saves(self, username):
-    #     # return a list of games saved, sorted by most recent (date)
     
-    # def save_game(self, username, player, rooms):
-    #     # saves the game state
 
-    # def get_game(self, username, gameID):
-    #     # return the game state as a list
 
-    #     # 1. Get player object, append to dictionary
-    #     # 2. Get room objects, append to dictionary
+    def get_saves(self, username, start_time):
+        # return a list of games saved, sorted by most recent (date)
 
-    # def delete_game(self, username, gameID):
+    def overwrite_save_game(self, username, game_ID, player, rooms):
+        # saves the game state
+        save_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    
+    def new_save_game(self, username, player, rooms):
+        save_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    
+
+    def get_game(self, username, gameID):
+        # return the game state as a list
+
+        # 1. Get player object, append to dictionary
+        # 2. Get room objects, append to dictionary
+
+    def delete_game(self, username, gameID):
         
         
         """

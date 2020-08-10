@@ -1,7 +1,7 @@
 # new maria db access
 # https://mariadb.com/resources/blog/how-to-connect-python-programs-to-mariadb/
-import mariadb
 import sys
+import mariadb
 import sqlhash
 
 # # Connect to MariaDB Platform
