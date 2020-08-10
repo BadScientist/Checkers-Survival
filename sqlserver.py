@@ -41,9 +41,11 @@ class SqlServer:
         self.__port = 3306
         self.__database = "cs361_condreab"
         # self._hash = sqlHash.sqlHash()
+        self.__conn = None
+
         self.__connect()
 
-    def __connect(self):
+    def __connect(self):    
         try:
             self.__conn = mariadb.connect(
                 user = self.__user,
