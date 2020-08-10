@@ -6,8 +6,28 @@ CREATE TABLE cs361_condreab.User
   PRIMARY KEY (username),
   CONSTRAINT user_info UNIQUE(username, email)  
 );
+-- create game table
+CREATE TABLE cs361_condreab.Game
+(
+  gameID INT NOT NULL UNIQUE,
+  startDate DATETIME,
+  saveDate DATETIME,
+  username varchar(25),
+  PRIMARY KEY (gameID),
+  FOREIGN KEY (username) REFERENCES User(username)
+);
 
 -- create player table
+CREATE TABLE cs361_condreab.Player
+(
+  health INT NOT NULL,
+  weapon INT,
+  roomID INT,
+  itemID INT,
+  gameID INT,
+  FOREIGN KEY (weapon) REFERENCES Item(ItemID),
+  
+);
 
 -- create rooms table
 

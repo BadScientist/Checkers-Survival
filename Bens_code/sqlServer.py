@@ -73,7 +73,7 @@ class SqlAccount:
     def __init__(self, database, cursor, salt):
         self._database = database
         self._cur = cursor
-        self._hash = sqlHash(salt)
+        self._hash = sqlhash.SqlHash(salt)
 
     def check_username_exists(self, username):
         """
@@ -187,29 +187,29 @@ class SqlGame:
         self._database = database
         self._cur = cursor
 
-    def get_saves(self, username):
-        # return a list of games saved, sorted by most recent (date)
+    # def get_saves(self, username):
+    #     # return a list of games saved, sorted by most recent (date)
     
-    def save_game(self, username, player, rooms):
-        # saves the game state
+    # def save_game(self, username, player, rooms):
+    #     # saves the game state
 
-    def get_game(self, username, gameID):
-        # return the game state as a list
+    # def get_game(self, username, gameID):
+    #     # return the game state as a list
 
-        # 1. Get player object, append to dictionary
-        # 2. Get room objects, append to dictionary
+    #     # 1. Get player object, append to dictionary
+    #     # 2. Get room objects, append to dictionary
 
-    def delete_game(self, username, gameID):
+    # def delete_game(self, username, gameID):
         
         
         """
             {
                 player: {
                     health: Int
-                    location: [Int, Int]
+                    location: Room
                     weapon: obj
                     inventory: [Item]
-                    canvas: ???
+                    canvas: Canvas
                 }
                 rooms: [
                     Room: {
@@ -229,7 +229,7 @@ class SqlGame:
                             item_wanted: Item
                             trade_complete: Bool
                         }
-                        animal: Animal {
+                        animal: Animal {    
                             name: String
                             description: String
                             health: Int
@@ -237,7 +237,9 @@ class SqlGame:
                             damage: Int
                             hunt_reward: Item
                         }
-                        item: Item
+                        item: Item {name, str_desc, item_type 
+                            weapon: {dmg_low dmg_high}}
+                            consumable: {value, health_gain, use_count}
                         next_level: Bool
                         event: Event
                     }

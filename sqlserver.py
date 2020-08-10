@@ -73,7 +73,7 @@ class SqlAccount:
     def __init__(self, database, cursor, salt):
         self._database = database
         self._cur = cursor
-        self._hash = sqlHash(salt)
+        self._hash = sqlhash.SqlHash(salt)
 
     def check_username_exists(self, username):
         """
@@ -206,10 +206,10 @@ class SqlGame:
             {
                 player: {
                     health: Int
-                    location: [Int, Int]
+                    location: Room
                     weapon: obj
                     inventory: [Item]
-                    canvas: ???
+                    canvas: Canvas
                 }
                 rooms: [
                     Room: {
@@ -229,7 +229,7 @@ class SqlGame:
                             item_wanted: Item
                             trade_complete: Bool
                         }
-                        animal: Animal {
+                        animal: Animal {    
                             name: String
                             description: String
                             health: Int
@@ -237,7 +237,9 @@ class SqlGame:
                             damage: Int
                             hunt_reward: Item
                         }
-                        item: Item
+                        item: Item {name, str_desc, item_type 
+                            weapon: {dmg_low dmg_high}}
+                            consumable: {value, health_gain, use_count}
                         next_level: Bool
                         event: Event
                     }
