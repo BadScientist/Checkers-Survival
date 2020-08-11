@@ -55,7 +55,7 @@ def cave_in():
 
 
 def creature_attack():
-    adj_values = [20, 0, 20]
+    adj_values = [-20, 0, -20]
     choice = event_to_UI('You hear a slight crunch behind you. You...\n\n' +
                          '1 - turn around slowly.\n2 - keep walking.\n' +
                          '3 - quickly pull out you weapon and turn around.')
@@ -70,7 +70,7 @@ def creature_attack():
 
 
 def poison_cloud():
-    adj_values = [10, 0, 20]
+    adj_values = [-10, 0, -20]
     choice = event_to_UI('You smell something strange. It keeps getting ' +
                          'stronger as you walk. You...\n\n1 - cover your ' +
                          'nose and mouth with your hand.\n2 - move to higher' +
@@ -90,7 +90,7 @@ def poison_cloud():
 
 
 def flood():
-    adj_values = [15, 15, 0]
+    adj_values = [-15, -15, 0]
     choice = event_to_UI('You hear a rumbling noise in the distance. The ' +
                          'sound keeps getting louder and louder. You...\n\n' +
                          '1 - turn toward the sound and wait.\n2 - dive ' +
@@ -112,7 +112,7 @@ def flood():
 
 
 def storm():
-    adj_values = [0, 20, 10]
+    adj_values = [0, -20, -10]
     choice = event_to_UI('Clouds begin to gather in the sky above you. As ' +
                          'it gets darker and darker, you decide to...\n\n1 ' +
                          '- find shelter.\n2 - move to higher ground.\n3 - ' +
