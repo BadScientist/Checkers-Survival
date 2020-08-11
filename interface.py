@@ -426,10 +426,13 @@ def newInventory():
     items = {}
     for item in player.get_inventory():
         item_name = item.get_name()
-        if item_name in items.keys():
-            items[item_name] += 1
+        if item.get_type() == 'CONSUMABLE':
+            items[item_name] = item.get_use_count()
         else:
-            items[item_name] = 1
+            if item_name in items.keys():
+                items[item_name] += 1
+            else:
+                items[item_name] = 1
     #print the inventory
     for key in items:
         inventory.insert(END, key + ': ' + str(items[key]) + '\n')
