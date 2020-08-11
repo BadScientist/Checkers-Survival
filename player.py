@@ -306,6 +306,9 @@ class Player:
     def get_health(self):
         return self._health
 
+    def get_inventory(self):
+        return self._inventory
+
     def get_weapon(self):
         return self._weapon
 
