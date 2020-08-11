@@ -355,7 +355,7 @@ def healthcolor():
     
     if score == 100:
         return "Green"
-    elif 90 > score > 40:
+    elif 90 > score & score > 40:
         return "Black"
     else:
         return "Red"
@@ -532,15 +532,61 @@ canvas1.create_window(300, 660, window=textbox)
 #top right health and day box
 topright = Canvas(canvas1, bg="#bbbbbb", width=290, height=50, highlightthickness=3, highlightbackground="black")
 
-topright.create_text(43, 27, text="Health ", font=font2, fill="black")
-topright.create_text(90, 27, text= healthScore(), font=font2, fill= healthcolor()) #this will be the changable variable for health also color changes for health
-topright.create_text(125, 27, text="/100", font=font2, fill="black")
+class Timer:
+    def __init__(self, parent):
+        # variable storing time
+        self.seconds = 00
+        self.minutes = 00
+        self.days = 1
+        # label displaying time
+        self.label = Label(parent, text="Day 1, 00:00", font="Courier 13 bold", width=14)
+        self.label.pack()
+        # start the timer
+        self.label.after(1000, self.refresh_label)
 
-topright.create_text(195, 27, text="Day ", font=font2, fill="black")
-topright.create_text(218, 27, text= specDay(), font=font2, fill= "black")
-topright.create_text(227, 27, text=",", font=font2, fill="black")
+    def refresh_label(self):
+        """ refresh the content of the label every second """
+        # increment the time
+        self.seconds += 1
+        # display the new time
+        if self.seconds > 59:
+            self.minutes += 1
+            self.seconds = 0
+        
+        if self.minutes >= 24:
+            self.days += 1
+            self.minutes = 0
+        
+        textsec = str(self.seconds).zfill(2)
+        textmin = str(self.minutes).zfill(2)
 
-topright.create_text(260, 27, text= clock(), font=font2, fill= "black")
+        finalText = "Day %d, %s:%s" % (self.days, textmin, textsec)
+        self.label.configure(text=finalText)
+        self.label.after(1000, self.refresh_label)
+
+class Health:
+    def __init__(self, parent):
+        self.health = 100
+        self.label = Label(parent, text = "Health %d/100" % (healthScore()), font="Courier 13 bold", width=15, fg= healthcolor())
+        self.label.pack()
+        self.label.after(1000, self.refresh_health)
+
+    def refresh_health(self):
+
+        finalText = "Health %d/100" % (healthScore())
+        self.label.configure(text=finalText, fg=healthcolor())
+        self.label.after(1000, self.refresh_health)
+
+
+
+healthscore = Canvas(topright, bg="#bbbbbb", width=100, height=50)
+userhealth = Health(healthscore)
+
+usertime = Canvas(topright, bg="#bbbbbb", width=100, height=50)
+timer = Timer(usertime)
+
+healthscore.pack(side="left")
+usertime.pack(side="right")
 
 
 topright.pack()
