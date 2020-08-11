@@ -1,15 +1,85 @@
 from NPCs import *
 from events import gen_event
 
-# TODO: Room descriptions (short description) needs the landscape description
+level_1_descriptions = [["an expanse of red grass.", "You are in a wide open " +
+                         "plain full of blood-red grass.\nDespite the " +
+                         "sinister look, it seems fairly safe and calm."],
+                        ["a lone tree.", "A single tree sits here in the " +
+                         "middle of the grassy plains.\nThe pink leaves " +
+                         "unsettlingly fold and unfold like tongues."],
+                        ["a shallow stream.", "A small stream calmly flows " +
+                         "through the plains. The water is\ncool and " +
+                         "refreshing."]]
+level_2_descriptions = [["a dark forest.", "You are in the middle of a dark " +
+                         "forest. Everywhere you look,\nthere are more trees," +
+                         " their branches twisted and their leaves\nall " +
+                         "manner of strange colors and shapes."],
+                        ["a small clearing.", "You've stepped out into an " +
+                         "open clearing in the forest.\nThe sun shines above " +
+                         "you, bringing some welcome warmth."],
+                        ["a forest pond.", "There is a pond here in the " +
+                         "middle of the forest. The dark\nwater is " +
+                         "unnervingly calm."]]
+level_3_descriptions = [["a rocky slope.", "You climb carefully up a steep " +
+                         "slope, littered with small,\nsharp rocks. Each " +
+                         "step sends a small avalanche of them " +
+                         "cascading\ntoward the valley below."],
+                        ["a narrow ledge.", "You make your way along a narrow" +
+                         " ledge, a sheer rock face on\none side, and a " +
+                         "precipitous drop on the other."],
+                        ["a snowy peak.", "You've reached the summit of one " +
+                         "of the towering mountains.\nThe air is thin and " +
+                         "glitters with tiny crystals of ice."]]
+level_4_descriptions = [["an ocean of sand.", "Massive black sand dunes " +
+                         "stretch out around you, almost as far\nas the eye " +
+                         "can see. The wind whistles over the tops of the " +
+                         "dunes."],
+                        ["a glittering oasis.", "At first, you are glad to " +
+                         "see that the oasis you saw was not a\nmirage. " +
+                         "However, upon seeing the water churning with yellow" +
+                         " worms, you wish it had been."],
+                        ["strange rock pillars.", "Many oddly shaped columns " +
+                         "of stone jut out from the sand here.\nSuddenly, " +
+                         "one of the columns vanishes beneath the sand. " +
+                         "You\ndecide it would be unwise to approach them " +
+                         "too closely."]]
+level_5_descriptions = [["a rocky coastline.", "You pick your way along the " +
+                         "shoreline. It's littered with rocks\nand boulders " +
+                         "of all shapes and sizes. The size of the waves\n" +
+                         "crashing on shore are equally varied and their " +
+                         "timing strangely\nerratic."],
+                        ["a wrecked vessel.", "A rusting hulk of metal rests " +
+                         "here on the shore. Its form is\nso eroded, you " +
+                         "can't tell whether it was once a spaceship or " +
+                         "a\nsea-faring vessel."],
+                        ["a swirling lagoon.", "You stand on the edge of a " +
+                         "lagoon. The water rushes violently\naround and " +
+                         "around the lagoon's center. You are careful to " +
+                         "avoid\nfalling in."]]
 
-# select from random list of landscapes
+room_desc_master_list = [level_1_descriptions,
+                         level_2_descriptions,
+                         level_3_descriptions,
+                         level_4_descriptions,
+                         level_5_descriptions]
 
 
-class Room: 
+def gen_room_desc(level_num):
+    """
+    Returns a list of strings in the form [short_description, long_description].
+    """
+    if level_num - 1 > len(room_desc_master_list):
+        index = 4
+    else:
+        index = level_num - 1
+    available_descriptions = room_desc_master_list[index]
+    desc_pair = available_descriptions[randrange(0, 3)]
+    return desc_pair
+
+
+class Room:
     
-    def __init__(self, level_num, long_desc='You are in Standard Room',
-                 shrt_desc='Standard'):
+    def __init__(self, level_num, desc_pair_list):
         """
         Creates a Room object that can be added to the level map.
         :param x: room's position (y axis), to prevent overlaps between rooms
@@ -29,8 +99,8 @@ class Room:
         """
         self.x = 0
         self.y = 0
-        self.long_desc = long_desc
-        self.shrt_desc = shrt_desc
+        self.long_desc = desc_pair_list[1]
+        self.shrt_desc = desc_pair_list[0]
         self.N = None
         self.S = None
         self.E = None
@@ -247,7 +317,7 @@ def gen_random_level(room_num, level_num):
     all_rooms = []
     avail_rooms = []  # has index of rooms with an available path
     for i in range(0, room_num):
-        all_rooms.append(Room(level_num))  # create the new room (target)
+        all_rooms.append(Room(level_num, gen_room_desc(level_num)))  # create the new room (target)
         avail_rooms.append(i)
         if i == 0:
             continue

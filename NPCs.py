@@ -171,7 +171,7 @@ animal_master_list = [
                   "\nconstantly watching you with one of its three eyes.",
                   10, 0.33, 5, create_meat(1)),
     create_animal("skevick",
-                  "You spot a slithering <n>. It blends in well with the " +
+                  "You spot a slithering <n>. It blends in well with the\n" +
                   "terrain.",
                   15, 0.50, 10, create_meat(1)),
     create_animal("boggu",

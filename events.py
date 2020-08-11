@@ -41,7 +41,7 @@ def result_to_UI(title_txt):
 
 
 def cave_in():
-    adj_values = [0, -10, 0]
+    adj_values = [0, 10, 0]
     choice = event_to_UI('The ground begins to shake beneath your feet. '
                          'Thinking quickly, you...\n\n1 - dive forward.\n' +
                          '2 - stand still.\n3 - roll backwards.')
@@ -51,11 +51,11 @@ def cave_in():
     else:
         result_to_UI("You move out of the way just before the ground " +
                      "caves in!\nYou continue on your way without injury.")
-    return adj_values[choice]
+    return adj_values[choice - 1]
 
 
 def creature_attack():
-    adj_values = [-20, 0, -20]
+    adj_values = [20, 0, 20]
     choice = event_to_UI('You hear a slight crunch behind you. You...\n\n' +
                          '1 - turn around slowly.\n2 - keep walking.\n' +
                          '3 - quickly pull out you weapon and turn around.')
@@ -66,11 +66,11 @@ def creature_attack():
     else:
         result_to_UI("You are pounced on by a huge jabbin!\nYou manage to " +
                      "fight it off, but not before it injures you.")
-    return adj_values[choice]
+    return adj_values[choice - 1]
 
 
 def poison_cloud():
-    adj_values = [-10, 0, -20]
+    adj_values = [10, 0, 20]
     choice = event_to_UI('You smell something strange. It keeps getting ' +
                          'stronger as you walk. You...\n\n1 - cover your ' +
                          'nose and mouth with your hand.\n2 - move to higher' +
@@ -86,11 +86,11 @@ def poison_cloud():
         result_to_UI("You hold your breath as long as you can, but " +
                      "eventually you have to breath.\nYou inhale a large " +
                      "amount of noxious gas!")
-    return adj_values[choice]
+    return adj_values[choice - 1]
 
 
 def flood():
-    adj_values = [-15, -15, 0]
+    adj_values = [15, 15, 0]
     choice = event_to_UI('You hear a rumbling noise in the distance. The ' +
                          'sound keeps getting louder and louder. You...\n\n' +
                          '1 - turn toward the sound and wait.\n2 - dive ' +
@@ -108,11 +108,11 @@ def flood():
         result_to_UI("You manage to make it to a hilltop just before a flash" +
                      " flood fills the low ground around you!\nOnce the " +
                      "water recedes, you continue on without injury.")
-    return adj_values[choice]
+    return adj_values[choice - 1]
 
 
 def storm():
-    adj_values = [0, -20, -10]
+    adj_values = [0, 20, 10]
     choice = event_to_UI('Clouds begin to gather in the sky above you. As ' +
                          'it gets darker and darker, you decide to...\n\n1 ' +
                          '- find shelter.\n2 - move to higher ground.\n3 - ' +
@@ -123,13 +123,13 @@ def storm():
                      "to pass before moving on unharmed.")
     elif choice == 2:
         result_to_UI("You make it to a hilltop just as a massive storm hits." +
-                     "\nBeing so high up only puts you in more danger as" +
+                     "\nBeing so high up only puts you in more danger as " +
                      "lightning strikes right next to you!\nYou aren't hit " +
                      "directly, but you are still injured by the blast.")
     else:
         result_to_UI("As you continue on, a massive storm hits!\nThe powerful" +
                      "winds batter you with debris, injuring you.")
-    return adj_values[choice]
+    return adj_values[choice - 1]
 
 
 event_master_list = [cave_in, creature_attack, poison_cloud, flood, storm]
