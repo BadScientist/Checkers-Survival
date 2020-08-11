@@ -18,8 +18,6 @@ How to Print to the UI from interface.py:
 '''
 
 #TODO: Keep refreshing and reprinting the:
-    #   1. Health
-    #   2. Time
     #   3. Inventory
 
 root = Tk()
@@ -352,7 +350,6 @@ def combine_funcs(*funcs):
 #changes the color of the score
 def healthcolor():
     score = healthScore()
-    
     if score == 100:
         return "Green"
     elif 90 > score & score > 40:
@@ -408,6 +405,8 @@ def searchDirection():
 
     midright.destroy()
     newMiniMap()
+    # botright.destroy()
+    newInventory()
 
 #this refreshes the mini map in the corner
 def newMiniMap():
@@ -417,11 +416,37 @@ def newMiniMap():
     midright.pack()
     canvas1.create_window(730, 230, window=midright)
 
+#this refreshes the inventory in GUI
+def newInventory():
+    botright = Canvas(canvas1, bg="#bbbbbb", width=290, height=295, highlightthickness=3, highlightbackground="black")
+    inventory = Text(botright, height=18, width=37, bg="#bbbbbb", highlightthickness=3, highlightbackground="black")
+    inventory.config(state=NORMAL)
+    
+    #get all the inventory items
+    items = {}
+    for item in player.get_inventory():
+        item_name = item.get_name()
+        if item_name in items.keys():
+            items[item_name] += 1
+        else:
+            items[item_name] = 1
+    #print the inventory
+    for key in items:
+        inventory.insert(END, key + ': ' + str(items[key]) + '\n')
+    inventory.insert(END, '\n\n(Enter "inventory" for inventory description)')
+    
+    inventory.config(state=DISABLED)
+    botright.pack()
+    inventory.pack()
+    canvas1.create_window(733, 533, window=botright)
+
 #Directly prints a prompt to the dialog box to the left
 def print_prompt(value):
     dialogleft = Canvas(canvas1, bg="#bbbbbb",width=550, height=600, highlightthickness=3, highlightbackground="black")
     prompt = Text(dialogleft, height=35, width=65, bg="#bbbbbb", highlightthickness=0)
+    prompt.config(state=NORMAL)
     prompt.insert(END, value)
+    prompt.config(state=DISABLED)
     dialogleft.pack()
     prompt.pack()
     canvas1.create_window(300, 325, window=dialogleft)
@@ -453,10 +478,9 @@ def transition_new_level():
     #FIXME: find a way to work without globals
     #TODO: way of destroying or quitting once game is over
     global cur_level, level_idx, player
-    level_idx+=1
     
-    if level_idx < len(levels):
-        new_level = levels[level_idx]
+    if level_idx+1 < len(levels):
+        new_level = levels[level_idx+1]
     else: #if all levels are complete
         new_level = None
     
@@ -464,8 +488,10 @@ def transition_new_level():
         print_prompt('All Levels Complete')
         #root.destroy()
     elif new_level != cur_level:
+        level_idx+=1
         cur_level = new_level
         player.set_start_position(identify_start_room(cur_level))
+        print_prompt('Entered Level ' + str(level_idx+1))
 
 #prompt user whether they want to move to the next level
 def prompt_move_nxt_level():
@@ -489,7 +515,7 @@ def prompt_move_nxt_level():
 ###Frames###
 f10 = Frame(root, bg='#3b444b')
 ###End Frames
-canvas1 = Canvas(f10, bg='#3b444b', width=900, height=700)
+canvas1 = Canvas(f10, bg='#3b444b', width=900, height=700, highlightthickness=0)
 
 level_size = [10, 12, 15, 18, 23]
 levels = [
@@ -588,7 +614,6 @@ timer = Timer(usertime)
 healthscore.pack(side="left")
 usertime.pack(side="right")
 
-
 topright.pack()
 canvas1.create_window(730, 50, window=topright)
 
@@ -601,18 +626,19 @@ midright.pack()
 canvas1.create_window(730, 230, window=midright)
 
 #inventory box bottom right
-botright = Canvas(canvas1, bg="#bbbbbb", width=290, height=295, highlightthickness=3, highlightbackground="black")
+# botright = Canvas(canvas1, bg="#bbbbbb", width=290, height=295, highlightthickness=3, highlightbackground="black")
 
-botright.create_text(60, 27, text="Health Pack", font=font2, fill="black")
-botright.create_text(27, 47, text="Meat", font=font2, fill="black")
-botright.create_text(75, 67, text="Hunting Knife ", font=font2, fill="black")
+# botright.create_text(60, 27, text="Health Pack", font=font2, fill="black")
+# botright.create_text(27, 47, text="Meat", font=font2, fill="black")
+# botright.create_text(75, 67, text="Hunting Knife ", font=font2, fill="black")
 
-botright.create_text(275, 27, text=hpNumber(), font=font2, fill="black")
-botright.create_text(275, 47, text=meatNumber(), font=font2, fill="black")
-botright.create_text(275, 67, text=hkNumber(), font=font2, fill="black")
+# botright.create_text(275, 27, text=hpNumber(), font=font2, fill="black")
+# botright.create_text(275, 47, text=meatNumber(), font=font2, fill="black")
+# botright.create_text(275, 67, text=hkNumber(), font=font2, fill="black")
 
-botright.pack()
-canvas1.create_window(730, 533, window=botright)
+# botright.pack()
+# canvas1.create_window(730, 533, window=botright)
+newInventory()
 
 canvas1.pack()
 
