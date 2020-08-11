@@ -10,6 +10,7 @@ class Player:
     def __init__(self, canvas):
         self._health = 100
         self.location = None
+        self._minutes_passed = 0
         self._weapon = create_knife()
         self._inventory = [create_medkit(1)]
         self.canvas = canvas  # the UI
@@ -64,6 +65,7 @@ class Player:
 
             # Check if player was killed by event.
             if not self.is_game_over():
+                self._minutes_passed += 240
                 self.here()
 
     def here(self):
@@ -107,12 +109,12 @@ class Player:
     
     def add_item(self, new_item):
         """Add the given item to the inventory."""
-        if new_item.get_type() == "CONSUMABLE":
-            for item in self._inventory:
-                if item.get_name() == new_item.get_name():
-                    # Add existing use count to new item use count
+        for item in self._inventory:
+            if item.get_name() == new_item.get_name():
+                # Add existing use count to new item use count
+                if new_item.get_type() == "CONSUMABLE":
                     new_item.adj_use_count(item.get_use_count())
-                    self._inventory.remove(item)
+                self._inventory.remove(item)
 
         # Add the new item to the inventory.
         self._inventory.append(new_item)
@@ -123,6 +125,7 @@ class Player:
         if item is not None:
             self.add_item(item)
             self.location.remove_item()
+            self._minutes_passed += 15
             self.print_prompt("You picked up the " + item.get_name() + '.')
         else:
             self.print_prompt("There is nothing here to take.")
@@ -153,6 +156,7 @@ class Player:
                         self._inventory.remove(item)
 
                     self.print_prompt("You used " + item.get_name() + ".")
+                    self._minutes_passed += 15
                     return
 
         self.print_prompt("You don't have that.")
@@ -196,6 +200,7 @@ class Player:
                 self._health -= animal.get_damage()
                 hunt_string += "You were hurt by the " + animal.get_name()
 
+        self._minutes_passed += 120
         self.print_prompt(hunt_string)
 
     def talk(self):
@@ -206,6 +211,7 @@ class Player:
         if character is not None:
             self.print_prompt("The " + character.get_name() + " greets you:\n" +
                               self.location.get_character().get_dialogue())
+            self._minutes_passed += 15
 
         else:
             self.print_prompt("There is no one here to talk to.")
@@ -242,6 +248,7 @@ class Player:
                                           item_offered.get_name() +
                                           " in return.\n\"Thanks for the " +
                                           "trade.\"")
+                        self._minutes_passed += 15
                         return
 
                 self.print_prompt("You don't have the correct item to trade.")
@@ -297,6 +304,7 @@ class Player:
             if self._weapon is not None:
                 self._inventory.append(self._weapon)
             self._weapon = weapon
+            self._minutes_passed += 15
             self.display_inventory()
 
         else:
@@ -314,6 +322,26 @@ class Player:
     
     def get_location(self):
         return self.location
+
+    def get_time(self):
+        """
+        Returns the time passed in game as a string in the form "Day D, HH:MM"
+        """
+        total_minutes = self._minutes_passed
+        clock_minutes = str(total_minutes % 60)
+        if len(clock_minutes) == 1:
+            clock_minutes = "0" + clock_minutes
+
+        total_hours = total_minutes // 60
+        clock_hours = str(total_hours % 24)
+        if len(clock_hours) == 1:
+            clock_hours = "0" + clock_hours
+
+        days = str((total_hours // 24) + 1)
+
+        date_time = "Day " + days + ", " + clock_hours + ":" + clock_minutes
+
+        return date_time
 
     def get_user_input(self, level, text):
 
