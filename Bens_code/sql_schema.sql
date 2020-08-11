@@ -52,7 +52,7 @@ WHERE username = 'condreab'
 -- GAME
 CREATE TABLE cs361_condreab.Game
 (
-  game_ID INT NOT NULL UNIQUE,
+  game_ID INT NOT NULL UNIQUE AUTO_INCREMENT,
   game_start_date DATETIME NOT NULL,
   game_save_date DATETIME NOT NULL,
   player_ID INT NOT NULL,
@@ -61,6 +61,13 @@ CREATE TABLE cs361_condreab.Game
   FOREIGN KEY (player_ID) REFERENCES cs361_condreab.Player(player_ID),
   FOREIGN KEY (username) REFERENCES cs361_condreab.User(username)
 );
+
+ALTER TABLE cs361_condreab.Game
+ADD FOREIGN KEY (player_ID) REFERENCES cs361_condreab.Player(player_ID);
+ALTER TABLE cs361_condreab.Game
+ADD FOREIGN KEY (username) REFERENCES cs361_condreab.User(username);
+
+
 
 CREATE TABLE cs361_condreab.Room
 (
@@ -163,3 +170,13 @@ CREATE TABLE cs361_condreab.Animal
 --   FOREIGN KEY (room_ID_1) REFERENCES cs361_condreab.Room(room_ID),
 --   FOREIGN KEY (room_ID_2) REFERENCES cs361_condreab.Room(room_ID)
 -- );
+
+CREATE TRIGGER `GameSaveInsert` BEFORE INSERT ON `Game`
+ FOR EACH ROW BEGIN
+SET NEW.game_save_date = NOW();
+END
+
+CREATE TRIGGER `GameSaveUpdate` BEFORE UPDATE ON `Game`
+ FOR EACH ROW BEGIN
+SET NEW.game_save_date = NOW();
+END

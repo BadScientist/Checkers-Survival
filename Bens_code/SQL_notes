@@ -1,3 +1,14 @@
 in case we need to add another column the the database...
 ALTER TABLE table_name
 ADD [COLUMN] column_definition;
+
+
+order of operations
+1. Create a User
+2. Create Game (requires user)
+3. Create Rooms
+4. Create weapon for player (item)
+5. Create Player (requires game, room, and weapon)
+6. Create Events (requires room)
+7. Create Items for Animals and Characters
+8. Create Animals and Character (requires room and items)
