@@ -20,7 +20,9 @@ class Player:
                             highlightthickness=3, highlightbackground="black")
         prompt = Text(dialogleft, height=35, width=65, bg="#bbbbbb", 
                       highlightthickness=0)
+        prompt.config(state=NORMAL)
         prompt.insert(END, value)
+        prompt.config(state=DISABLED)
         dialogleft.pack()
         prompt.pack()
         self.canvas.create_window(300, 325, window=dialogleft)

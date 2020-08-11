@@ -444,7 +444,9 @@ def newInventory():
 def print_prompt(value):
     dialogleft = Canvas(canvas1, bg="#bbbbbb",width=550, height=600, highlightthickness=3, highlightbackground="black")
     prompt = Text(dialogleft, height=35, width=65, bg="#bbbbbb", highlightthickness=0)
+    prompt.config(state=NORMAL)
     prompt.insert(END, value)
+    prompt.config(state=DISABLED)
     dialogleft.pack()
     prompt.pack()
     canvas1.create_window(300, 325, window=dialogleft)
