@@ -307,7 +307,10 @@ class Player:
         return self._health
 
     def get_inventory(self):
-        return self._inventory
+        items = self._inventory
+        if self._weapon not in items:
+            items.append(self._weapon)
+        return items
 
     def get_weapon(self):
         return self._weapon
