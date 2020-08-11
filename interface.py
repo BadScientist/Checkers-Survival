@@ -21,6 +21,7 @@ How to Print to the UI from interface.py:
     #   1. Health
     #   2. Time
     #   3. Inventory
+    # print a message for new level to the dialog box
 
 root = Tk()
 
@@ -352,7 +353,7 @@ def combine_funcs(*funcs):
 #changes the color of the score
 def healthcolor():
     score = healthScore()
-    
+    #FIXME: Is this good?
     if score == 100:
         return "Green"
     elif 90 > score > 40:
@@ -408,14 +409,24 @@ def searchDirection():
 
     midright.destroy()
     newMiniMap()
+    botright.destroy()
+    newInventory()
 
 #this refreshes the mini map in the corner
 def newMiniMap():
     midright = Canvas(canvas1, bg="#bbbbbb", width=290, height=290,highlightthickness=3, highlightbackground="black")
     start_mini_map_IO(midright, player.location)
-
     midright.pack()
     canvas1.create_window(730, 230, window=midright)
+
+#this refreshes the inventory in GUI
+def newInventory():
+    botright = Canvas(canvas1, bg="#bbbbbb", width=290, height=295, highlightthickness=3, highlightbackground="black")
+    inventory = Text(botright, height=20, width=35, bg="#bbbbbb", highlightthickness=0)
+    inventory.insert(END, 'value')
+    botright.pack()
+    inventory.pack()
+    canvas1.create_window(730, 533, window=botright)
 
 #Directly prints a prompt to the dialog box to the left
 def print_prompt(value):
@@ -541,7 +552,6 @@ topright.create_text(218, 27, text= specDay(), font=font2, fill= "black")
 topright.create_text(227, 27, text=",", font=font2, fill="black")
 
 topright.create_text(260, 27, text= clock(), font=font2, fill= "black")
-
 
 topright.pack()
 canvas1.create_window(730, 50, window=topright)
