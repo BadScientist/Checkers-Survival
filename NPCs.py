@@ -138,8 +138,8 @@ def create_animal(name, description, health, injure_chance, damage, reward):
 character_master_list = [
     create_character("survivor",
                      "There is another <n> here.",
-                     "Please, I need some <iw>. I can offer this <io> in " +
-                     "return.",
+                     "\"Please, I need some <iw>. I can offer this <io> in " +
+                     "return.\"",
                      create_meat(2), create_berries(1)),
     create_character("explorer",
                      "An alien <n> eyes you from a short distance away.",

@@ -359,7 +359,7 @@ def healthcolor():
 
 #this will be where the score is optained
 def healthScore():
-    return player._health
+    return player.get_health()
 
 #grabs the day
 def specDay():
@@ -369,7 +369,7 @@ def specDay():
 
 #we will have to talk to see what we want to do abou this feature
 def clock():
-    time= "00:00"
+    time = "00:00"
 
     return time
 
@@ -411,7 +411,8 @@ def searchDirection():
 #this refreshes the mini map in the corner
 def newMiniMap():
     midright = Canvas(canvas1, bg="#bbbbbb", width=290, height=290,highlightthickness=3, highlightbackground="black")
-    start_mini_map_IO(midright, player.location)
+    start_mini_map_IO(midright, player.get_location())
+
     midright.pack()
     canvas1.create_window(730, 230, window=midright)
 
@@ -617,7 +618,7 @@ canvas1.create_window(730, 50, window=topright)
 #map box middle right
 midright = Canvas(canvas1, bg="#bbbbbb", width=290, height=290,highlightthickness=3, highlightbackground="black")
 
-start_mini_map_IO(midright, player.location)
+start_mini_map_IO(midright, player.get_location())
 
 midright.pack()
 canvas1.create_window(730, 230, window=midright)
