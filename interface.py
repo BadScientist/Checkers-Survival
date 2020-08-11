@@ -419,7 +419,7 @@ def newMiniMap():
 #this refreshes the inventory in GUI
 def newInventory():
     botright = Canvas(canvas1, bg="#bbbbbb", width=290, height=295, highlightthickness=3, highlightbackground="black")
-    inventory = Text(botright, height=22, width=40, bg="#bbbbbb", highlightthickness=3, highlightbackground="black")
+    inventory = Text(botright, height=18, width=37, bg="#bbbbbb", highlightthickness=3, highlightbackground="black")
     inventory.config(state=NORMAL)
     
     #get all the inventory items
@@ -438,7 +438,7 @@ def newInventory():
     inventory.config(state=DISABLED)
     botright.pack()
     inventory.pack()
-    canvas1.create_window(730, 533, window=botright)
+    canvas1.create_window(733, 533, window=botright)
 
 #Directly prints a prompt to the dialog box to the left
 def print_prompt(value):
