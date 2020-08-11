@@ -417,6 +417,7 @@ def newMiniMap():
     canvas1.create_window(730, 230, window=midright)
 
 #this refreshes the inventory in GUI
+#FIXME: no. of items with same name always 1 even with multiple items of same name
 def newInventory():
     botright = Canvas(canvas1, bg="#bbbbbb", width=290, height=295, highlightthickness=3, highlightbackground="black")
     inventory = Text(botright, height=18, width=37, bg="#bbbbbb", highlightthickness=3, highlightbackground="black")
