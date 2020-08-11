@@ -417,7 +417,6 @@ def newMiniMap():
     canvas1.create_window(730, 230, window=midright)
 
 #this refreshes the inventory in GUI
-#FIXME: no. of items with same name always 1 even with multiple items of same name
 def newInventory():
     botright = Canvas(canvas1, bg="#bbbbbb", width=290, height=295, highlightthickness=3, highlightbackground="black")
     inventory = Text(botright, height=18, width=37, bg="#bbbbbb", highlightthickness=3, highlightbackground="black")
@@ -427,10 +426,13 @@ def newInventory():
     items = {}
     for item in player.get_inventory():
         item_name = item.get_name()
-        if item_name in items.keys():
-            items[item_name] += 1
+        if item.get_type() == 'CONSUMABLE':
+            items[item_name] = item.get_use_count()
         else:
-            items[item_name] = 1
+            if item_name in items.keys():
+                items[item_name] += 1
+            else:
+                items[item_name] = 1
     #print the inventory
     for key in items:
         inventory.insert(END, key + ': ' + str(items[key]) + '\n')

@@ -116,7 +116,7 @@ class Player:
                 # Add existing use count to new item use count
                 if new_item.get_type() == "CONSUMABLE":
                     new_item.adj_use_count(item.get_use_count())
-                self._inventory.remove(item)
+                    self._inventory.remove(item)
 
         # Add the new item to the inventory.
         self._inventory.append(new_item)
