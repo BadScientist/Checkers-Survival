@@ -2,9 +2,6 @@ from room import *
 from mapGUI import start_large_map_IO
 from tkinter import *
 
-# FIXME: "Map" command doesn't clear from the textbox. Doesn't act like other
-#  commands.
-
 
 class Player:
     def __init__(self, canvas):

@@ -17,8 +17,8 @@ How to Print to the UI from interface.py:
     pass string to print prompt below canvas1 definitions.
 '''
 
-#TODO: Keep refreshing and reprinting the:
-    #   3. Inventory
+# TODO: in transition_new_level(), implement a way of destroying or quitting 
+#       once the game is over
 
 root = Tk()
 
@@ -479,7 +479,6 @@ def identify_start_room(level):
 #handles the transition between levels
 def transition_new_level():
     #FIXME: find a way to work without globals
-    #TODO: way of destroying or quitting once game is over
     global cur_level, level_idx, player
     
     if level_idx+1 < len(levels):
@@ -487,7 +486,10 @@ def transition_new_level():
     else: #if all levels are complete
         new_level = None
     
-    if new_level == None: #all levels complete
+    if new_level == None: 
+        
+        #all levels complete
+        
         print_prompt('All Levels Complete')
         #root.destroy()
     elif new_level != cur_level:
@@ -629,26 +631,10 @@ midright.pack()
 canvas1.create_window(730, 230, window=midright)
 
 #inventory box bottom right
-# botright = Canvas(canvas1, bg="#bbbbbb", width=290, height=295, highlightthickness=3, highlightbackground="black")
-
-# botright.create_text(60, 27, text="Health Pack", font=font2, fill="black")
-# botright.create_text(27, 47, text="Meat", font=font2, fill="black")
-# botright.create_text(75, 67, text="Hunting Knife ", font=font2, fill="black")
-
-# botright.create_text(275, 27, text=hpNumber(), font=font2, fill="black")
-# botright.create_text(275, 47, text=meatNumber(), font=font2, fill="black")
-# botright.create_text(275, 67, text=hkNumber(), font=font2, fill="black")
-
-# botright.pack()
-# canvas1.create_window(730, 533, window=botright)
 newInventory()
 
 canvas1.pack()
 
-#********Examples of how we can print to UI*************
-# print_prompt('sbclkhjsbdcj bisub o;s')
-# player.print_prompt('uhbcibw')
-#*************************************
 
 #f10.pack()
 

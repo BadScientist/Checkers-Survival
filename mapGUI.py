@@ -3,9 +3,6 @@ import tkinter as tk
 #GUI Map Definition - Enlarged Map and Mini-Map
 
 
-# TODO: New window upon clicking or hovering over a room in map
-
-
 #Use start_large_map_IO for enlarged map and start_mini_map_IO for mini map
 #They are the very last functions at the bottom
 
@@ -164,8 +161,8 @@ def start_large_map_IO(level, location):
     #Defines the Enlarged Map Window and Creates the Canvas to generate map
     Map = tk.Tk(className=" Map")
     Map.config(bg='#3b444b')
-    Map.geometry("1080x800")
-    canvas = tk.Canvas(Map, width=1040, height=610, highlightthickness=0)
+    Map.geometry("1080x760")
+    canvas = tk.Canvas(Map, width=1040, height=560, highlightthickness=0)
     canvas.config(bg='#3b444b')
     
     title = tk.Label(Map, text="Full Map",font=("Courier",50), fg='white',
@@ -186,4 +183,3 @@ def start_large_map_IO(level, location):
     returnButton = tk.Button(Map, text="OK", padx=80, pady=10, 
                              command=Map.destroy, bg='#cc5500', fg='white')
     returnButton.pack(side='bottom')
-    Map.mainloop()
