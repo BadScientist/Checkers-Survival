@@ -89,6 +89,14 @@ def new_game():
 
 def load_game():
     global load_save
+    
+    f10.pack()
+    title.pack_forget()
+    f1.pack_forget()
+    f2.pack_forget()
+    f3.pack_forget()
+    f4.pack_forget()
+
     load_save = True
     print_prompt("Game loaded.")
 
