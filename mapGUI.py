@@ -3,6 +3,10 @@ import tkinter as tk
 #GUI Map Definition - Enlarged Map and Mini-Map
 
 
+# TODO: fix the canvas scroll bar in enlarged map to allow scrolling for huge
+#       room
+
+
 #Use start_large_map_IO for enlarged map and start_mini_map_IO for mini map
 #They are the very last functions at the bottom
 
@@ -157,29 +161,54 @@ def start_mini_map_IO(root, location):
                      nxt_position[1], False)
     canvas.pack(anchor='sw', side='bottom')
 
+# from tkinter import *
+# root=Tk()
+# frame=Frame(root,width=300,height=300)
+# frame.pack(expand=True, fill=BOTH) #.grid(row=0,column=0)
+# canvas=Canvas(frame,bg='#FFFFFF',width=300,height=300,scrollregion=(0,0,500,500))
+# hbar=Scrollbar(frame,orient=HORIZONTAL)
+# hbar.pack(side=BOTTOM,fill=X)
+# hbar.config(command=canvas.xview)
+# vbar=Scrollbar(frame,orient=VERTICAL)
+# vbar.pack(side=RIGHT,fill=Y)
+# vbar.config(command=canvas.yview)
+# canvas.config(width=300,height=300)
+# canvas.config(xscrollcommand=hbar.set, yscrollcommand=vbar.set)
+# canvas.pack(side=LEFT,expand=True,fill=BOTH)
+
+# root.mainloop()
+
 def start_large_map_IO(level, location):
     #Defines the Enlarged Map Window and Creates the Canvas to generate map
     Map = tk.Tk(className=" Map")
     Map.config(bg='#3b444b')
-    Map.geometry("1080x760")
-    canvas = tk.Canvas(Map, width=1040, height=560, highlightthickness=0)
-    canvas.config(bg='#3b444b')
+    # Map.geometry("1080x760")
+    frame = tk.Frame(Map, width=1080, height=760, bg='#3b444b')
+    frame.pack(expand=True)
+    canvas = tk.Canvas(frame, width=1040, height=560, bg='#3b444b',
+                       highlightthickness=3)
+    canvas.configure(scrollregion = canvas.bbox("all"))
     
-    title = tk.Label(Map, text="Full Map",font=("Courier",50), fg='white',
+    title = tk.Label(frame, text="Full Map",font=("Courier",50), fg='white',
                      bg='#3b444b')
-    title.pack()
-    vert_scroll = tk.Scrollbar(Map, orient='vertical')
-    vert_scroll.pack(side='right', fill='y')
-    hori_scroll = tk.Scrollbar(Map, orient='horizontal')
-    hori_scroll.pack(side='bottom', fill='x')
+    title.pack(expand=True)
     
-    #Print pivot first at CENTER of window, then display the rest
+    vert_scroll = tk.Scrollbar(frame, orient='vertical')
+    vert_scroll.pack(side='right', fill='y')
+    vert_scroll.config(command=canvas.xview)
+    hori_scroll = tk.Scrollbar(frame, orient='horizontal')
+    hori_scroll.pack(side='bottom', fill='x')
+    hori_scroll.config(command=canvas.yview)
+    
+    # Print pivot first at CENTER of window, then display the rest
     pivot = locate_pivot(level)
     x = 525 #center of the screen on x-axis
     y = 290 #center of the screen on y-axis
     display_level(canvas, pivot, location, x, y)
-    canvas.pack()
     
-    returnButton = tk.Button(Map, text="OK", padx=80, pady=10, 
+    canvas.config(xscrollcommand=hori_scroll.set,yscrollcommand=vert_scroll.set)
+    canvas.pack(expand=True)
+    
+    returnButton = tk.Button(frame, text="OK", padx=80, pady=10, 
                              command=Map.destroy, bg='#cc5500', fg='white')
     returnButton.pack(side='bottom')
