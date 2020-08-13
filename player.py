@@ -26,6 +26,10 @@ class Player:
     
     def is_game_over(self):
         return self._health <= 0
+
+    def make_health_nonnegative(self):
+        if self._health < 0:
+            self._health = 0
    
     def move(self, dir_str):
         """
@@ -58,6 +62,7 @@ class Player:
             event = self.location.get_event()
             if event is not None:
                 self._health -= event()
+                self.make_health_nonnegative()
                 self.location.remove_event()
             adj_room.apply_seen()  # To view adjacent room contents in Maps
             self.location = adj_room
@@ -197,6 +202,7 @@ class Player:
             # animal's damage and print message notifying player.
             if random() < animal.get_injure_chance():
                 self._health -= animal.get_damage()
+                self.make_health_nonnegative()
                 hunt_string += "You were hurt by the " + animal.get_name()
 
         self._minutes_passed += 120

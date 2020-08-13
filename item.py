@@ -80,7 +80,7 @@ def create_knife():
 
 def create_slingshot():
     name = 'SLINGSHOT'
-    str_desc = 'A simple SLINGSHOT that can be used to fire small rocks.'
+    str_desc = 'A simple SLINGSHOT that can be used to fire small\nrocks.'
     dmg_low = 15
     dmg_high = 25
     return create_weapon(name, str_desc, dmg_low, dmg_high)
@@ -112,23 +112,18 @@ def create_gun():
 
 class Consumable(Item):
     """Consumable class in game."""
-    def __init__(self, name, str_desc, value, health_gain, use_count):
+    def __init__(self, name, str_desc, health_gain, use_count):
         """Creates a consumable object.\n
         parameters: name, str_desc, value, use_count"""
         self._name = name
         self._str_desc = str_desc
         self._type = "CONSUMABLE"
-        self._value = value
         self._health_gain = health_gain
         self._use_count = use_count
 
     def __str__(self):
-        return self._name + ": " + self._str_desc + " value: " + \
-               str(self._value) + ", use count:" + str(self._use_count)
-        
-    def get_value(self):
-        """get the value of the consumable."""
-        return self._value
+        return self._name + ": " + self._str_desc + \
+               " (x" + str(self._use_count) + ")"
     
     def get_use_count(self):
         """get the remaining use count"""
@@ -150,53 +145,48 @@ class Consumable(Item):
         self._use_count += integer
 
 
-def create_consumable(name, str_desc, value, health_gain, use_count):
-    return Consumable(name, str_desc, value, health_gain, use_count)
+def create_consumable(name, str_desc, health_gain, use_count):
+    return Consumable(name, str_desc, health_gain, use_count)
 
 
 def create_medkit(quantity):
     name = 'MEDKIT'
     str_desc = 'A simple MEDKIT. Restores 50 health when used.'
-    value = 100
     health_gain = 50
     use_count = quantity
-    return create_consumable(name, str_desc, value, health_gain, use_count)
+    return create_consumable(name, str_desc, health_gain, use_count)
 
 
 def create_berries(quantity):
     name = 'BERRIES'
-    str_desc = 'A bundle of alien BERRIES. Restores 10 health when used.'
-    value = 20
+    str_desc = 'A bundle of alien BERRIES. Restores 10 health when\nused.'
     health_gain = 10
     use_count = quantity
-    return create_consumable(name, str_desc, value, health_gain, use_count)
+    return create_consumable(name, str_desc, health_gain, use_count)
 
 
 def create_rations(quantity):
     name = 'RATIONS'
-    str_desc = 'A pack of emergency RATIONS. Restores 20 health when used.'
-    value = 30
+    str_desc = 'A pack of emergency RATIONS. Restores 20 health when\nused.'
     health_gain = 20
     use_count = quantity
-    return create_consumable(name, str_desc, value, health_gain, use_count)
+    return create_consumable(name, str_desc, health_gain, use_count)
 
 
 def create_vitamins(quantity):
     name = 'VITAMINS'
-    str_desc = 'A small bottle of VITAMINS. Restores 30 health when used.'
-    value = 30
+    str_desc = 'A small bottle of VITAMINS. Restores 30 health when\nused.'
     health_gain = 30
     use_count = quantity
-    return create_consumable(name, str_desc, value, health_gain, use_count)
+    return create_consumable(name, str_desc, health_gain, use_count)
 
 
 def create_meat(quantity):
     name = 'MEAT'
-    str_desc = 'The MEAT of an alien creature. Restores 15 health when used.'
-    value = 10
+    str_desc = 'The MEAT of an alien creature. Restores 15 health when\nused.'
     health_gain = 15
     use_count = quantity
-    return create_consumable(name, str_desc, value, health_gain, use_count)
+    return create_consumable(name, str_desc, health_gain, use_count)
 
 
 def gen_item(level_num):

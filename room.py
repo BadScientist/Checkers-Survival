@@ -63,6 +63,24 @@ room_desc_master_list = [level_1_descriptions,
                          level_4_descriptions,
                          level_5_descriptions]
 
+level_transitions = ["As you walk, the grassland slowly gives way to forest." +
+                     "\nEventually, the trees grow so thick and close that t" +
+                     "hey block\nout the sun and sky.",
+                     "The forest begins to slope up and up. As you climb, th" +
+                     "e trees\nbecome more scarce. Soon, you find yourself o" +
+                     "n a barren\nmountainside.",
+                     "You make your way down the far side of the mountain ra" +
+                     "nge. Here\nthe mountains seem to block the passage of " +
+                     "clouds, creating a\nvast, sandy desert.",
+                     "As you walk along in a daze, you barely notice that th" +
+                     "e sea of\ndunes has been replaced by a real ocean ahea" +
+                     "d of you. The sand of\nthe desert gives way to solid r" +
+                     "ock as you approach the shore.",
+                     "As you walk along the shore, you spot a bit of unruste" +
+                     "d metal\nshining in the distance. Racing toward it, yo" +
+                     "u see that it's a\nrescue pod from your homeworld!\n\n" +
+                     "You have survived!"]
+
 
 def gen_room_desc(level_num):
     """

@@ -357,9 +357,9 @@ def combine_funcs(*funcs):
 #changes the color of the score
 def healthcolor():
     score = healthScore()
-    if score == 100:
+    if score >= 90:
         return "Green"
-    elif 90 > score & score > 40:
+    elif 90 > score and score >= 40:
         return "Black"
     else:
         return "Red"
@@ -414,6 +414,8 @@ def searchDirection():
     newMiniMap()
     # botright.destroy()
     newInventory()
+    timer.refresh_label()
+    userhealth.refresh_health()
 
     if player.is_game_over():
         print_prompt("You have died!")
@@ -498,15 +500,14 @@ def transition_new_level():
         new_level = None
     
     if new_level is None:  # all levels complete
-        print_prompt("You find a rescue pod sent from your home world." +
-                     "\n\nYou have survived!")
+        print_prompt(level_transitions[-1])
         textbox_button.destroy()
 
     elif new_level != cur_level:
         level_idx+=1
         cur_level = new_level
         player.set_start_position(identify_start_room(cur_level))
-        print_prompt('Entered Level ' + str(level_idx+1))
+        print_prompt(level_transitions[level_idx - 1])
 
 # prompt user whether they want to move to the next level
 def prompt_move_nxt_level():
@@ -578,27 +579,23 @@ class Timer:
         # label displaying time
         self.label = Label(parent, text=player.get_time(), font="Courier 13 bold", width=14)
         self.label.pack()
-        # start the timer
-        self.label.after(1000, self.refresh_label)
 
     def refresh_label(self):
         """ refresh the content of the label every second """
         finalText = "%s" % (player.get_time())
         self.label.configure(text=finalText)
-        self.label.after(1000, self.refresh_label)
 
 class Health:
     def __init__(self, parent):
         self.health = 100
-        self.label = Label(parent, text = "Health %d/100" % (healthScore()), font="Courier 13 bold", width=15, fg= healthcolor())
+        self.label = Label(parent, text = "Health %d/100" % (healthScore()),
+                           font="Courier 13 bold", width=15, fg= healthcolor())
         self.label.pack()
-        self.label.after(1000, self.refresh_health)
 
     def refresh_health(self):
 
         finalText = "Health %d/100" % (healthScore())
         self.label.configure(text=finalText, fg=healthcolor())
-        self.label.after(1000, self.refresh_health)
 
 
 healthscore = Canvas(topright, bg="#bbbbbb", width=100, height=50)

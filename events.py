@@ -55,7 +55,7 @@ def cave_in():
 
 
 def creature_attack():
-    adj_values = [20, 0, 20]
+    adj_values = [20, 20, 0]
     choice = event_to_UI('You hear a slight crunch behind you. You...\n\n' +
                          '1 - turn around slowly.\n2 - keep walking.\n' +
                          '3 - quickly pull out you weapon and turn around.')
