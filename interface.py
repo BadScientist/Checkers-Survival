@@ -18,8 +18,7 @@ its a poor method, I know. Pls change if you have another implementation
 '''
 
 
-# TODO: - print item needed when trading.
-#       - create save game button and methods
+# TODO: - create save game button and methods
 #       - load save game (from database) - see load_save variable below under
 #         Game Info, and the if statement under 'Game Variables' section to
 #         place your code
