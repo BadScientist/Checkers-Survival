@@ -574,34 +574,16 @@ canvas1.create_window(300, 660, window=textbox)
 topright = Canvas(canvas1, bg="#bbbbbb", width=290, height=50, highlightthickness=3, highlightbackground="black")
 
 class Timer:
-    def __init__(self, parent):
-        # variable storing time
-        self.seconds = 00
-        self.minutes = 00
-        self.days = 1
+    def __init__(self, parent, player):
         # label displaying time
-        self.label = Label(parent, text="Day 1, 00:00", font="Courier 13 bold", width=14)
+        self.label = Label(parent, text=player.get_time(), font="Courier 13 bold", width=14)
         self.label.pack()
         # start the timer
         self.label.after(1000, self.refresh_label)
 
     def refresh_label(self):
         """ refresh the content of the label every second """
-        # increment the time
-        self.seconds += 1
-        # display the new time
-        if self.seconds > 59:
-            self.minutes += 1
-            self.seconds = 0
-        
-        if self.minutes >= 24:
-            self.days += 1
-            self.minutes = 0
-        
-        textsec = str(self.seconds).zfill(2)
-        textmin = str(self.minutes).zfill(2)
-
-        finalText = "Day %d, %s:%s" % (self.days, textmin, textsec)
+        finalText = "%s" % (player.get_time())
         self.label.configure(text=finalText)
         self.label.after(1000, self.refresh_label)
 
@@ -619,12 +601,11 @@ class Health:
         self.label.after(1000, self.refresh_health)
 
 
-
 healthscore = Canvas(topright, bg="#bbbbbb", width=100, height=50)
 userhealth = Health(healthscore)
 
 usertime = Canvas(topright, bg="#bbbbbb", width=100, height=50)
-timer = Timer(usertime)
+timer = Timer(usertime, player)
 
 healthscore.pack(side="left")
 usertime.pack(side="right")
