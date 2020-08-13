@@ -63,10 +63,17 @@ def new_game():
     f3.pack_forget()
     f4.pack_forget()
 
-    print("Start New Game")
+    print_prompt("Crashed\n\nDisaster! Once assigned the prestigious task of " +
+                 "establishing a\nresearch outpost orbiting an alien planet a" +
+                 " mechanical failure\nrendered you unable to reach a stable " +
+                 "orbit over the planet. You\nhad no choice but to enter the " +
+                 "planet's rich atmosphere and\ncrash-landed on one of its " +
+                 "landmasses. Hunt, Work with friendly\nnatives, " +
+                 "Brave the planet's hazards - but by all means...\nSurvive." +
+                 "\n\nType help and click submit to see the list of commands.")
 
 def load_game():
-    print("Load Old Game") 
+    print_prompt("Game loaded.")
 
 def info():
     f5.pack()
@@ -254,10 +261,10 @@ font1 = tkFont.Font(family="Courier",size=13,weight="bold")
 c1.create_text(30, 20, text="Info:", font=font1, fill='white')
 
 #info goes here
-c1.create_text(250, 50, text="Disaster! Once assigned the prestigious task of establishing a Research Outpost orbiting", fill='white')
+c1.create_text(250, 50, text="Disaster! Once assigned the prestigious task of establishing a research outpost orbiting", fill='white')
 c1.create_text(250, 65, text="Earth to study the technologically rudimentary humanoids, a mechanical failure rendered", fill='white')
 c1.create_text(250, 80, text="you unable to reach a stable orbit over the planet. You had no choice but to enter the", fill='white')
-c1.create_text(250, 95, text="planet's rich atmosphere and crash landed on one of it's islands. Nonetheless, protocol", fill='white')
+c1.create_text(250, 95, text="planet's rich atmosphere and crash landed on one of its islands. Nonetheless, protocol", fill='white')
 c1.create_text(250, 110, text="dictates that radio silence for a period of 5 rotations (5 days) will necessitate a ", fill='white')
 c1.create_text(250, 125, text="search-and-rescue mission to be dispatched. Hunt, Work with friendly natives, Brave the", fill='white')
 c1.create_text(250, 140, text="planet's hazards - but by all means... Survive.", fill='white')
@@ -400,13 +407,17 @@ def searchDirection():
     player.get_user_input(cur_level, result)
     entry10.delete(0, END)
 
-    if player.get_location().get_next_level() == True:
+    if player.get_location().get_next_level():
         prompt_move_nxt_level()
 
     midright.destroy()
     newMiniMap()
     # botright.destroy()
     newInventory()
+
+    if player.is_game_over():
+        print_prompt("You have died!")
+        textbox_button.destroy()
 
 #this refreshes the mini map in the corner
 def newMiniMap():
@@ -476,7 +487,7 @@ def identify_start_room(level):
             start_room = room
     return start_room
 
-#handles the transition between levels
+# handles the transition between levels
 def transition_new_level():
     #FIXME: find a way to work without globals
     #TODO: way of destroying or quitting once game is over
@@ -484,21 +495,23 @@ def transition_new_level():
     
     if level_idx+1 < len(levels):
         new_level = levels[level_idx+1]
-    else: #if all levels are complete
+    else:  # if all levels are complete
         new_level = None
     
-    if new_level == None: #all levels complete
-        print_prompt('All Levels Complete')
-        #root.destroy()
+    if new_level is None:  # all levels complete
+        print_prompt("You find a rescue pod sent from your home world." +
+                     "\n\nYou have survived!")
+        textbox_button.destroy()
+
     elif new_level != cur_level:
         level_idx+=1
         cur_level = new_level
         player.set_start_position(identify_start_room(cur_level))
         print_prompt('Entered Level ' + str(level_idx+1))
 
-#prompt user whether they want to move to the next level
+# prompt user whether they want to move to the next level
 def prompt_move_nxt_level():
-    #Returns either True/False
+    # Returns either True/False
     response = Tk(className=" Progression")
     response.config(bg='#3b444b')
     title = Label(response, text='Advance to the next level?', pady=30,

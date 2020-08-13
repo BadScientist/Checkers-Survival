@@ -423,20 +423,27 @@ class Player:
         # Display help information about commands
         elif words[0] == "help":
 
+            general_help = "Commands: move, look, take, use, hunt, talk, trad" \
+                           "e, inventory,\nmap, status, here, help\nEnter \"h" \
+                           "elp\" followed by another command for instruction" \
+                           "s on\nusing the command.\nItems, Characters, and " \
+                           "NPCs that can be interacted with are\ndisplayed i" \
+                           "n ALL CAPS."
+
             if len(words) == 1:
-                self.print_prompt("Commands: move, look, take, use, hunt, " +
-                                  "talk, trade, inventory, \nmap, status, " +
-                                  "here, help\nItems, Characters, and NPCs " +
-                                  "that can be interacted with are " +
-                                  "\ndisplayed in ALL CAPS.")
+                self.print_prompt(general_help)
 
             elif words[1] == "move":
                 self.print_prompt("Usage: move <direction>\nMove to the " +
-                                  "location in the specified direction.")
+                                  "location in the specified direction." +
+                                  "\nValid directions are north, south, east," +
+                                  " and west (or n, s, e,\nand w).")
 
             elif words[1] == "look":
                 self.print_prompt("Usage: look <direction>\nLook in the " +
-                                  "specified direction.")
+                                  "specified direction.\nValid directions " +
+                                  "are north, south, east, and west (or n, " +
+                                  "s, e,\nand w).")
 
             elif words[1] == "take":
                 self.print_prompt("Usage: take\nTake the item in the current " +
@@ -482,11 +489,7 @@ class Player:
                                   "command help information.")
 
             else:
-                self.print_prompt("Commands: move, look, take, use, hunt, " +
-                                  "talk, trade, inventory, map, status, here," +
-                                  " help\nItems, Characters, and NPCs that " +
-                                  "can be interacted with are displayed in " +
-                                  "ALL CAPS.")
+                self.print_prompt(general_help)
 
         else:
             self.print_prompt(
