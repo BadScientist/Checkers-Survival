@@ -256,7 +256,8 @@ class Player:
                         self._minutes_passed += 15
                         return
 
-                self.print_prompt("You don't have the correct item to trade.")
+                self.print_prompt("You don't have the correct item to trade." +
+                                  "\n\nCorrect item: "+ item_wanted.get_name())
 
             else:
                 self.print_prompt("\"Sorry, I have nothing left to trade.\"")

@@ -5,20 +5,24 @@ import tkinter.font as tkFont
 import math
 
 '''
-Changes:
-    The player is initialized via passing the UI canvas ie canvas1 to player
-    class.
-    The UI can then be modified from there.
-    ********* Note: you can only call it once every element of canvas1 has been
-                    initialized.
-    see bottom of Game Settings for example
-        
-How to Print to the UI from interface.py:
-    pass string to print prompt below canvas1 definitions.
+    for implementing load game method:
+    
+There's a simple if statement which uses load_save like a flag.
+if user selects load game, the load_save variable is set to True
+
+if load_save is true when the player & map are being created, if statement will
+overwrite the newly created player and will load the database data to the
+player object
+
+its a poor method, I know. Pls change if you have another implementation
 '''
 
-# TODO: in transition_new_level(), implement a way of destroying or quitting
-#       once the game is over
+
+# TODO: - create save game button and methods
+#       - load save game (from database) - see load_save variable below under
+#         Game Info, and the if statement under 'Game Variables' section to
+#         place your code
+
 
 root = Tk()
 
@@ -27,6 +31,16 @@ root.config(bg='#3b444b')
 root.geometry('900x700') 
 
 ###END Page Setup###
+
+
+# Game info:
+#   (for now, its only if the game is loaded or not).
+#   you can even set this as a dict should you like
+'''
+    var load_save: whether the game should be loaded (True) or not (False)
+'''
+load_save = False #default to create a new game
+
 
 ###Page Switches###
 def login_page():
@@ -73,6 +87,16 @@ def new_game():
                  "\n\nType help and click submit to see the list of commands.")
 
 def load_game():
+    global load_save
+    
+    f10.pack()
+    title.pack_forget()
+    f1.pack_forget()
+    f2.pack_forget()
+    f3.pack_forget()
+    f4.pack_forget()
+
+    load_save = True
     print_prompt("Game loaded.")
 
 def info():
@@ -533,6 +557,7 @@ f10 = Frame(root, bg='#3b444b')
 ###End Frames
 canvas1 = Canvas(f10, bg='#3b444b', width=900, height=700, highlightthickness=0)
 
+# Game Variables
 level_size = [10, 12, 15, 18, 23]
 levels = [
     gen_random_level(level_size[0], 1),
@@ -541,12 +566,20 @@ levels = [
     gen_random_level(level_size[3], 4),
     gen_random_level(level_size[4], 5),
 ]
-
-# Initialize first Level and Player
 level_idx = 0
 cur_level = levels[level_idx]
 player = Player(canvas1)
 player.set_start_position(identify_start_room(cur_level))
+
+if load_save == True:
+    
+    #TODO: add the load game method here
+    
+    # 1. Download game data from database
+    # 2. Set it to the game variables level_idx, cur_level, and player
+    
+    next
+
 
 #font for texts on screen
 font2 = tkFont.Font(family="Courier",size=13, weight="bold")
