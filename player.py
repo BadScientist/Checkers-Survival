@@ -147,11 +147,7 @@ class Player:
 
                 else:
                     # Adjust the player's health and item's use count.
-                    self._health += item.get_health_gein()
-
-                    # Make sure current health doesn't exceed maximum of 100.
-                    if self._health > 100:
-                        self._health = 100
+                    self.adj_health(item.get_health_gein())
 
                     item.use_item()
 
@@ -257,7 +253,7 @@ class Player:
                         return
 
                 self.print_prompt("You don't have the correct item to trade." +
-                                  "\n\nCorrect item: "+ item_wanted.get_name())
+                                  "\n\nCorrect item: " + item_wanted.get_name())
 
             else:
                 self.print_prompt("\"Sorry, I have nothing left to trade.\"")
@@ -285,7 +281,7 @@ class Player:
     def adj_health(self, amount):
         self._health += amount
         if self._health >= 100:
-            self._health == 100;
+            self._health = 100
             
     def equip(self, weapon_str):
         """

@@ -493,10 +493,11 @@ def searchDirection(event):
         menu_button = Button(textbox, text="Back to Menu", bg='#cc5500',
                              fg='white', height=2, width=15, command=game_over)
         menu_button.pack()
-        textbox.create_window(496, 23, window=menu_button) #pack the box
+        textbox.create_window(496, 23, window=menu_button)  # pack the box
     
     if player.get_location().get_next_level():
         prompt_move_nxt_level()
+
 
 # this refreshes the mini map in the corner
 def newMiniMap():
@@ -616,11 +617,12 @@ def prompt_move_nxt_level():
     title.grid(row=0, columnspan=2)
     Yes.grid(row=1, column=0)
     No.grid(row=1, column=1)
-    
-#creates new objects for all the game variables
+
+
+# creates new objects for all the game variables
 def new_variables():
     global levels, player, cur_level, level_idx
-    #create new game
+    # create new game
     levels = [
         gen_random_level(level_size[0], 1),
         gen_random_level(level_size[1], 2),
@@ -633,9 +635,10 @@ def new_variables():
     player = Player(canvas1)
     player.set_start_position(identify_start_room(cur_level))
     
-#GAME SETTINGS
+# GAME SETTINGS
 
-###Frames###
+
+# # #Frames# # #
 f10 = Frame(root, bg='#3b444b')
 # # #End Frames
 canvas1 = Canvas(f10, bg='#3b444b', width=900, height=700, highlightthickness=0)
@@ -659,8 +662,6 @@ if load_save:
     # 1. Download game data from database
     # 2. Set it to the game variables level_idx, cur_level, and player
     next
-else:
-    prompt = "Disaster! Once assigned the prestigious task of establishing a Research Outpost orbiting an alien planet to study the technologically rudimentary humanoids, a mechanical failure rendered you unable to reach a stable orbit over the planet. \n\nYou had no choice but to enter the planet's rich atmosphere and crash landed on one of its landmasses. Hunt, Work with friendly natives, Brave the planet's hazards - but by all means... Survive."
 
 # font for texts on screen
 font2 = tkFont.Font(family="Courier", size=13, weight="bold")
@@ -676,7 +677,7 @@ textbox = Canvas(canvas1, bg="white", width=550, height=40,
                  highlightthickness=3, highlightbackground="black")
 
 textbox.create_text(15, 23, text=">", font=font2, fill="black")
-entry10 = Entry(textbox, width=40)  # this is the entry box
+entry10 = Entry(textbox, width=65)  # this is the entry box
 entry10.bind("<Return>", searchDirection)
 entry10.pack()
 textbox.create_window(230, 23, window=entry10)  # packing the entry box
@@ -716,8 +717,8 @@ class Timer:
 class Health:
     def __init__(self, parent):
         self.health = 100
-        self.label = Label(parent, text = "Health %d/100" % (healthScore()),
-                           font="Courier 13 bold", width=15, fg= healthcolor())
+        self.label = Label(parent, text="Health %d/100" % (healthScore()),
+                           font="Courier 13 bold", width=15, fg=healthcolor())
         self.label.pack()
 
     def refresh_health(self):
@@ -753,7 +754,7 @@ newInventory()
 canvas1.pack()
 
 
-#f10.pack()
+# f10.pack()
 
 
 # # #END GAME INTERFACE# # #
