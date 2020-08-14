@@ -655,14 +655,12 @@ player = Player(canvas1)
 player.set_start_position(identify_start_room(cur_level))
 
 if load_save:
-    
     # TODO: add the load game method here
-    
     # 1. Download game data from database
     # 2. Set it to the game variables level_idx, cur_level, and player
-    
     next
-
+else:
+    prompt = "Disaster! Once assigned the prestigious task of establishing a Research Outpost orbiting an alien planet to study the technologically rudimentary humanoids, a mechanical failure rendered you unable to reach a stable orbit over the planet. \n\nYou had no choice but to enter the planet's rich atmosphere and crash landed on one of its landmasses. Hunt, Work with friendly natives, Brave the planet's hazards - but by all means... Survive."
 
 # font for texts on screen
 font2 = tkFont.Font(family="Courier", size=13, weight="bold")
@@ -678,7 +676,7 @@ textbox = Canvas(canvas1, bg="white", width=550, height=40,
                  highlightthickness=3, highlightbackground="black")
 
 textbox.create_text(15, 23, text=">", font=font2, fill="black")
-entry10 = Entry(textbox, width=65)  # this is the entry box
+entry10 = Entry(textbox, width=40)  # this is the entry box
 entry10.bind("<Return>", searchDirection)
 entry10.pack()
 textbox.create_window(230, 23, window=entry10)  # packing the entry box
