@@ -3,6 +3,10 @@ import tkinter as tk
 #GUI Map Definition - Enlarged Map and Mini-Map
 
 
+# TODO: fix the canvas scroll bar in enlarged map to allow scrolling for huge
+#       room
+
+
 #Use start_large_map_IO for enlarged map and start_mini_map_IO for mini map
 #They are the very last functions at the bottom
 
@@ -158,12 +162,12 @@ def start_mini_map_IO(root, location):
     canvas.pack(anchor='sw', side='bottom')
 
 def start_large_map_IO(level, location):    
-    root=tk.Tk()
+    root = tk.Tk(className=" Full Map")
     frame = tk.Frame(root, bg='#3b444b', highlightthickness=0)
     frame.pack(expand=True, fill='both')
     canvas = tk.Canvas(frame, bg='#3b444b', highlightthickness=2)
     
-    #Print pivot first at CENTER of window, then display the rest
+    # Print pivot first at CENTER of window, then display the rest
     pivot = locate_pivot(level)
     x = 525 #center of the screen on x-axis
     y = 290 #center of the screen on y-axis
@@ -182,8 +186,9 @@ def start_large_map_IO(level, location):
                       bg='#3b444b').pack(side='top')
     
     returnButton = tk.Button(frame, text="OK", padx=80, pady=10, 
-                              command=root.destroy, bg='#cc5500', fg='white')
+                             command=root.destroy, bg='#cc5500', fg='white')
     returnButton.pack(side='bottom')
-        
+    
     canvas.config(xscrollcommand=hbar.set, yscrollcommand=vbar.set)
     canvas.pack(anchor='center', expand=True, fill='both')
+    canvas.pack(expand=True)
