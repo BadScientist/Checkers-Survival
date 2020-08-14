@@ -284,7 +284,9 @@ class Player:
 
     def adj_health(self, amount):
         self._health += amount
-
+        if self._health >= 100:
+            self._health == 100;
+            
     def equip(self, weapon_str):
         """
         Exchange the equipped weapon for the specified weapon in the inventory.

@@ -189,6 +189,16 @@ class SqlGame:
         self._database = database
         self._cur = cursor
 
+    # return a list of games saved, sorted by most recent (date)
+    def load_game(self, username):
+        game_ID = self._cur.execute("SELECT game_ID, game_save_date FROM "+self._database+".Game WHERE username=? ORDER BY game_save_date",(username)
+
+    def get_curr_room(self, game_ID):
+        return self._cur.execute("SELECT room_ID, FROM "+self._database+".Player WHERE game_ID=?",(game_ID) 
+    
+    def get_player(self, game_ID):
+        next
+
     # def get_saves(self, username):
     #     # return a list of games saved, sorted by most recent (date)
     
