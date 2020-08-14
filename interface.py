@@ -379,14 +379,19 @@ def combine_funcs(*funcs):
             f(*args, **kwargs)
     return combined_func    
 
+# Actual transition from game UI to the main menu
 def return_to_menu():
+    f10.pack_forget()
+    title.pack()
+    start_game()
+
+# Called when 'Return to Menu' button is pushed ie game is over
+def game_over():
     menu_button.destroy()
     textbox_button = Button(textbox, text="Submit", bg='#cc5500', fg='white', height=2, width=15, command=searchDirection) #new button for submit
     textbox_button.pack()
     textbox.create_window(496, 23, window=textbox_button) #pack the box
-    f10.pack_forget()
-    title.pack()
-    start_game()
+    return_to_menu()
 
 #changes the color of the score
 def healthcolor():
@@ -454,7 +459,7 @@ def searchDirection():
     if player.is_game_over():
         print_prompt("You have died!")
         textbox_button.destroy()
-        menu_button = Button(textbox, text="Back to Menu", bg='#cc5500', fg='white', height=2, width=15, command=return_to_menu) #new button for submit
+        menu_button = Button(textbox, text="Back to Menu", bg='#cc5500', fg='white', height=2, width=15, command=game_over) #new button for submit
         menu_button.pack()
         textbox.create_window(496, 23, window=menu_button) #pack the box
 
@@ -538,7 +543,7 @@ def transition_new_level():
     if new_level is None:  # all levels complete
         print_prompt(level_transitions[-1])
         textbox_button.destroy()
-        menu_button = Button(textbox, text="Back to Menu", bg='#cc5500', fg='white', height=2, width=15, command=return_to_menu) #new button for submit
+        menu_button = Button(textbox, text="Back to Menu", bg='#cc5500', fg='white', height=2, width=15, command=game_over) #new button for submit
         menu_button.pack()
         textbox.create_window(496, 23, window=menu_button) #pack the box
     elif new_level != cur_level:
@@ -616,7 +621,7 @@ textbox_button.pack()
 textbox.create_window(496, 23, window=textbox_button) #pack the box
 
 #Used to return to the menu
-menu_button = Button(textbox, text="Back to Menu", bg='#cc5500', fg='white', height=2, width=15, command=return_to_menu) #new button for submit
+menu_button = Button(textbox, text="Back to Menu", bg='#cc5500', fg='white', height=2, width=15, command=game_over) #new button for submit
 
 textbox.pack()
 canvas1.create_window(300, 660, window=textbox)
