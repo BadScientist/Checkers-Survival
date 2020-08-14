@@ -378,6 +378,11 @@ def combine_funcs(*funcs):
             f(*args, **kwargs)
     return combined_func    
 
+def return_to_menu():
+    f10.pack_forget()
+    title.pack()
+    start_game()
+
 #changes the color of the score
 def healthcolor():
     score = healthScore()
@@ -430,7 +435,7 @@ def searchDirection():
     result = entry10.get()
     player.get_user_input(cur_level, result)
     entry10.delete(0, END)
-
+    
     if player.get_location().get_next_level():
         prompt_move_nxt_level()
 
