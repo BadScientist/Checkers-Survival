@@ -3,10 +3,6 @@ import tkinter as tk
 #GUI Map Definition - Enlarged Map and Mini-Map
 
 
-# TODO: fix the canvas scroll bar in enlarged map to allow scrolling for huge
-#       room
-
-
 #Use start_large_map_IO for enlarged map and start_mini_map_IO for mini map
 #They are the very last functions at the bottom
 
