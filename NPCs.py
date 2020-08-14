@@ -143,24 +143,24 @@ character_master_list = [
                      create_meat(2), create_berries(1)),
     create_character("explorer",
                      "An alien <n> eyes you from a short distance away.",
-                     "\"Greetings, traveller. I'm looking for a <iw>. If " +
-                     "you're willing to trade, I'll give you this <io>.\"",
+                     "\"Greetings, traveller. I'm looking for some <iw>. If " +
+                     "you're\nwilling to trade, I'll give you these <io>.\"",
                      create_rations(2), create_meat(1)),
     create_character("trader",
                      "An alien <n> waves you over. It seems they want to " +
-                     "make you an offer.",
-                     "\"You look like you could use this <io>. I'd be willing" +
-                     " to trade it for a <iw>.\"",
+                     "make you an\noffer.",
+                     "\"You look like you could use these <io>. I'd be willin" +
+                     "g to\ntrade it for some <iw>.\"",
                      create_vitamins(2), create_meat(1)),
     create_character("warrior",
                      "An alien <n> signals to you that they want to talk.",
                      "\"You won't make it far without a decent weapon. If you" +
-                     " get me a <iw>, I'll give you my <io>.\"",
+                     " get me\nsome <iw>, I'll give you my <io>.\"",
                      create_axe(), create_vitamins(1)),
     create_character("doctor",
                      "A <n> from your ship's crew is here.",
                      "\"If you're hurt, I can give you this <io>, but I need " +
-                     "a <iw> in return.\"",
+                     "some <iw>\nin return.\"",
                      create_medkit(1), create_meat(1))
 ]
 

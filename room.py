@@ -37,7 +37,7 @@ level_4_descriptions = [["an ocean of sand.", "Massive black sand dunes " +
                         ["a glittering oasis.", "At first, you are glad to " +
                          "see that the oasis you saw was not a\nmirage. " +
                          "However, upon seeing the water churning with yellow" +
-                         " worms, you wish it had been."],
+                         "\nworms, you wish it had been."],
                         ["strange rock pillars.", "Many oddly shaped columns " +
                          "of stone jut out from the sand here.\nSuddenly, " +
                          "one of the columns vanishes beneath the sand. " +
