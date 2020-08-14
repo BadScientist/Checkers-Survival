@@ -157,29 +157,33 @@ def start_mini_map_IO(root, location):
                      nxt_position[1], False)
     canvas.pack(anchor='sw', side='bottom')
 
-def start_large_map_IO(level, location):
-    #Defines the Enlarged Map Window and Creates the Canvas to generate map
-    Map = tk.Tk(className=" Map")
-    Map.config(bg='#3b444b')
-    Map.geometry("1080x760")
-    canvas = tk.Canvas(Map, width=1040, height=560, highlightthickness=0)
-    canvas.config(bg='#3b444b')
-    
-    title = tk.Label(Map, text="Full Map",font=("Courier",50), fg='white',
-                     bg='#3b444b')
-    title.pack()
-    vert_scroll = tk.Scrollbar(Map, orient='vertical')
-    vert_scroll.pack(side='right', fill='y')
-    hori_scroll = tk.Scrollbar(Map, orient='horizontal')
-    hori_scroll.pack(side='bottom', fill='x')
+def start_large_map_IO(level, location):    
+    root=tk.Tk()
+    frame = tk.Frame(root, bg='#3b444b', highlightthickness=0)
+    frame.pack(expand=True, fill='both')
+    canvas = tk.Canvas(frame, bg='#3b444b', highlightthickness=2)
     
     #Print pivot first at CENTER of window, then display the rest
     pivot = locate_pivot(level)
     x = 525 #center of the screen on x-axis
     y = 290 #center of the screen on y-axis
     display_level(canvas, pivot, location, x, y)
-    canvas.pack()
     
-    returnButton = tk.Button(Map, text="OK", padx=80, pady=10, 
-                             command=Map.destroy, bg='#cc5500', fg='white')
+    canvas.configure(scrollregion=canvas.bbox('all'))
+    
+    hbar = tk.Scrollbar(frame,orient='horizontal')
+    hbar.pack(side='bottom',fill='x')
+    hbar.config(command=canvas.xview)
+    vbar = tk.Scrollbar(frame,orient='vertical')
+    vbar.pack(side='right',fill='y')
+    vbar.config(command=canvas.yview)
+    
+    title = tk.Label(frame, text="Full Map",font=("Courier",50), fg='white',
+                      bg='#3b444b').pack(side='top')
+    
+    returnButton = tk.Button(frame, text="OK", padx=80, pady=10, 
+                              command=root.destroy, bg='#cc5500', fg='white')
     returnButton.pack(side='bottom')
+        
+    canvas.config(xscrollcommand=hbar.set, yscrollcommand=vbar.set)
+    canvas.pack(anchor='center', expand=True, fill='both')
