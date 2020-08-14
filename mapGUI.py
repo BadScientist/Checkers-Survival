@@ -158,8 +158,8 @@ def start_mini_map_IO(root, location):
     canvas.pack(anchor='sw', side='bottom')
 
 def start_large_map_IO(level, location):    
-    root = tk.Tk(className=" Full Map")
-    frame = tk.Frame(root, bg='#3b444b', highlightthickness=0)
+    Map = tk.Tk(className=" Full Map")
+    frame = tk.Frame(Map, bg='#3b444b', highlightthickness=0)
     frame.pack(expand=True, fill='both')
     canvas = tk.Canvas(frame, bg='#3b444b', highlightthickness=2)
     
@@ -182,7 +182,7 @@ def start_large_map_IO(level, location):
                       bg='#3b444b').pack(side='top')
     
     returnButton = tk.Button(frame, text="OK", padx=80, pady=10, 
-                             command=root.destroy, bg='#cc5500', fg='white')
+                             command=Map.destroy, bg='#cc5500', fg='white')
     returnButton.pack(side='bottom')
     
     canvas.config(xscrollcommand=hbar.set, yscrollcommand=vbar.set)
