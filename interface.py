@@ -612,12 +612,10 @@ def prompt_move_nxt_level():
     title.grid(row=0, columnspan=2)
     Yes.grid(row=1, column=0)
     No.grid(row=1, column=1)
-<<<<<<< HEAD
     
 #creates new objects for all the game variables
 def new_variables():
     global levels, player, cur_level, level_idx
-    
     #create new game
     levels = [
         gen_random_level(level_size[0], 1),
@@ -632,12 +630,8 @@ def new_variables():
     player.set_start_position(identify_start_room(cur_level))
     
 #GAME SETTINGS
-=======
-# GAME SETTINGS
->>>>>>> 77d52ecd39a0e51537514f42592aba8667ff9fda
 
-
-# # #Frames# # #
+###Frames###
 f10 = Frame(root, bg='#3b444b')
 # # #End Frames
 canvas1 = Canvas(f10, bg='#3b444b', width=900, height=700, highlightthickness=0)
