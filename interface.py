@@ -432,6 +432,13 @@ def combine_funcs(*funcs):
 
 # Actual transition from game UI to the main menu
 def return_to_menu():
+    midright.destroy()
+    newMiniMap()
+    # botright.destroy()
+    newInventory()
+    timer.refresh_label()
+    userhealth.refresh_health()
+    
     f10.pack_forget()
     title.pack()
     start_game()
@@ -439,6 +446,7 @@ def return_to_menu():
 
 # Called when 'Return to Menu' button is pushed ie game is over
 def game_over():
+    new_variables()
     menu_button.destroy()
     textbox_button = Button(textbox, text="Submit", bg='#cc5500', fg='white', height=2, width=15, command=searchDirection) #new button for submit
     textbox_button.pack()
@@ -467,9 +475,6 @@ def searchDirection():
     result = entry10.get()
     player.get_user_input(cur_level, result)
     entry10.delete(0, END)
-    
-    if player.get_location().get_next_level():
-        prompt_move_nxt_level()
 
     midright.destroy()
     newMiniMap()
@@ -485,8 +490,10 @@ def searchDirection():
         menu_button = Button(textbox, text="Back to Menu", bg='#cc5500',
                              fg='white', height=2, width=15, command=game_over)
         menu_button.pack()
-        textbox.create_window(496, 23, window=menu_button)  # pack the box
-
+        textbox.create_window(496, 23, window=menu_button) #pack the box
+    
+    if player.get_location().get_next_level():
+        prompt_move_nxt_level()
 
 # this refreshes the mini map in the corner
 def newMiniMap():
@@ -605,7 +612,29 @@ def prompt_move_nxt_level():
     title.grid(row=0, columnspan=2)
     Yes.grid(row=1, column=0)
     No.grid(row=1, column=1)
+<<<<<<< HEAD
+    
+#creates new objects for all the game variables
+def new_variables():
+    global levels, player, cur_level, level_idx
+    
+    #create new game
+    levels = [
+        gen_random_level(level_size[0], 1),
+        gen_random_level(level_size[1], 2),
+        gen_random_level(level_size[2], 3),
+        gen_random_level(level_size[3], 4),
+        gen_random_level(level_size[4], 5),
+    ]
+    level_idx = 0
+    cur_level = levels[level_idx]
+    player = Player(canvas1)
+    player.set_start_position(identify_start_room(cur_level))
+    
+#GAME SETTINGS
+=======
 # GAME SETTINGS
+>>>>>>> 77d52ecd39a0e51537514f42592aba8667ff9fda
 
 
 # # #Frames# # #
