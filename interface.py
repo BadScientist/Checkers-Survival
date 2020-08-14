@@ -448,7 +448,9 @@ def return_to_menu():
 def game_over():
     new_variables()
     menu_button.destroy()
-    textbox_button = Button(textbox, text="Submit", bg='#cc5500', fg='white', height=2, width=15, command=searchDirection) #new button for submit
+    # new button for submit
+    textbox_button = Button(textbox, text="Submit", bg='#cc5500', fg='white',
+                            height=2, width=15, command=searchDirection)
     textbox_button.pack()
     textbox.create_window(496, 23, window=textbox_button)  # pack the box
     return_to_menu()
@@ -471,7 +473,7 @@ def healthScore():
 
 
 # this will be where it figures out what the text says
-def searchDirection():
+def searchDirection(event):
     result = entry10.get()
     player.get_user_input(cur_level, result)
     entry10.delete(0, END)
@@ -486,6 +488,7 @@ def searchDirection():
     if player.is_game_over():
         print_prompt("You have died!")
         textbox_button.destroy()
+        entry10.destroy()
         # new button for submit
         menu_button = Button(textbox, text="Back to Menu", bg='#cc5500',
                              fg='white', height=2, width=15, command=game_over)
@@ -584,6 +587,7 @@ def transition_new_level():
     if new_level is None:  # all levels complete
         print_prompt(level_transitions[-1])
         textbox_button.destroy()
+        entry10.destroy()
         # new button for submit
         menu_button = Button(textbox, text="Back to Menu", bg='#cc5500',
                              fg='white', height=2, width=15, command=game_over)
@@ -675,6 +679,7 @@ textbox = Canvas(canvas1, bg="white", width=550, height=40,
 
 textbox.create_text(15, 23, text=">", font=font2, fill="black")
 entry10 = Entry(textbox, width=65)  # this is the entry box
+entry10.bind("<Return>", searchDirection)
 entry10.pack()
 textbox.create_window(230, 23, window=entry10)  # packing the entry box
 
